@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-
+from app.forms import PostVideo
+from app.models import Video, Comment
 # Create your views here.
 
 def index(request):
@@ -21,9 +22,23 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def postVideo(request):
-    context = {
-    }
-    return render(request, 'postVideo.html' , context)
+    if request.method == "POST":
+        form = PostVideo(request.POST, request.FILES)
+        if form.is_valid():
+            video = Video(
+                author=request.user.username,
+                title=form.cleaned_data["title"],
+                description=form.cleaned_data["description"],
+                thumbnail=form.cleaned_data["thumbnail"],
+                video=form.cleaned_data["image"]
+            )
+            video.save()
+            return redirect('blog_index')
+    else:
+        form = PostVideo()
+    
+    return render(request, 'blog/makepost.html', {'form': form})
+
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
