@@ -1,1 +1,24 @@
 {% extends "base.html" %}
+
+{% block page_content %}
+<body>
+    <h1>Create Recipe</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            {{ form.title }}
+        </div>
+        <div>
+            {{ form.description }}
+        </div>
+        <div>
+            {{ form.thumbnail }}
+        </div>
+        <div>
+            {{ form.video }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{% url 'blog_index' %}">Cancel</a>
+    </form>
+</body>
+{% endblock page_content %}
