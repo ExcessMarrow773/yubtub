@@ -3,24 +3,4 @@
 {% block title %}YubTub - Home{% endblock title %}
 
 {% block content %}
-<div class="navbar">
-    <h1>Welcome to YubTub! </h1>
-    {% if user.is_authenticated %}
-        <navbar-buttons>
-        <form method="post" action="{% url 'logout' %}">
-            <a id="name" class="button" href="{% url 'index' %}">{{ user.username }}</a>
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-            {% if user.is_staff %}
-                <a class="button" href="/admin">Admin Site</a>
-            {% endif %}
-        </form>
-        </navbar-buttons>
-    {% else %}
-    <navbar-buttons>
-        <a class="button" href="login">Login</a>
-        <a class="button" href="signup">Sign Up</a>
-    </navbar-buttons>
-    {% endif %}
-</div>
 {% endblock content %}
