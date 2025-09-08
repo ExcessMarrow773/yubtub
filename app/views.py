@@ -33,11 +33,11 @@ def postVideo(request):
                 video=form.cleaned_data["image"]
             )
             video.save()
-            return redirect('blog_index')
+            return redirect('index')
     else:
         form = PostVideo()
     
-    return render(request, 'blog/makepost.html', {'form': form})
+    return render(request, 'video.html', {'form': form})
 
 
 class CustomLoginView(LoginView):
