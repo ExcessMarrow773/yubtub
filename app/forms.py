@@ -11,7 +11,6 @@ class CommentForm(forms.Form):
 class PostVideo(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['image'].required = False
     title = forms.CharField(
         max_length=255,
         widget=forms.TextInput(
