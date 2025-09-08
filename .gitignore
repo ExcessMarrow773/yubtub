@@ -1,3 +1,5 @@
 videos/
 .venv
 *.sqlite3
+thumbnail/
+SQLiteDatabaseBrowserPortable
