@@ -28,4 +28,4 @@ class PostVideo(forms.Form):
             attrs={"class": "form-control", "placeholder": "Body"}
         )
     )
-    video_file = forms.FileField(upload_to='videos/') 
+    video = forms.FileField(required=True)
