@@ -1,0 +1,16 @@
+<head>    
+    <meta charset="utf-8">
+    <title>{% block page_title %}YubTub{% endblock page_title %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<form method="post">
+    <h2>Login</h2>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+</form>
