@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.admin.widgets import AdminSplitDateTime
 
 class CommentForm(forms.Form):
     body = forms.CharField(
@@ -26,5 +27,9 @@ class PostVideo(forms.Form):
         widget=forms.Textarea(
             attrs={"class": "form-control", "placeholder": "Body"}
         )
+    )
+    schedulePost = forms.DateTimeField(
+        required=False,
+        widget=AdminSplitDateTime()
     )
     video = forms.FileField(required=True)
