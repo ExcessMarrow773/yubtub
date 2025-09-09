@@ -8,5 +8,9 @@
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
   No video support.
 </video>
+
 <a href="../media/{{ videos.video_file }}" class="button">vid</a>
+
+{{ videos.description | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linebreaks -->
+
 {% endblock %}

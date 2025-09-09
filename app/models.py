@@ -9,6 +9,7 @@ class Video(models.Model):
     description = models.TextField(default='There was no description provided for this video')
     posted_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(upload_to="thumbnail", height_field=None, width_field=None, max_length=None)
+    views = models.IntegerField(default=0)
     video_file = models.FileField(
         upload_to='videos/',
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm'])]
