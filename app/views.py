@@ -49,6 +49,14 @@ def watchVideo(request, pk):
     }
     return render(request, 'watch.html', context)
 
+def account(request, username):
+    user_videos = Video.objects.filter(author=username)
+    context = {
+        'user_videos': user_videos,
+        'username': username
+    }
+    return render(request, 'account.html', context)
+
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
