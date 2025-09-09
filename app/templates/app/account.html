@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block heading %}{{ user.username.capitalize }}'s posted videos{% endblock heading %}
+
+{% block page_content %}
+    {% block videos %}
+        {% for video in user_videos %}
+            <a href="{% url 'watch' video.id %}">
+                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
+            </a>
+            <small>
+                {{ video.author }} Posted "{{ video.title }}" on: {{ video.posted_on }}<br><br>
+            </small>
+            
+        {% endfor %}
+    {% endblock videos %}
+{% endblock page_content %}
