@@ -50,7 +50,7 @@ def watchVideo(request, pk):
     return render(request, 'watch.html', context)
 
 def account(request, username):
-    user_videos = Video.objects.filter(author=username)
+    user_videos = Video.objects.filter(author=username).order_by('-posted_on')
     context = {
         'user_videos': user_videos,
         'username': username
