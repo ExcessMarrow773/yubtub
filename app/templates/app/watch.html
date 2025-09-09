@@ -1,10 +1,10 @@
-{% extends "css.html" %}
+{% extends "base.html" %}
 
 {% block title %}YubTub: {{ videos.title }}{% endblock title %}
 
 {% block page_content %}
 
-<video width="50%" height="50%" controls>
+<video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
   No video support.
 </video>
