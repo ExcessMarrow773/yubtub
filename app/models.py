@@ -6,7 +6,7 @@ import datetime
 class Video(models.Model):
     author = models.CharField(max_length=100, default='admin')
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(default='There was no description provided for this video')
     posted_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(upload_to="thumbnail", height_field=None, width_field=None, max_length=None)
     video_file = models.FileField(
