@@ -39,6 +39,15 @@ def postVideo(request):
     
     return render(request, 'video.html', {'form': form})
 
+def watchVideo(request, pk):
+    videos = Video.objects.get(pk=pk)
+    # comments = Comment.objects.get(video=videos)
+    context = {
+        'videos': videos,
+        'pk': pk,
+        # 'comments': comments
+    }
+    return render(request, 'watch.html', context)
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
