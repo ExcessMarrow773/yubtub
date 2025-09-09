@@ -1,0 +1,12 @@
+{% extends "css.html" %}
+
+{% block title %}YubTub: {{ videos.title }}{% endblock title %}
+
+{% block page_content %}
+
+<video width="50%" height="50%" controls>
+  <source src="../media/{{ videos.video_file }}" type="video/mp4">
+  No video support.
+</video>
+<a href="../media/{{ videos.video_file }}" class="button">vid</a>
+{% endblock %}
