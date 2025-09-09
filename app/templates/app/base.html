@@ -14,10 +14,14 @@
     
 <div class="navbar">
     <h1>{% block heading %} Welcome to YubTub! {% endblock heading %}</h1>
+    
     {% if user.is_authenticated %}
+        {% if "/account/" in request.path  %}
+            <a href="{% url 'postVideo' %}" class="button">Make A Video</a>
+        {% endif %}
         <navbar-buttons>
         <form method="post" action="{% url 'logout' %}">
-            <a id="name" class="button" href="{% url 'index' %}">{{ user.username }}</a>
+            <a id="name" class="button" href="{% url 'account' user.username %}">{{ user.username }}</a>
             {% csrf_token %}
             <button type="submit">Logout</button>
             {% if user.is_staff %}
