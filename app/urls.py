@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('signup/', views.register, name='register'),
     path('video/', views.postVideo, name='postVideo'),
-    path('watch/<int:pk>', views.watchVideo, name='watch')
+    path('watch/<int:pk>', views.watchVideo, name='watch'),
+    path('account/<str:username>/', views.account, name='account'),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
