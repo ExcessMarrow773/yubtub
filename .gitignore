@@ -1,7 +1,6 @@
-videos/
+media/
 .venv
 db.sqlite3
 thumbnail/
 SQLiteDatabaseBrowserPortable
 *.pyc
-app\migrations
