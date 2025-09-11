@@ -4,4 +4,4 @@ db.sqlite3
 thumbnail/
 SQLiteDatabaseBrowserPortable
 *.pyc
-*/migrations
+app\migrations
