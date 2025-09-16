@@ -1,14 +1,16 @@
 {% extends "base.html" %}
-<head>
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
-<script src="{% static 'admin/js/core.js' %}"></script>
-<script src="{% static 'admin/js/admin/RelatedObjectLookup.js' %}"></script>
-<script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-<script src="{% static 'admin/js/jquery.init.js' %}"></script>
-<script src="{% static 'admin/js/actions.js' %}"></script>
-<script src="{% static 'admin/js/calendar.js' %}"></script>
-<script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
-</head>
+{% load static %}
+{% block extra_head%}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'admin/js/admin/RelatedObjectLookup.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'admin/js/actions.js' %}"></script>
+    <script src="{% static 'admin/js/calendar.js' %}"></script>
+    <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+{% endblock extra_head %}
+
 {% block heading %}{{ user.username.capitalize }}'s posted videos{% endblock heading %}
 
 {% block page_content %}
