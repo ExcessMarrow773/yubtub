@@ -8,6 +8,7 @@ from app.models import Video, Comment
 
 def index(request):
     context = {
+        'videos': Video.objects.all().order_by('-posted_on')
     }
     return render(request, 'index.html', context)
 
