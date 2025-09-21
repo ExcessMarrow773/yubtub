@@ -1,14 +1,20 @@
 {% extends "base.html" %}
 
 {% block title %}YubTub - Home{% endblock title %}
-{% for video in videos %}
-    <a href="{% url 'watch' video.id %}">
-        <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
-    </a>
-    <small>
-        {{ video.author }} Posted "{{ video.title }}" on: {{ video.posted_on }}<br><br>
-    </small>
-    
-{% endfor %}
-{% block content %}
-{% endblock content %}
+
+{% block page_content %}
+    {% if videos %}
+        {% for video in videos %}
+            <a href="{% url 'watch' video.id %}">
+                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
+            </a>
+            <small>
+                {{ video.author }} Posted "{{ video.title }}" on: {{ video.posted_on }}<br><br>
+            </small>
+            
+        {% endfor %}
+        
+    {% else %}
+        <p>No videos available.</p>
+    {% endif %}
+{% endblock page_content %}
