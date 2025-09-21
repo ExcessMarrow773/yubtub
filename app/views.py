@@ -32,7 +32,7 @@ def postVideo(request):
                 title=form.cleaned_data["title"],
                 description=form.cleaned_data["description"],
                 thumbnail=form.cleaned_data["thumbnail"],
-                video_file=form.cleaned_data["video"],
+                video_file=form.cleaned_data["video_file"],
             )
             video.save()
             return redirect('index')
