@@ -25,6 +25,7 @@ def register(request):
 def postVideo(request):
     if request.method == "POST":
         form = PostVideo(request.POST, request.FILES)
+        print(request.POST)
         if form.is_valid():
             video = Video(
                 author=request.user.username,
@@ -32,14 +33,13 @@ def postVideo(request):
                 description=form.cleaned_data["description"],
                 thumbnail=form.cleaned_data["thumbnail"],
                 video_file=form.cleaned_data["video"],
-                posted_on=form.cleaned_data["schedulePost"] if form.cleaned_data["schedulePost"] else None
             )
             video.save()
             return redirect('index')
     else:
         form = PostVideo()
     
-    return render(request, 'video.html', {'form': form})
+    return render(request, 'createVideo.html', {'form': form})
 
 def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
