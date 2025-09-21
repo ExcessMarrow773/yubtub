@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import AdminSplitDateTime
+from django.utils import timezone
 
 class CommentForm(forms.Form):
     body = forms.CharField(
@@ -30,6 +31,7 @@ class PostVideo(forms.Form):
     )
     schedulePost = forms.DateTimeField(
         required=False,
-        widget=AdminSplitDateTime()
+        widget=AdminSplitDateTime(),
+        initial=timezone.now
     )
     video = forms.FileField(required=True)
