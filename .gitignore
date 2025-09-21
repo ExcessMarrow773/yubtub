@@ -4,3 +4,4 @@ db.sqlite3
 thumbnail/
 SQLiteDatabaseBrowserPortable
 *.pyc
+debug.txt
