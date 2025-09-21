@@ -29,9 +29,4 @@ class PostVideo(forms.Form):
             attrs={"class": "form-control", "placeholder": "Body"}
         )
     )
-    schedulePost = forms.DateTimeField(
-        required=False,
-        widget=AdminSplitDateTime(),
-        initial=timezone.now
-    )
     video = forms.FileField(required=True)
