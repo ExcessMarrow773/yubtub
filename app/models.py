@@ -1,44 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
-from django.core.files.base import ContentFile
 import datetime
-import ffmpeg
-from PIL import Image
-import io
-
+import cv2
+import os
 
 class Video(models.Model):
-    def generate_thumbnail(self):
-
-        # Path to the uploaded video file
-        video_path = self.video_file.path
-
-        # Generate thumbnail using ffmpeg
-        thumbnail_path = f"{video_path[:len(video_path)-4]}.jpg"
-
-        with open("debug.txt", 'w') as f:
-            f.write(f"Video path: {video_path}\n")
-            f.write(f"Thumbnail path: {thumbnail_path}\n")
-        try:
-            (
-                ffmpeg
-                .input(video_path, ss=1)  # Capture frame at 1 second
-                .output(thumbnail_path, vframes=1)
-                .run(capture_stdout=True, capture_stderr=True)
-            )
-            # Save the thumbnail to the ImageField
-            with open(thumbnail_path, 'rb') as f:
-                image = Image.open(f)
-                thumb_io = io.BytesIO()
-                image.save(thumb_io, format='JPEG')
-                self.thumbnail.save(f"{self.pk}_thumbnail.jpg", ContentFile(thumb_io.getvalue()), save=False)
-        except Exception as e:
-            print(f"Error generating thumbnail: {e}")
-            with open("debug.txt", 'a') as f:
-                f.write(f"Error generating thumbnail: {e}\n")
-
-
     author = models.CharField(max_length=100, default='admin')
     title = models.CharField(max_length=255)
     description = models.TextField(default='', null=True, blank=True)
@@ -52,11 +19,36 @@ class Video(models.Model):
     def was_published_recently(self):
             return self.created_on >= timezone.now() - datetime.timedelta(days=1)
     
+    def generate_thumbnail(self):
+        video_path = self.video_file.path
+        thumbnail_path = video_path.rsplit('.', 1)[0] + '.jpg'
+        thumbnail_path = thumbnail_path.replace('videos', 'thumbnail')
+        with open('debug.txt', 'w') as f:
+            f.write("time: " + str(datetime.datetime.now()) + "\n")
+            f.write(f"Video path: {video_path}\n")
+            f.write(f"Thumbnail path: {thumbnail_path}\n")
+            f.write(f"Video Exists: {os.path.exists(video_path)}\n")
+            f.write(f"Thumbnail path includes 'thumbnail/': {'thumbnail/' in thumbnail_path}\n")
+        
+        cap = cv2.VideoCapture(video_path)
+        success, image = cap.read()
+        if success:
+            cv2.imwrite(thumbnail_path, image)
+            self.thumbnail = 'videos/' + os.path.basename(thumbnail_path)
+            with open('debug.txt', 'a') as f:
+                f.write(f"Thumbnail generated at: {thumbnail_path}\n")
+                f.write(f"Thumbnail Exists: {os.path.exists(thumbnail_path)}\n")
+            print(f"Thumbnail generated at: {thumbnail_path}")
+
+        cap.release()
+
+        return thumbnail_path
+    
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         print(self.thumbnail)
         if self.thumbnail == None or self.thumbnail == "":
-            self.generate_thumbnail()
+            self.thumbnail = self.generate_thumbnail()
             super().save(*args, **kwargs)  # Save again to store the thumbnail
 
         if self.description == "":
