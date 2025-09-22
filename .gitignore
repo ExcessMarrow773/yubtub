@@ -5,3 +5,4 @@ thumbnail/
 SQLiteDatabaseBrowserPortable
 *.pyc
 debug.txt
+db.*
