@@ -1,7 +1,7 @@
 import subprocess
-print("Setting up virtual environment...")
+print("Setting up virtual environment...\n")
 subprocess.run(['python3', '-m', 'venv', '.venv'])
-print("Installing required packages...")
+print("Installing required packages...\n")
 subprocess.run(['.venv/bin/pip', 'install', '-r', 'requirements.txt'])
 
-print("Setup complete. To activate the virtual environment, run 'source .venv/bin/activate'.")
+print("\n\nSetup complete. To activate the virtual environment, run 'source .venv/bin/activate'.")
