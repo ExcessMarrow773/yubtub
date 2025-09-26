@@ -9,4 +9,4 @@ subprocess.run(['./.venv/bin/python3', 'manage.py', 'collectstatic', '--noinput'
 
 subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 
-subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver'])
+subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8080'])
