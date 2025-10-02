@@ -9,6 +9,6 @@ try:
 
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 
-	subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8080'])
+	subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8000'])
 except KeyboardInterrupt:
 	print('\n\nexiting program')
