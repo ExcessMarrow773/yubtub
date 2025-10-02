@@ -44,6 +44,8 @@ def postVideo(request):
 def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
     # comments = Comment.objects.get(video=videos)
+    videos.views += 1
+    videos.save()
     context = {
         'videos': videos,
         'pk': pk,
