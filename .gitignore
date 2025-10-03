@@ -217,3 +217,4 @@ SQLiteDatabaseBrowserPortable
 *.pyc
 debug.txt
 db.*
+CONFIG

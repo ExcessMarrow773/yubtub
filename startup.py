@@ -1,9 +1,20 @@
-import subprocess, time
+import subprocess, time, os
+
+if os.path.exists('CONFIG') == False:
+	with open('CONFIG', 'w') as f:
+		f.write('first_run=True\n')
+
+with open('CONFIG', 'r') as f:
+	config = f.read().splitlines()
+if config[0] == 'first_run=True':
+	print("First run detected. Setting up the environment...\n")
+	subprocess.run(['python3', './setup.py'])
+	with open('CONFIG', 'w') as f:
+		f.write('first_run=False\n')
 try:
 	print("Starting application...\n")
 	subprocess.run(['git', 'pull'])
 	time.sleep(2)  # Wait for 2 seconds to ensure the environment is ready
-	subprocess.run(['python3', './setup.py'])
 	print("Running migrations and starting server...\n")
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'makemigrations'])
 
