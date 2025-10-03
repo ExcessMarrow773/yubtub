@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
+from yubtub import settings
 import datetime
 import cv2
 import os
@@ -22,7 +23,8 @@ class Video(models.Model):
     def generate_thumbnail(self):
         video_path = self.video_file.path
         thumbnail_path = video_path.rsplit('.', 1)[0] + '.jpg'
-        thumbnail_path = thumbnail_path.replace('videos', 'thumbnail')
+        filename = os.path.basename(thumbnail_path)
+        thumbnail_path = os.path.join(settings.MEDIA_ROOT, 'thumbnail', filename)
         with open('debug.txt', 'w') as f:
             f.write("time: " + str(datetime.datetime.now()) + "\n")
             f.write(f"Video path: {video_path}\n")
@@ -42,7 +44,7 @@ class Video(models.Model):
 
         cap.release()
 
-        return thumbnail_path
+        return os.path.join('thumbnail', filename)
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
