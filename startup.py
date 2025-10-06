@@ -15,11 +15,13 @@ try:
 	print("Starting application...\n")
 	subprocess.run(['git', 'pull'])
 	time.sleep(2)  # Wait for 2 seconds to ensure the environment is ready
-	print("Running migrations and starting server...\n")
+	print("\nRunning migrations and starting server...\n")
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'makemigrations'])
 
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
-
+	print("Starting server on http://127.0.0.1:8000\n")
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8000'])
 except KeyboardInterrupt:
-	print('\n\nexiting program')
+	print('\n\nStopping server and exiting program')
+	time.sleep(2.2)
+	print('Server stopped, database saved')
