@@ -10,4 +10,4 @@
 
 - [ ] Add different communities
 
-- [ ] add feature to
+- [ ] add feature for regular, text only, posts
