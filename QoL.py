@@ -9,5 +9,8 @@ match i:
 		cursor = conn.cursor()
 		cursor.execute('DELETE FROM app_video')
 		cursor.execute('DELETE FROM app_comment')
+		cursor.execute('DELETE FROM app_video_likedUsers')
+		cursor.execute('DELETE FROM app_video_viewedUsers')
+		cursor.execute('DELETE FROM app_post')
 		conn.commit()
 		conn.close()
