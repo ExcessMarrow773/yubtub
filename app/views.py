@@ -94,6 +94,10 @@ def TODO(request):
     }
     return render(request, 'app/TODO.html', context)
 
+def cornhub(request):
+    context = {}
+    return render(request, 'app/cornhub.html', context)
+
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST
 def like_video(request):
