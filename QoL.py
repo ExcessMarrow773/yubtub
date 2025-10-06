@@ -5,7 +5,7 @@ os = platform.system()
 match i:
 	case "cdb":
 		subprocess.run(['rm', 'media/videos/*', 'media/templates/*'])
-		conn = sqlite3.connect('db2.sqlite3')
+		conn = sqlite3.connect('db.sqlite3')
 		cursor = conn.cursor()
 		cursor.execute('DELETE FROM app_video')
 		cursor.execute('DELETE FROM app_comment')
