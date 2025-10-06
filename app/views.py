@@ -1,9 +1,13 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from app.forms import PostVideo, CommentForm
 from app.models import Video, Comment
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
 # Create your views here.
 
 def index(request):
@@ -43,7 +47,10 @@ def postVideo(request):
 
 def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
-    videos.views += 1
+    likes = videos.likes
+    if not request.user in videos.viewedUsers.all():
+        videos.viewedUsers.add(request.user)
+        videos.views += 1
     videos.save()
 
     if request.method == "POST":
@@ -58,11 +65,12 @@ def watchVideo(request, pk):
     else:
         form = CommentForm()
 
-    comments = Comment.objects.filter(video=videos)
+    comments = Comment.objects.filter(video=videos).order_by("-created_on")
     context = {
         'videos': videos,
         'pk': pk,
         'comments': comments,
+        'likes': likes,
         'form': form
     }
 
@@ -75,6 +83,28 @@ def account(request, username):
         'username': username
     }
     return render(request, 'account.html', context)
+
+@csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
+@require_POST
+def like_video(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'message': 'Login required.'}, status=403)
+
+    data = json.loads(request.body)
+    video_id = data.get('video_id')
+
+    try:
+        video = Video.objects.get(id=video_id)
+    except Video.DoesNotExist:
+        return JsonResponse({'message': 'Video not found.'}, status=404)
+
+    if request.user in video.likedUsers.all():
+        return JsonResponse({'message': 'You already liked this video.', 'liked': False, 'alreadyLiked': True})
+
+    video.likedUsers.add(request.user)
+    video.likes += 1
+    video.save()
+    return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'

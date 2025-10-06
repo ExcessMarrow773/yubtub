@@ -3,13 +3,18 @@
 {% block title %}YubTub: {{ videos.title }}{% endblock title %}
 
 {% block page_content %}
-
+<div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen Autoplay Loop>
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
   No video support.
 </video>
+{{ videos.likedUsers.all }}
+</div>
+
 <div>
 <a href="../media/{{ videos.video_file }}" class="button">vid</a>
+<button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button>
+<p id="like-response"></p>
 <small>Views: {{ videos.views }}</small>
 {{ videos.description | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
 </div>

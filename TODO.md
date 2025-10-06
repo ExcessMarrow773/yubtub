@@ -4,4 +4,8 @@
 
 - [x] Add feature to comment on people's videos
 
-- [ ] Add feature to react to people's videos
+- [x] Add feature to react to people's videos
+
+- [ ] Add feature to follow people
+
+- [ ] Add different communities
