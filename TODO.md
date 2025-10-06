@@ -7,3 +7,5 @@
 - [ ] Add feature to react to people's videos
 
 - [ ] Add feature to follow people
+
+- [ ] Add different communities
