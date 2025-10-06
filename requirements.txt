@@ -3,6 +3,7 @@ decouple==0.0.7
 Django==5.2.6
 ffmpeg-python==0.2.0
 future==1.0.0
+Markdown==3.9
 numpy==2.2.6
 opencv-python==4.12.0.88
 pillow==11.3.0

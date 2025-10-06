@@ -7,6 +7,7 @@ from app.forms import PostVideo, CommentForm
 from app.models import Video, Comment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+import os
 import json
 # Create your views here.
 
@@ -83,6 +84,15 @@ def account(request, username):
         'username': username
     }
     return render(request, 'account.html', context)
+
+def TODO(request):
+    file_path = os.path.join(os.path.dirname(__file__), '../TODO.md')
+    with open(file_path, 'r') as f:
+        markdown_content = f.read()
+    context = {
+        'TODO': markdown_content,
+    }
+    return render(request, 'app/TODO.html', context)
 
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST

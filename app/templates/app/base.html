@@ -15,8 +15,8 @@
 <body>
     
 <div class="navbar">
-    <h1>{% block heading %} Welcome to <a class="button" href="{% url 'index' %}">YubTub</a> {% endblock heading %}</h1>
-    
+    <h1>{% block heading %} Welcome to <a class="button" href="{% url 'index' %}">YubTub</a> {% endblock heading %}</h1><a href="{% url 'TODO' %}">TODO</a>
+
     {% if user.is_authenticated %}
         {% if "/account/" in request.path and username == user.username %}
             <a href="{% url 'postVideo' %}" class="button">Make A Video</a>
