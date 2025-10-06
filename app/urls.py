@@ -16,4 +16,5 @@ urlpatterns = [
     path('cornhub/', views.cornhub, name='cornhub'),
     path('makePost/', views.makePost, name='makePost'),
     path('posts/', views.postIndex, name="postIndex"),
+    path('post/<int:pk>/', views.viewPost, name='post'),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

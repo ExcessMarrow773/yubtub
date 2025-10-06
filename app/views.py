@@ -1,10 +1,10 @@
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from app.forms import PostVideo, CommentForm, CreatePost
-from app.models import Video, Comment, Post
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
+from app.models import Video, VideoComment, Post, PostComment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import os
@@ -55,18 +55,18 @@ def watchVideo(request, pk):
     videos.save()
 
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        form = VideoCommentForm(request.POST)
         if form.is_valid():
-            comment = Comment(
+            comment = VideoComment(
                 author=request.user.username,
                 body=form.cleaned_data["body"],
                 video=videos
             )
             comment.save()
     else:
-        form = CommentForm()
+        form = VideoCommentForm()
 
-    comments = Comment.objects.filter(video=videos).order_by("-created_on")
+    comments = VideoComment.objects.filter(video=videos).order_by("-created_on")
     context = {
         'videos': videos,
         'pk': pk,
@@ -125,23 +125,22 @@ def postIndex(request):
 
 def viewPost(request, pk):
     post = Post.objects.get(pk=pk)
-    form = CommentForm()
+    form = PostCommentForm()
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        form = PostCommentForm(request.POST)
         if form.is_valid():
-            comment = Comment(
+            comment = PostComment(
                 author=request.user.username,
                 body=form.cleaned_data["body"],
                 post=post,
             )
             comment.save()
             return HttpResponseRedirect(request.path_info)
-    comments = Comment.objects.filter(post=post)
+    comments = PostComment.objects.filter(post=post)
     context = {
         "post": post,
         "comments": comments,
-        "form": CommentForm(),
-
+        "form": PostCommentForm(),
     }
     
     return render(request, "app/viewPost.html", context)
