@@ -460,8 +460,9 @@ pre,
 pre span,
 kbd,
 samp {
-  font-family: var(--mono-font);
+/*  font-family: var(--mono-font);*/
   color: var(--code);
+  background-color: var(--accent-bg);
 }
 kbd {
   color: var(--preformatted);

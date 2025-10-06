@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from app.forms import PostVideo
+from app.forms import PostVideo, CommentForm
 from app.models import Video, Comment
 # Create your views here.
 
@@ -38,19 +38,34 @@ def postVideo(request):
             return redirect('index')
     else:
         form = PostVideo()
-    
+
     return render(request, 'createVideo.html', {'form': form})
 
 def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
-    # comments = Comment.objects.get(video=videos)
     videos.views += 1
     videos.save()
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(
+                author=request.user.username,
+                body=form.cleaned_data["body"],
+                video=videos
+            )
+            comment.save()
+    else:
+        form = CommentForm()
+
+    comments = Comment.objects.filter(video=videos)
     context = {
         'videos': videos,
         'pk': pk,
-        # 'comments': comments
+        'comments': comments,
+        'form': form
     }
+
     return render(request, 'watch.html', context)
 
 def account(request, username):
