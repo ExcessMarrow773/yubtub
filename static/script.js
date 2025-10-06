@@ -13,6 +13,11 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 function likeVideo() {
     const videoId = document.getElementById("like-button").dataset.videoId;
 
@@ -27,7 +32,7 @@ function likeVideo() {
     .then(response => response.json())
     .then(data => {
         document.getElementById("like-response").innerText = data.message;
-        if (data.liked) {
+        if (data.liked || data.alreadyLiked) {
             document.getElementById("like-button").disabled = true;
         }
     });
