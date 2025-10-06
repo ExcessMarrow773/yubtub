@@ -19,7 +19,7 @@ class Video(models.Model):
     )
     def was_published_recently(self):
             return self.created_on >= timezone.now() - datetime.timedelta(days=1)
-    
+
     def generate_thumbnail(self):
         video_path = self.video_file.path
         thumbnail_path = video_path.rsplit('.', 1)[0] + '.jpg'
@@ -31,7 +31,7 @@ class Video(models.Model):
             f.write(f"Thumbnail path: {thumbnail_path}\n")
             f.write(f"Video Exists: {os.path.exists(video_path)}\n")
             f.write(f"Thumbnail path includes 'thumbnail/': {'thumbnail/' in thumbnail_path}\n")
-        
+
         cap = cv2.VideoCapture(video_path)
         success, image = cap.read()
         if success:
@@ -40,12 +40,13 @@ class Video(models.Model):
             with open('debug.txt', 'a') as f:
                 f.write(f"Thumbnail generated at: {thumbnail_path}\n")
                 f.write(f"Thumbnail Exists: {os.path.exists(thumbnail_path)}\n")
+                f.write(f"Thumbnail success: {success}\n")
             print(f"Thumbnail generated at: {thumbnail_path}")
 
         cap.release()
 
         return os.path.join('thumbnail', filename)
-    
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         print(self.thumbnail)
