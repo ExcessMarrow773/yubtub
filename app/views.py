@@ -63,7 +63,7 @@ def watchVideo(request, pk):
     else:
         form = CommentForm()
 
-    comments = Comment.objects.filter(video=videos)
+    comments = Comment.objects.filter(video=videos).order_by("-created_on")
     context = {
         'videos': videos,
         'pk': pk,
@@ -97,10 +97,12 @@ def like_video(request):
         return JsonResponse({'message': 'Video not found.'}, status=404)
 
     if request.user in video.likedUsers.all():
-        return JsonResponse({'message': 'You already liked this video.', 'liked': False})
+        return JsonResponse({'message': 'You already liked this video.', 'liked': False, 'alreadyLiked': True})
 
     video.likedUsers.add(request.user)
-    return JsonResponse({'message': 'Thanks for liking!', 'liked': True})
+    video.likes += 1
+    video.save()
+    return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
