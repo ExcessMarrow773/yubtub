@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from app.forms import PostVideo, CommentForm
-from app.models import Video, Comment
+from app.forms import PostVideo, CommentForm, CreatePost
+from app.models import Video, Comment, Post
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import os
@@ -97,6 +97,55 @@ def TODO(request):
 def cornhub(request):
     context = {}
     return render(request, 'app/cornhub.html', context)
+
+def makePost(request):
+    if request.method == "POST":
+        form = CreatePost(request.POST, request.FILES)
+        if form.is_valid():
+            post = Post(
+                author=request.user.username,
+                title=form.cleaned_data["title"],
+                body=form.cleaned_data["body"],
+            )
+            post.save()
+            return redirect('index')
+    else:
+        form = CreatePost()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/makePost.html', context)
+
+def postIndex(request):
+    posts = Post.objects.all().order_by("-created_on")
+    context = {
+        "posts": posts,
+    }
+    return render(request, "app/postIndex.html", context)
+
+def viewPost(request, pk):
+    post = Post.objects.get(pk=pk)
+    form = CommentForm()
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(
+                author=request.user.username,
+                body=form.cleaned_data["body"],
+                post=post,
+            )
+            comment.save()
+            return HttpResponseRedirect(request.path_info)
+    comments = Comment.objects.filter(post=post)
+    context = {
+        "post": post,
+        "comments": comments,
+        "form": CommentForm(),
+
+    }
+    
+    return render(request, "app/viewPost.html", context)
+  
 
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST
