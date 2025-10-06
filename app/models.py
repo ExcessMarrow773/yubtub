@@ -72,3 +72,14 @@ class Comment(models.Model):
     video = models.ForeignKey("Video", on_delete=models.CASCADE)
     def __str__(self):
          return self.author
+
+class Post(models.Model):
+    author = models.CharField(max_length=100, default='admin')
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def was_published_recently(self):
+            return self.created_on >= timezone.now() - datetime.timedelta(days=1)
+    def __str__(self):
+        return self.title

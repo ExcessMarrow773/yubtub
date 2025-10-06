@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import Video, Comment
+from app.models import Video, Comment, Post
 # Register your models here.
 
 class VideoAdmin(admin.ModelAdmin):
@@ -8,5 +8,9 @@ class VideoAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     pass
 
+class PostsAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Video, VideoAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Post, PostsAdmin)
