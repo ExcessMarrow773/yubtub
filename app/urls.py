@@ -11,4 +11,5 @@ urlpatterns = [
     path('video/', views.postVideo, name='postVideo'),
     path('watch/<int:pk>', views.watchVideo, name='watch'),
     path('account/<str:username>/', views.account, name='account'),
+    path('like-video/', views.like_video, name="like-video"),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
