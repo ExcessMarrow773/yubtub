@@ -14,6 +14,7 @@ class Video(models.Model):
     posted_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(upload_to="thumbnail", blank=True, height_field=None, width_field=None, max_length=None, null=True)
     views = models.IntegerField(default=0)
+    viewedUsers = models.ManyToManyField(User, related_name='watched_videos', blank=True)
     likes = models.IntegerField(default=0)
     likedUsers = models.ManyToManyField(User, related_name='liked_videos', blank=True)
     video_file = models.FileField(

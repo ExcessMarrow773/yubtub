@@ -48,7 +48,9 @@ def postVideo(request):
 def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
     likes = videos.likes
-    videos.views += 1
+    if not request.user in videos.viewedUsers.all():
+        videos.viewedUsers.add(request.user)
+        videos.views += 1
     videos.save()
 
     if request.method == "POST":
