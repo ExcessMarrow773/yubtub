@@ -17,4 +17,5 @@ urlpatterns = [
     path('makePost/', views.makePost, name='makePost'),
     path('posts/', views.postIndex, name="postIndex"),
     path('post/<int:pk>/', views.viewPost, name='post'),
+    path('mdHelp/', views.mdHelp, name='mdHelp'),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

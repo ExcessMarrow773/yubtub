@@ -146,6 +146,16 @@ def viewPost(request, pk):
     return render(request, "app/viewPost.html", context)
   
 
+def mdHelp(request):
+	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/help.md')
+	with open(file_path, 'r') as f:
+		markdown_content = f.read()
+
+	context = {
+		"mdHelp": markdown_content,
+	}
+	return render(request, "app/mdHelp.html", context)
+
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST
 def like_video(request):
