@@ -10,7 +10,7 @@
     </div>
     <div>
         {{ form.body }}<br>
-        <small>Markdown is supported!</small>
+        <small><a href="{% url 'mdHelp' %}">Markdown</a> is supported!</small>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{% url 'index' %}">Cancel</a>
