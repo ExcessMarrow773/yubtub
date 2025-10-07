@@ -20,7 +20,7 @@ try:
 
 	subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 	print("Starting server on http://127.0.0.1:8000\n")
-	subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8000'])
+	subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:80'])
 except KeyboardInterrupt:
 	print('\n\nStopping server and exiting program')
 	time.sleep(2.2)
