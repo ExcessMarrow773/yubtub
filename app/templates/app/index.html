@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}YubTub - Home{% endblock title %}
-
+{% block extra_navbar %}
+<a href="{% url 'postIndex' %}" class="button">Posts</a>
+{% endblock extra_navbar %}
 {% block page_content %}
     {% if videos %}
         {% for video in videos %}
+            
             <a href="{% url 'watch' video.id %}">
                 <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
             </a>
             <small>
-                {{ video.author }} Posted "{{ video.title }}" on: {{ video.posted_on }}<br><br>
+                {{ video.author }} Posted "{{ video.title }}" on: {{ video.created_on }}<br><br>
             </small>
             
         {% endfor %}

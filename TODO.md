@@ -10,4 +10,7 @@
 
 - [ ] Add different communities
 
-- [ ] add feature for regular, text only, posts
+- [x] add feature for regular, text only, posts
+    - [x] add markdown support for posts
+
+- [ ] add post viewer

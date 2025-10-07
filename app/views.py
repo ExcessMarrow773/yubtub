@@ -1,19 +1,21 @@
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from app.forms import PostVideo, CommentForm
-from app.models import Video, Comment
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
+from app.models import Video, VideoComment, Post, PostComment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from itertools import chain
+from operator import attrgetter
 import os
 import json
 # Create your views here.
 
 def index(request):
     context = {
-        'videos': Video.objects.all().order_by('-posted_on')
+        'videos': Video.objects.all().order_by('-created_on'),
     }
     return render(request, 'index.html', context)
 
@@ -55,18 +57,18 @@ def watchVideo(request, pk):
     videos.save()
 
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        form = VideoCommentForm(request.POST)
         if form.is_valid():
-            comment = Comment(
+            comment = VideoComment(
                 author=request.user.username,
                 body=form.cleaned_data["body"],
                 video=videos
             )
             comment.save()
     else:
-        form = CommentForm()
+        form = VideoCommentForm()
 
-    comments = Comment.objects.filter(video=videos).order_by("-created_on")
+    comments = VideoComment.objects.filter(video=videos).order_by("-created_on")
     context = {
         'videos': videos,
         'pk': pk,
@@ -78,9 +80,18 @@ def watchVideo(request, pk):
     return render(request, 'watch.html', context)
 
 def account(request, username):
-    user_videos = Video.objects.filter(author=username).order_by('-posted_on')
+    user_videos = Video.objects.filter(author=username).order_by('-created_on')
+    user_posts = Post.objects.filter(author=username).order_by('-created_on')
+    
+    # Combine and sort by created_on
+    combined = sorted(
+        chain(user_videos, user_posts),
+        key=attrgetter('created_on'),
+        reverse=True
+    )
+
     context = {
-        'user_videos': user_videos,
+        'combined': combined,
         'username': username
     }
     return render(request, 'account.html', context)
@@ -97,6 +108,64 @@ def TODO(request):
 def cornhub(request):
     context = {}
     return render(request, 'app/cornhub.html', context)
+
+def makePost(request):
+    if request.method == "POST":
+        form = CreatePost(request.POST, request.FILES)
+        if form.is_valid():
+            post = Post(
+                author=request.user.username,
+                title=form.cleaned_data["title"],
+                body=form.cleaned_data["body"],
+            )
+            post.save()
+            return redirect('index')
+    else:
+        form = CreatePost()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/makePost.html', context)
+
+def postIndex(request):
+    posts = Post.objects.all().order_by("-created_on")
+    context = {
+        "posts": posts,
+    }
+    return render(request, "app/postIndex.html", context)
+
+def viewPost(request, pk):
+    post = Post.objects.get(pk=pk)
+    form = PostCommentForm()
+    if request.method == "POST":
+        form = PostCommentForm(request.POST)
+        if form.is_valid():
+            comment = PostComment(
+                author=request.user.username,
+                body=form.cleaned_data["body"],
+                post=post,
+            )
+            comment.save()
+            return HttpResponseRedirect(request.path_info)
+    comments = PostComment.objects.filter(post=post)
+    context = {
+        "post": post,
+        "comments": comments,
+        "form": PostCommentForm(),
+    }
+    
+    return render(request, "app/viewPost.html", context)
+  
+
+def mdHelp(request):
+	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/help.md')
+	with open(file_path, 'r') as f:
+		markdown_content = f.read()
+
+	context = {
+		"mdHelp": markdown_content,
+	}
+	return render(request, "app/mdHelp.html", context)
 
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST

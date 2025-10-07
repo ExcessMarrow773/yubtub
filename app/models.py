@@ -11,7 +11,7 @@ class Video(models.Model):
     author = models.CharField(max_length=100, default='admin')
     title = models.CharField(max_length=255)
     description = models.TextField(default='', null=True, blank=True)
-    posted_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(upload_to="thumbnail", blank=True, height_field=None, width_field=None, max_length=None, null=True)
     views = models.IntegerField(default=0)
     viewedUsers = models.ManyToManyField(User, related_name='watched_videos', blank=True)
@@ -21,6 +21,7 @@ class Video(models.Model):
         upload_to='videos/',
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm'])]
     )
+    type = models.CharField(max_length=20, default='video')
     def was_published_recently(self):
             return self.created_on >= timezone.now() - datetime.timedelta(days=1)
 
@@ -29,6 +30,7 @@ class Video(models.Model):
         thumbnail_path = video_path.rsplit('.', 1)[0] + '.jpg'
         filename = os.path.basename(thumbnail_path)
         thumbnail_path = os.path.join(settings.MEDIA_ROOT, 'thumbnail', filename)
+
         with open('debug.txt', 'w') as f:
             f.write("time: " + str(datetime.datetime.now()) + "\n")
             f.write(f"Video path: {video_path}\n")
@@ -65,10 +67,34 @@ class Video(models.Model):
     def __str__(self):
         return self.title
 
-class Comment(models.Model):
+class VideoComment(models.Model):
     author = models.CharField(max_length=60)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     video = models.ForeignKey("Video", on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, default='videoComment')
+
+    def __str__(self):
+         return self.author
+
+class Post(models.Model):
+    author = models.CharField(max_length=100, default='admin')
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    type = models.CharField(max_length=20, default='post')
+
+    def was_published_recently(self):
+            return self.created_on >= timezone.now() - datetime.timedelta(days=1)
+    def __str__(self):
+        return self.title
+    
+class PostComment(models.Model):
+    author = models.CharField(max_length=60)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, default='postComment')
+
     def __str__(self):
          return self.author
