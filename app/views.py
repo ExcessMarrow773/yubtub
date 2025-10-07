@@ -7,13 +7,15 @@ from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
 from app.models import Video, VideoComment, Post, PostComment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from itertools import chain
+from operator import attrgetter
 import os
 import json
 # Create your views here.
 
 def index(request):
     context = {
-        'videos': Video.objects.all().order_by('-posted_on')
+        'videos': Video.objects.all().order_by('-created_on'),
     }
     return render(request, 'index.html', context)
 
@@ -78,9 +80,18 @@ def watchVideo(request, pk):
     return render(request, 'watch.html', context)
 
 def account(request, username):
-    user_videos = Video.objects.filter(author=username).order_by('-posted_on')
+    user_videos = Video.objects.filter(author=username).order_by('-created_on')
+    user_posts = Post.objects.filter(author=username).order_by('-created_on')
+    
+    # Combine and sort by created_on
+    combined = sorted(
+        chain(user_videos, user_posts),
+        key=attrgetter('created_on'),
+        reverse=True
+    )
+
     context = {
-        'user_videos': user_videos,
+        'combined': combined,
         'username': username
     }
     return render(request, 'account.html', context)
