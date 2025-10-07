@@ -13,9 +13,9 @@
 
 <div>
 <a href="../media/{{ videos.video_file }}" class="button">vid</a>
-<button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button>
+<button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button><small>Views: {{ videos.views }}</small>
+
 <p id="like-response"></p>
-<small>Views: {{ videos.views }}</small>
 {{ videos.description | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
 </div>
 
