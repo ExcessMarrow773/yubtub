@@ -466,7 +466,7 @@ pre {
   overflow: auto;
 }
 pre code {
-  color: var(--preformatted);
+  color: var(--text);
   background: 0 0;
   margin: 0;
   padding: 0;
