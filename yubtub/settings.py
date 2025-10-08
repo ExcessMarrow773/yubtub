@@ -57,7 +57,7 @@ ROOT_URLCONF = 'yubtub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', 'app/templates/app'],
+        'DIRS': [BASE_DIR / 'templates', 'app/templates/app', 'polls/templates/polls'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
