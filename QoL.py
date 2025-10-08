@@ -12,5 +12,7 @@ match i:
 		cursor.execute('DELETE FROM app_video_likedUsers')
 		cursor.execute('DELETE FROM app_video_viewedUsers')
 		cursor.execute('DELETE FROM app_post')
+		cursor.execute('DELETE FROM polls_question')
+		cursor.execute('DELETE FROM polls_choice')
 		conn.commit()
 		conn.close()
