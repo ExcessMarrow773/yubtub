@@ -4,5 +4,11 @@ from .models import Question, Choice
 
 # Register your models here.
 
-admin.site.register(Question)
-admin.site.register(Choice)
+class QuestionAdmin(admin.ModelAdmin):
+    pass
+
+class ChoiceAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice, ChoiceAdmin)
