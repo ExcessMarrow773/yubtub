@@ -23,6 +23,7 @@
         {% endif %}
         <navbar-buttons>
         <form method="post" action="{% url 'logout' %}">
+            {% block extra_navbar %}{% endblock extra_navbar %}
             {% block extra_navbar %}
             {% endblock extra_navbar%}
             {% if 'posts/' in request.path %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load markdown_truncate markdown_extras %}
 {% block extra_head%}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
     <script src="{% static 'admin/js/core.js' %}"></script>
@@ -11,20 +12,24 @@
     <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
 {% endblock extra_head %}
 
-{% block heading %}{{ username.capitalize }}'s posted videos{% endblock heading %}
-{% block extra_navbar %}
-<a class="button" href="{% url 'postIndex' %}">Posts</a>
-{% endblock extra_navbar%}
+{% block heading %}{{ username.capitalize }}'s posted things{% endblock heading %}
+
 {% block page_content %}
     {% block videos %}
-        {% for video in user_videos %}
-            <a href="{% url 'watch' video.id %}">
-                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
-            </a>
-            <small>
-                {{ video.author }} Posted "{{ video.title }}" on: {{ video.posted_on }}<br><br>
-            </small>
-            
+        {% for thing in combined %}
+            {% if thing.type == "video" %}
+                <a href="{% url 'watch' thing.id %}">
+                    <img src="{{ thing.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
+                </a>
+                <small>
+                    {{ thing.author }} Posted "{{ thing.title }}" on: {{ thing.created_on }}<br><br>
+                </small>
+            {% elif thing.type == "post" %}
+                <h3>Post: "<a href="{% url 'post' thing.pk %}">{{ thing.title }}</a>"</h3>
+                <p>{{ thing.body | markdown_truncate:100 | markdown}}</p>
+                <small>Posted by {{ thing.author }} on {{ thing.created_on }}</small>
+                <hr>
+            {% endif %}
         {% endfor %}
     {% endblock videos %}
 {% endblock page_content %}

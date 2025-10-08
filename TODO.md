@@ -10,4 +10,11 @@
 
 - [ ] Add different communities
 
-- [ ] add feature for regular, text only, posts
+- [x] add feature for regular, text only, posts
+    - [x] add markdown support for posts
+
+- [x] add post viewer
+
+- [ ] start adding custom error pages
+
+- [ ] add a polling function
