@@ -16,3 +16,5 @@
 - [x] add post viewer
 
 - [ ] start adding custom error pages
+
+- [ ] add a polling function
