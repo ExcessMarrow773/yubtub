@@ -12,7 +12,7 @@
                 <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
             </a>
             <small>
-                {{ video.author }} Posted "{{ video.title }}" on: {{ video.created_on }}<br><br>
+                <a href="{% url 'account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
             </small>
             
         {% endfor %}
