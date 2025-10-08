@@ -13,4 +13,4 @@
 - [x] add feature for regular, text only, posts
     - [x] add markdown support for posts
 
-- [ ] add post viewer
+- [x] add post viewer
