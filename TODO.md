@@ -16,3 +16,9 @@
 - [x] add post viewer
 
 - [ ] start adding custom error pages
+
+# DEBUG TODO
+
+- [ ] add tests
+
+- [ ] add namespacing
