@@ -15,6 +15,10 @@
 
 - [x] add post viewer
 
+- [ ] add description viewer for posts
+
+- [ ] add images for posts
+
 - [ ] start adding custom error pages
 
 - [ ] add a polling function
