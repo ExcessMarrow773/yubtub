@@ -1,3 +1,7 @@
+# IN PROGRESS
+
+- [ ] add description viewer for posts
+
 # TODO
 
 - [x] Add feature to mass remove videos and thumbnails from storage and db
@@ -15,14 +19,13 @@
 
 - [x] add post viewer
 
-- [ ] add description viewer for posts
-
 - [ ] add images for posts
 
 - [ ] start adding custom error pages
 
 - [ ] add a polling function
 
+- [ ] add number simplifyers
 
 # DEBUG TODO
 
