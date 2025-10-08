@@ -12,7 +12,9 @@
 {% endblock extra_head %}
 
 {% block heading %}{{ username.capitalize }}'s posted videos{% endblock heading %}
-
+{% block extra_navbar %}
+<a class="button" href="{% url 'postIndex' %}">Posts</a>
+{% endblock extra_navbar%}
 {% block page_content %}
     {% block videos %}
         {% for video in user_videos %}
