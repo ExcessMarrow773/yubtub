@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-
+{% load markdown_extras %}
 {% block title %}YubTub: {{ videos.title }}{% endblock title %}
 
 {% block page_content %}
+<h1>{{ videos.title }}</h1>
 <div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen Autoplay Loop>
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
   No video support.
 </video>
-{{ videos.likedUsers.all }}
 </div>
 
 <div>
@@ -16,7 +16,7 @@
 <button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button><small>Views: {{ videos.views }}</small>
 
 <p id="like-response"></p>
-{{ videos.description | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
+{{ videos.description | markdown | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
 </div>
 
 <div>
