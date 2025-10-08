@@ -24,13 +24,6 @@
         <navbar-buttons>
         <form method="post" action="{% url 'logout' %}">
             {% block extra_navbar %}{% endblock extra_navbar %}
-            {% block extra_navbar %}
-            {% endblock extra_navbar%}
-            {% if 'posts/' in request.path %}
-            <a class="button" href="{% url 'index' %}">Videos</a>
-            {% elif '/' == request.path %}
-            <a class="button" href="{% url 'postIndex' %}">Posts</a>
-            {% endif %}
             <a id="name" class="button" href="{% url 'account' user.username %}">{{ user.username }}</a>
             {% csrf_token %}
             <button type="submit">Logout</button>
