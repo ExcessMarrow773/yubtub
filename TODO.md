@@ -18,3 +18,10 @@
 - [ ] start adding custom error pages
 
 - [ ] add a polling function
+
+
+# DEBUG TODO
+
+- [ ] add tests
+
+- [ ] add namespacing
