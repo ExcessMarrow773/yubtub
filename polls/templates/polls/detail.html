@@ -1,14 +1,17 @@
 {% extends 'css.html' %}
 
 {% block page_content %}
-<h1>You're looking at question {{ question_id }}</h1>
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+	<legend><h2>{{ question }}</h2></legend>
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<h2>{{ question.question_text }}</h2>
-
-<ul>
 	{% for choice in question.choice_set.all %}
-		<li>{{ choice.choice_text }}</li>
+		<input type="radio" name="choice" if="choice{{ forlook.counter }}" value="{{ choice.id }}">
+		<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
 	{% endfor %}
-</ul>
-
+</fieldset>
+<input type="submit" value="Vote">
+</form>
 {% endblock page_content %}
