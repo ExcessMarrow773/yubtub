@@ -134,3 +134,5 @@ LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
+
+ERROR_404_TEMPLATE_NAME = "404.html"
