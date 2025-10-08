@@ -1,0 +1,14 @@
+{% extends 'css.html' %}
+
+{% block page_content %}
+<h1>You're looking at question {{ question_id }}</h1>
+
+<h2>{{ question.question_text }}</h2>
+
+<ul>
+	{% for choice in question.choice_set.all %}
+		<li>{{ choice.choice_text }}</li>
+	{% endfor %}
+</ul>
+
+{% endblock page_content %}
