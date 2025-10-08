@@ -12,4 +12,4 @@ def markdown_truncate(value, length):
     """
     rendered = markdown.markdown(value, extensions=['fenced_code'])  # Render Markdown
     plain_text = strip_tags(rendered)  # Remove HTML tags
-    return rendered[:length] + ("..." if len(plain_text) > length else "")
+    return plain_text[:length] + ("..." if len(plain_text) > length else "")
