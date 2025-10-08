@@ -19,8 +19,11 @@
 
     {% if user.is_authenticated %}
         {% if "/account/" in request.path and username == user.username %}
+            <div>
             <a href="{% url 'postVideo' %}" class="button">Make A Video</a>
-        {% endif %}
+            <a href="{% url 'makePost' %}" class="button">Make A Post</a>
+            </div>
+            {% endif %}
         <navbar-buttons>
         <form method="post" action="{% url 'logout' %}">
             {% block extra_navbar %}{% endblock extra_navbar %}
