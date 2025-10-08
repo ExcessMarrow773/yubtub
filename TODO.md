@@ -14,3 +14,5 @@
     - [x] add markdown support for posts
 
 - [x] add post viewer
+
+- [ ] start adding custom error pages
