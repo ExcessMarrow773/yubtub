@@ -1,11 +1,13 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
+from django.conf import settings
 from yubtub import settings
 import datetime
 import cv2
 import os
-from yubtub.settings import AUTH_USER_MODEL as User
+
+User = settings.AUTH_USER_MODEL
 
 class Video(models.Model):
     author = models.CharField(max_length=100, default='admin')
@@ -14,9 +16,9 @@ class Video(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(upload_to="thumbnail", blank=True, height_field=None, width_field=None, max_length=None, null=True)
     views = models.IntegerField(default=0)
-    viewedUsers = models.ManyToManyField(User, related_name='watched_videos', blank=True)
+    viewedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='watched_videos', blank=True)
     likes = models.IntegerField(default=0)
-    likedUsers = models.ManyToManyField(User, related_name='liked_videos', blank=True)
+    likedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_videos', blank=True)
     video_file = models.FileField(
         upload_to='videos/',
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm'])]
