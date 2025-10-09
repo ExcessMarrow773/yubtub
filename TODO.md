@@ -1,6 +1,6 @@
-# IN PROGRESS
+# IN PROGRESS ITEM
 
-- [ ] add description viewer for posts
+- [ ] Add feature to follow people
 
 # TODO
 
@@ -10,14 +10,15 @@
 
 - [x] Add feature to react to people's videos
 
-- [ ] Add feature to follow people
-
 - [ ] Add different communities
 
 - [x] add feature for regular, text only, posts
     - [x] add markdown support for posts
 
 - [x] add post viewer
+
+- [x] add description viewer for posts
+
 
 - [ ] add images for posts
 
