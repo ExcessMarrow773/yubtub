@@ -4,7 +4,7 @@ import markdown
 
 register = template.Library()
 
-@register.filter
+@register.filter(name="markdown_truncate")
 def markdown_truncate(value, length):
     """
     Render Markdown and truncate the resulting text to the specified length.
@@ -13,3 +13,4 @@ def markdown_truncate(value, length):
     rendered = markdown.markdown(value, extensions=['fenced_code'])  # Render Markdown
     plain_text = strip_tags(rendered)  # Remove HTML tags
     return plain_text[:length] + ("..." if len(plain_text) > length else "")
+

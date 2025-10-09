@@ -2,8 +2,10 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
 from app.models import Video, VideoComment, Post, PostComment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +13,8 @@ from itertools import chain
 from operator import attrgetter
 import os
 import json
+
+User = get_user_model()
 # Create your views here.
 
 def index(request):
@@ -21,14 +25,17 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()         # important — saves hashed password
+            login(request, user)       # optional: log user in immediately
+            return redirect('index')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+
+@login_required
 def postVideo(request):
     if request.method == "POST":
         form = PostVideo(request.POST, request.FILES)
@@ -109,6 +116,7 @@ def cornhub(request):
     context = {}
     return render(request, 'app/cornhub.html', context)
 
+@login_required
 def makePost(request):
     if request.method == "POST":
         form = CreatePost(request.POST, request.FILES)
@@ -191,6 +199,7 @@ def like_video(request):
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
+    authentication_form = CustomAuthenticationForm
 
 class CustomLogoutView(LogoutView):
     template_name = 'index.html'

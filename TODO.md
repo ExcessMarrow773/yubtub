@@ -1,3 +1,7 @@
+# IN PROGRESS ITEM
+
+- [ ] Add feature to follow people
+
 # TODO
 
 - [x] Add feature to mass remove videos and thumbnails from storage and db
@@ -6,8 +10,6 @@
 
 - [x] Add feature to react to people's videos
 
-- [ ] Add feature to follow people
-
 - [ ] Add different communities
 
 - [x] add feature for regular, text only, posts
@@ -15,6 +17,19 @@
 
 - [x] add post viewer
 
+- [x] add description viewer for posts
+
+
+- [ ] add images for posts
+
 - [ ] start adding custom error pages
 
 - [ ] add a polling function
+
+- [ ] add number simplifyers
+
+# DEBUG TODO
+
+- [ ] add tests
+
+- [ ] add namespacing
