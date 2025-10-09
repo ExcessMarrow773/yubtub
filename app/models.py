@@ -5,7 +5,7 @@ from yubtub import settings
 import datetime
 import cv2
 import os
-from django.contrib.auth.models import User
+from yubtub.settings import AUTH_USER_MODEL as User
 
 class Video(models.Model):
     author = models.CharField(max_length=100, default='admin')
@@ -22,6 +22,8 @@ class Video(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm'])]
     )
     type = models.CharField(max_length=20, default='video')
+
+    
     def was_published_recently(self):
             return self.created_on >= timezone.now() - datetime.timedelta(days=1)
 
