@@ -10,8 +10,6 @@
 
 - [x] Add feature to react to people's videos
 
-- [ ] Add different communities
-
 - [x] add feature for regular, text only, posts
     - [x] add markdown support for posts
 
@@ -19,6 +17,7 @@
 
 - [x] add description viewer for posts
 
+- [ ] Add different communities
 
 - [ ] add images for posts
 
@@ -30,6 +29,6 @@
 
 # DEBUG TODO
 
-- [ ] add tests
+- [x] add tests
 
 - [ ] add namespacing

@@ -226,7 +226,6 @@ determines the header level.) :
 
     ### This is an H3 ######
 
-
 <h3 id="blockquote">Blockquotes</h3>
 
 Markdown uses email-style `>` characters for blockquoting. If you're
