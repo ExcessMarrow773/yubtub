@@ -89,7 +89,7 @@ def watchVideo(request, pk):
 def account(request, username):
     user_videos = Video.objects.filter(author=username).order_by('-created_on')
     user_posts = Post.objects.filter(author=username).order_by('-created_on')
-    
+
     # Combine and sort by created_on
     combined = sorted(
         chain(user_videos, user_posts),
@@ -97,9 +97,13 @@ def account(request, username):
         reverse=True
     )
 
+    userInUrl = User.objects.get(username=username)
+
     context = {
         'combined': combined,
-        'username': username
+        'username': username,
+        'urlUser': userInUrl,
+        'user': request.user
     }
     return render(request, 'account.html', context)
 
@@ -161,9 +165,9 @@ def viewPost(request, pk):
         "comments": comments,
         "form": PostCommentForm(),
     }
-    
+
     return render(request, "app/viewPost.html", context)
-  
+
 
 def mdHelp(request):
 	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/help.md')
@@ -196,6 +200,27 @@ def like_video(request):
     video.likes += 1
     video.save()
     return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
+
+@csrf_exempt
+#@require_POST
+def follow_user(request):
+	if not request.user.is_authenticated:
+		return JsonResponse({'message': 'Login required'}, status=403)
+
+	data = json.loads(request.body)
+	username=data.get('username')
+
+	try:
+		user = User.objects.get(username=username)
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found.'}, status=404)
+
+	if request.user in user.followers.all():
+		request.user.unfollow(user)
+	else:
+		request.user.follow(user)
+
+	return JsonResponse({'message': 'Thanks for following!'})
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'

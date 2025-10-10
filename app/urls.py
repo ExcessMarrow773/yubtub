@@ -18,4 +18,5 @@ urlpatterns = [
     path('posts/', views.postIndex, name="postIndex"),
     path('post/<int:pk>/', views.viewPost, name='post'),
     path('mdHelp/', views.mdHelp, name='mdHelp'),
+    path('follow-user/', views.follow_user, name="follow-user"),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

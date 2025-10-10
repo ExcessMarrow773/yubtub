@@ -40,7 +40,7 @@ function likeVideo() {
 
 function followUser() {
     const account = document.getElementById("follow-button").dataset.account;
-
+    
     fetch('/follow-user/', {
         method: 'POST',
         headers: {

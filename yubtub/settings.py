@@ -26,8 +26,12 @@ SECRET_KEY = 'Ay|nBe8~ha/,TnLroK<>x7`bXq,.&c|e3-*pt$7+e43r-jwwoqmw_^*#g47)fr$&2)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.116', '192.168.68.120', '192.168.68.130', 'yubtub', '*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.116', '192.168.68.120', '192.168.68.130', 'yubtub']
 
+CSRF_TRUSTED_ORIGINS=[]
+
+for i in ALLOWED_HOSTS:
+	CSRF_TRUSTED_ORIGINS.append("http://" + i)
 
 # Application definition
 
@@ -57,7 +61,7 @@ ROOT_URLCONF = 'yubtub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', 'app/templates/app', 'polls/templates/polls'],
+        'DIRS': [BASE_DIR / 'templates', 'app/templates/app'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

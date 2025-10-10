@@ -12,7 +12,7 @@
     <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
 {% endblock extra_head %}
 
-{% block heading %}{{ username.capitalize }}'s posted things{% endblock heading %}
+{% block heading %}{{ username.capitalize }}'s posted things<button id="follow-button" data-account-id="{{ urlUser.username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}</button>{% endblock heading %}
 
 {% block page_content %}
     {% block videos %}
