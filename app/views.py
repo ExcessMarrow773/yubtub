@@ -201,14 +201,20 @@ def like_video(request):
     video.save()
     return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
 
-@csrf_exempt
-#@require_POST
+#@csrf_exempt
+@require_POST
 def follow_user(request):
 	if not request.user.is_authenticated:
 		return JsonResponse({'message': 'Login required'}, status=403)
 
-	data = json.loads(request.body)
-	username=data.get('username')
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({'message': 'Invalid JSON'}, status=400)
+
+
+	username=data.get('account')
+	print(data)
 
 	try:
 		user = User.objects.get(username=username)
