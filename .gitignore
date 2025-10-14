@@ -218,3 +218,5 @@ SQLiteDatabaseBrowserPortable
 debug.txt
 db.*
 CONFIG
+*.tmp
+tmp.py
