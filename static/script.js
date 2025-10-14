@@ -21,7 +21,7 @@ function sleep(ms) {
 function likeVideo() {
     const videoId = document.getElementById("like-button").dataset.videoId;
 
-    fetch('/like-video/', {
+    fetch('like-video/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -39,8 +39,11 @@ function likeVideo() {
 }
 
 function followUser() {
-    const account = document.getElementById("follow-button").dataset.account;
-    
+    const followButton = document.getElementById("follow-button");
+    const account = followButton.dataset.account;
+
+    console.log(account);
+
     fetch('/follow-user/', {
         method: 'POST',
         headers: {
@@ -49,14 +52,29 @@ function followUser() {
         },
         body: JSON.stringify({ account: account })
     })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("follow-response").innerText = data.message;
-        if (data.followed || data.alreadyFollowing) {
-            document.getElementById("follow-button").disabled = true;
+    .then(response => {
+        return response.json().then(data => ({
+            status: response.status,
+            data: data
+        }));
+    })
+    .then(({ status, data }) => {
+        console.log(data);
+
+//        document.getElementById("follow-response").innerText = data.message;
+
+        if (status === 200) {
+            showToast("success", data.message);
+        } else {
+            showToast("error", data.message);
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast("error", "Something went wrong.");
     });
 }
+
 
 function showToast(type, message, duration = 3000) {
     const toastContainer = document.getElementById('toast-container');
