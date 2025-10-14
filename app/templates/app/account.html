@@ -10,11 +10,15 @@
     <script src="{% static 'admin/js/actions.js' %}"></script>
     <script src="{% static 'admin/js/calendar.js' %}"></script>
     <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+    <script>
+    	console.log("{% url 'follow-user' %}")
+    </script>
 {% endblock extra_head %}
 
-{% block heading %}{{ username.capitalize }}'s posted things<button id="follow-button" data-account-id="{{ urlUser.username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}</button>{% endblock heading %}
+{% block heading %}{{ username.capitalize }}'s posted things<button id="follow-button" data-account="{{ username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}</button>{% endblock heading %}
 
 {% block page_content %}
+<p id="follow-response"></p>
     {% block videos %}
         {% for thing in combined %}
             {% if thing.type == "video" %}
@@ -32,4 +36,5 @@
             {% endif %}
         {% endfor %}
     {% endblock videos %}
+    <div id="toast-container"></div>
 {% endblock page_content %}
