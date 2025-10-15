@@ -1,6 +1,6 @@
 # IN PROGRESS ITEM
 
-- [ ] Add feature to follow people
+- [ ] add images for posts
 
 # TODO
 
@@ -17,13 +17,11 @@
 
 - [x] add description viewer for posts
 
+- [x] Add feature to follow people
+
 - [ ] Add different communities
 
-- [ ] add images for posts
-
 - [ ] start adding custom error pages
-
-- [ ] add a polling function
 
 - [ ] add number simplifyers
 
