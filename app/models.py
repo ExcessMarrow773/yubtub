@@ -87,12 +87,19 @@ class Post(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=20, default='post')
+    image = models.ImageField(upload_to='postImages', blank=False, height_field=None, width_field=None, max_length=None, null=True)
 
     def was_published_recently(self):
             return self.created_on >= timezone.now() - datetime.timedelta(days=1)
+
+    def save(self, *args, **kwargs):
+	super().save(*args, **kwargs)
+	if self.image == None or self.image == "":
+            super().save(*args, **kwargs)  # Save again to store the thumbnail
+
     def __str__(self):
         return self.title
-    
+
 class PostComment(models.Model):
     author = models.CharField(max_length=60)
     body = models.TextField()
