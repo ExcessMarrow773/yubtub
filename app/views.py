@@ -96,13 +96,11 @@ def account(request, username):
         reverse=True
     )
 
-    userInUrl = User.objects.get(username=username)
-
     context = {
         'combined': combined,
         'username': username,
-        'urlUser': userInUrl,
-        'user': request.user
+        'user': request.user.username,
+        'isUsersAccount': username == request.user.username,
     }
     return render(request, 'account.html', context)
 
@@ -237,7 +235,7 @@ def follow_user(request):
 
 
 	username=data.get('account')
-	print(data)
+	print(request.user.is_authenticated)
 
 	try:
 		user = User.objects.get(username=username)
