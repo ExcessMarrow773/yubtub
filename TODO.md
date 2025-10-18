@@ -23,8 +23,6 @@
 
 - [ ] start adding custom error pages
 
-- [ ] add number simplifyers
-
 # DEBUG TODO
 
 - [x] add tests
