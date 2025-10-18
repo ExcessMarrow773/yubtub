@@ -15,7 +15,17 @@
     </script>
 {% endblock extra_head %}
 
-{% block heading %}{{ username.capitalize }}'s posted things<button id="follow-button" data-account="{{ username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}</button>{% endblock heading %}
+{% block heading %}{{ username.capitalize }}'s posted things
+{% if not isUsersAccount %}
+<button id="follow-button" data-account="{{ username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}
+{% endif %}
+</button>{% endblock heading %}
+
+{% block extra_navbar %}
+
+<a href="{% url 'following' %}" class="button">Following</a>
+
+{% endblock extra_navbar %}
 
 {% block page_content %}
 <p id="follow-response"></p>
