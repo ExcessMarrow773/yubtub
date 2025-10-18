@@ -18,6 +18,7 @@
 - [x] add description viewer for posts
 
 - [x] Add feature to follow people
+    - [x] add page to check up on people you follow
 
 - [ ] Add different communities
 
