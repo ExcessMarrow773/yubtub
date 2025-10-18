@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load markdown_truncate %}
+{% block page_content %}
+	<h1>People you Follow</h1>
+	<ul>
+	{% for account in following %}
+		<li><a href="{% url 'account' account.username %}">{{ account.username }}</a></li>
+	{% endfor %}
+	</ul>
+
+	<h1>Videos from people you follow</h1>
+	{% if videos %}
+	        {% for video in videos %}
+	            <div style="display: flex">
+	            <a href="{% url 'watch' video.id %}">
+	                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
+	            </a>
+	            <p>{{ video.description | markdown_truncate:100 | linebreaks }}</p>
+	            </div> 
+	            <small>
+	                <a href="{% url 'account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
+	            </small>
+	            
+	        {% endfor %}
+	        
+	{% else %}
+        	<p>No videos available.</p>
+        {% endif %}
+
+        <h1>Posts from people you follow</h1>
+	    {% if posts %}
+	    <ul>
+        	{% for post in posts %}
+        	<li>
+	            <h1><a href="{% url 'post' post.pk %}">{{ post.author }} posted: {{ post.title }}</a></h1>
+	            <small>
+	                {{ post.created_on.date }}
+	            </small>
+	        </li>
+	        {% endfor %}
+	    </ul>
+	    {% else %}
+	        <p>No posts available.</p>
+	    {% endif %}
+{% endblock page_content %}

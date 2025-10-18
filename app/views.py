@@ -1,7 +1,6 @@
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
@@ -178,6 +177,30 @@ def mdHelp(request):
 		"mdHelp": markdown_content,
 	}
 	return render(request, "app/mdHelp.html", context)
+
+def following(request):
+	user = get_object_or_404(User, username=request.user.username)
+	following = user.following.all()
+
+	following_names = []
+	for i in following:
+		following_names.append(i.username)
+
+	posts = Post.objects.filter(author__in=following_names).order_by('-created_on')
+	videos = Video.objects.filter(author__in=following_names).order_by('-created_on')
+
+	if len(following) > 10:
+		following = following[:10]
+	if len(posts) > 10:
+		posts = posts[:10]
+	if len(videos) > 10:
+		videos = videos[:10]
+	context = {
+		'following': following,
+		'posts': posts
+	}
+
+	return render(request, "app/following.html", context)
 
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST

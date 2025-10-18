@@ -19,4 +19,5 @@ urlpatterns = [
     path('post/<int:pk>/', views.viewPost, name='post'),
     path('mdHelp/', views.mdHelp, name='mdHelp'),
     path('follow-user/', views.follow_user, name="follow-user"),
+    path('following/', views.following, name="following"),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
