@@ -11,15 +11,20 @@
     <script src="{% static 'admin/js/calendar.js' %}"></script>
     <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
     <script>
-    	console.log("{% url 'follow-user' %}")
     </script>
 {% endblock extra_head %}
 
 {% block heading %}{{ username.capitalize }}'s posted things
 {% if not isUsersAccount %}
-<button id="follow-button" data-account="{{ username }}" onclick="followUser()">{% if user in urlUser.followers %}Unfollow {% else %} Follow {% endif %}
+<button id="follow-button" data-account="{{ username }}" onclick="followUser()">
+	{% if urlUser in user.following %}
+		Unfollow 
+	{% else %}
+		Follow 
+	{% endif %}
+</button>
 {% endif %}
-</button>{% endblock heading %}
+{% endblock heading %}
 
 {% block extra_navbar %}
 

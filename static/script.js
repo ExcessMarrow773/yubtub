@@ -61,8 +61,6 @@ function followUser() {
     .then(({ status, data }) => {
         console.log(data);
 
-//        document.getElementById("follow-response").innerText = data.message;
-
         if (status === 200) {
             showToast("success", data.message);
         } else {

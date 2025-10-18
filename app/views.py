@@ -99,7 +99,6 @@ def account(request, username):
     context = {
         'combined': combined,
         'username': username,
-        'user': request.user.username,
         'isUsersAccount': username == request.user.username,
     }
     return render(request, 'account.html', context)
@@ -244,10 +243,10 @@ def follow_user(request):
 
 	if request.user in user.followers.all():
 		request.user.unfollow(user)
+		return JsonResponse({'message': 'Sad to see you go!'})
 	else:
 		request.user.follow(user)
-
-	return JsonResponse({'message': 'Thanks for following!'})
+		return JsonResponse({'message': 'Thanks for following!'})
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
