@@ -63,6 +63,12 @@ function followUser() {
 
         if (status === 200) {
             showToast("success", data.message);
+            if (data.following === true) {
+            	followButton.innerHTML = "Unfollow";
+            } else {
+            	followButton.innerHTML = "Follow";
+            }
+            console.log(followButton.innerHTML);
         } else {
             showToast("error", data.message);
         }

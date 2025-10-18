@@ -17,7 +17,7 @@
 {% block heading %}{{ username.capitalize }}'s posted things
 {% if not isUsersAccount %}
 <button id="follow-button" data-account="{{ username }}" onclick="followUser()">
-	{% if urlUser in user.following %}
+	{% if followingUser %}
 		Unfollow 
 	{% else %}
 		Follow 
