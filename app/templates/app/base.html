@@ -13,6 +13,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+<div id="toast-container"></div>
     
 <div class="navbar">
     <h1>{% block heading %} Welcome to <a class="button" href="{% url 'index' %}">YubTub</a> {% endblock heading %}</h1>{% if request.path == '/' or 'posts/' %} <a href="{% url 'TODO' %}">TODO</a> {% endif %}

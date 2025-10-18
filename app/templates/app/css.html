@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {% block title %}YubTub{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <script 
+    <script src="{% static 'script.js' %}"></script>
 </head>
 <body>
+<div id="toast-container"></div>
     {% block page_content %}
     {% endblock page_content %}
 </body>
