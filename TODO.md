@@ -22,7 +22,7 @@
 
 - [ ] Add different communities
 
-- [ ] start adding custom error pages
+- [x] start adding custom error pages
 
 # DEBUG TODO
 
