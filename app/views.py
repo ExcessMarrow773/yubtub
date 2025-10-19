@@ -263,3 +263,6 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     template_name = 'index.html'
+
+def handler405(request, exception=None):
+	return render(request, '405.html', status=405)

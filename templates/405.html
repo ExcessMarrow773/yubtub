@@ -1,0 +1,14 @@
+{% extends 'css.html' %}
+
+{% block title %}Page Not Allowed{% endblock %}
+
+{% block page_content %}
+<div style="text-align: center">
+<br>
+<h1>Error 405</h1>
+<br>
+<h1>You're not supposed to be here</h1>
+<h4>This page can't be accessed like this<br><a class="button" href="{% url 'index' %}">Head on back to the Homepage</a></h4>
+
+</div>
+{% endblock %}

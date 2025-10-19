@@ -1,0 +1,13 @@
+{% extends 'css.html' %}
+
+{% block title %}Internal Server Error{% endblock %}
+
+{% block page_content %}
+<div style="text-align: center">
+<br>
+<h1>Error 500</h1>
+<br>
+	<h1>It seems we messed up somewhere</h1>
+	<h4>Internal Server Error<br><a class="button" href="{% url 'index' %}">Head on back to the Homepage</a></h4>
+</div>
+{% endblock %}
