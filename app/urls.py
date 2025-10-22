@@ -21,4 +21,4 @@ urlpatterns = [
     path('follow-user/', views.follow_user, name="follow-user"),
     path('following/', views.following, name="following"),
     path('bug/', views.bug_report, name='bugReport')
- ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
