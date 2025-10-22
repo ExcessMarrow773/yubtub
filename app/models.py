@@ -91,11 +91,6 @@ class Post(models.Model):
     def was_published_recently(self):
        return self.created_on >= timezone.now() - datetime.timedelta(days=1)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.image == None or self.image == "":
-            super().save(*args, **kwargs)  # Save again to store the thumbnail
-
     def __str__(self):
         return self.title
 
