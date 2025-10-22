@@ -18,8 +18,7 @@ lib/
 lib64/
 parts/
 sdist/
-var/
-wheels/
+var/wheels/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -212,7 +211,6 @@ __marimo__/
 media/
 .venv
 db.sqlite3
-thumbnail/
 SQLiteDatabaseBrowserPortable
 *.pyc
 debug.txt
