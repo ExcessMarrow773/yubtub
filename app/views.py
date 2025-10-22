@@ -138,7 +138,7 @@ def makePost(request):
                 body=form.cleaned_data["body"],
             )
             post.save()
-            return redirect('index')
+            return redirect('postIndex')
     else:
         form = CreatePost()
     context = {
