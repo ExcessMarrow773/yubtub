@@ -5,7 +5,7 @@
 {% block page_content %}
 <h1>{{ videos.title }}</h1>
 <div>
-<video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen Autoplay Loop>
+<video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
   No video support.
 </video>
@@ -13,9 +13,9 @@
 
 <div>
 <a href="../media/{{ videos.video_file }}" class="button">vid</a>
-<button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button><small>Views: {{ videos.views }}</small>
+<button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button> <small>Views: {{ videos.views }}</small>
 
-<p id="like-response"></p>
+
 {{ videos.description | markdown | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
 </div>
 
@@ -39,5 +39,5 @@
 </p>
 {% endfor %}
 {% endblock comments %}
-
+<div id="toast-container"></div>
 {% endblock %}

@@ -233,7 +233,6 @@ def bug_report(request):
     }
     return render(request, "app/bugReport.html", context)
 
-@csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST
 def like_video(request):
     if not request.user.is_authenticated:
@@ -248,13 +247,18 @@ def like_video(request):
         return JsonResponse({'message': 'Video not found.'}, status=404)
 
     if request.user in video.likedUsers.all():
-        return JsonResponse({'message': 'You already liked this video.', 'liked': False, 'alreadyLiked': True})
-
-    video.likedUsers.add(request.user)
-    video.likes += 1
-    video.save()
-    return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
-
+        video.likedUsers.remove(request.user)
+        video.likes -= 1
+        video.save()
+        return JsonResponse({'message': 'You unliked this video.', 'likes': video.likes}, status=200)
+    else:
+        video.likedUsers.add(request.user)
+        video.likes += 1
+        video.save()
+        return JsonResponse({'message': 'Thanks for liking!', 'likes': video.likes}, status=200)
+    
+    
+    
 @require_POST
 def follow_user(request):
 	if not request.user.is_authenticated:

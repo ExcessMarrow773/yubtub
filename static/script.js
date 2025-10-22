@@ -21,7 +21,7 @@ function sleep(ms) {
 function likeVideo() {
     const videoId = document.getElementById("like-button").dataset.videoId;
 
-    fetch('like-video/', {
+    fetch('/like-video/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -31,10 +31,8 @@ function likeVideo() {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("like-response").innerText = data.message;
-        if (data.liked || data.alreadyLiked) {
-            document.getElementById("like-button").disabled = true;
-        }
+        showToast("success", data.message);
+        document.getElementById("like-button").innerText = data.likes + ":👍";
     });
 }
 
