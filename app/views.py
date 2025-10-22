@@ -4,10 +4,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
-from app.models import Video, VideoComment, Post, PostComment
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
+from app.models import Video, VideoComment, Post, PostComment
+
 from itertools import chain
 from operator import attrgetter
 import os
@@ -101,7 +103,7 @@ def account(request, username):
 
     following_names = []
     for i in following:
-    	following_names.append(i.username)
+        following_names.append(i.username)
     print(following_names)
 
     context = {
