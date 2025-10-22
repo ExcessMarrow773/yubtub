@@ -4,11 +4,12 @@
 
 {% block page_content %}
 <div style="text-align: center">
-<br>
-<h1>Error 405</h1>
-<br>
-<h1>You're not supposed to be here</h1>
-<h4>This page can't be accessed like this<br><a class="button" href="{% url 'index' %}">Head on back to the Homepage</a></h4>
+    <br>
+    <h1>Error 405</h1>
+    <br>
+    <h1>You're not supposed to be here</h1>
+    <h4>This page can't be accessed like this<br><a class="button" href="{% url 'index' %}">Head on back to the Homepage</a></h4>
+	<a class="button" href="{% url 'bugReport' %}"><b>Submit a bug report.</b></a>
 
 </div>
 {% endblock %}
