@@ -109,3 +109,18 @@ class PostComment(models.Model):
 
     def __str__(self):
          return self.author
+
+TYPE_CHOICES = {
+    'BUG': 'Bug',
+    'DOCS': 'Documentation',
+    'NEW': 'Enhancement',
+    'HUH?': 'Question',
+    'NOPE': 'Wontfix'
+}
+
+class Bug(models.Model):
+    author = models.CharField(max_length=100, default='admin')
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now=True, auto_now_add=False)
+    type = models.CharField(choices=TYPE_CHOICES, max_length=50)
