@@ -20,4 +20,5 @@ urlpatterns = [
     path('mdHelp/', views.mdHelp, name='mdHelp'),
     path('follow-user/', views.follow_user, name="follow-user"),
     path('following/', views.following, name="following"),
+    path('bug/', views.bug_report, name='bugReport')
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
