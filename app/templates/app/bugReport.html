@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        Type: {{ form.type }}
+    </div>
+    <div>
+        Title: {{ form.title }}
+    </div>
+    <div>
+        {{ form.body }}<br>
+        <small><a href="{% url 'mdHelp' %}">Markdown</a> is supported!</small>
+    </div>
+    <div>
+        <p>For a better chance of us fixing it, go create a <a href="https://github.com/ExcessMarrow773/yubtub/issues/new">Github Issue</a> and put a link to it here.</p>
+        {{ form.github_issue }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="{% url 'index' %}">Cancel</a>
+</form>
+
+{% endblock page_content %}
