@@ -7,8 +7,8 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
-from app.models import Video, VideoComment, Post, PostComment
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm, BugReportForm
+from app.models import Video, VideoComment, Post, PostComment, BugReport
 
 from itertools import chain
 from operator import attrgetter
@@ -210,6 +210,29 @@ def following(request):
 
 	return render(request, "app/following.html", context)
 
+def bug_report(request):
+    
+    if request.method == "POST":
+        form = BugReportForm(request.POST)
+        if form.is_valid():
+            bug = BugReport(
+                author=request.user.username,
+                title=form.cleaned_data["title"],
+                body=form.cleaned_data["body"],
+                type=form.cleaned_data["type"],
+                github_issue=form.cleaned_data["github_issue"]
+            )
+            if bug.github_issue != None:
+                bug.has_github_issue = True
+            bug.save()
+            return redirect('bugReport')
+    else:
+        form = BugReportForm()
+    context = {
+        'form': form
+    }
+    return render(request, "app/bugReport.html", context)
+
 @csrf_exempt  # For production: use @require_POST and handle CSRF with token properly
 @require_POST
 def like_video(request):
@@ -232,7 +255,6 @@ def like_video(request):
     video.save()
     return JsonResponse({'message': 'Thanks for liking!', 'liked': True, 'alreradyLiked': False})
 
-#@csrf_exempt
 @require_POST
 def follow_user(request):
 	if not request.user.is_authenticated:
