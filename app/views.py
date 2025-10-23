@@ -23,14 +23,14 @@ def index(request):
         'videos': Video.objects.all().order_by('-created_on'),
     }
     return render(request, 'index.html', context)
-
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()         # important — saves hashed password
             login(request, user)       # optional: log user in immediately
-            return redirect('index')
+            return redirect('app:index')
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
