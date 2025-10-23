@@ -41,6 +41,7 @@ for i in ALLOWED_HOSTS:
 
 INSTALLED_APPS = [
     'app.apps.AppConfig',
+	'chat.apps.ChatConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'yubtub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', 'app/templates/app'],
+        'DIRS': [BASE_DIR / 'templates', 'app/templates/app', 'chat/templates/chat'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
