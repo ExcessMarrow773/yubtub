@@ -677,29 +677,83 @@ chat {
     gap: 12px;
     width: 60%;
     max-width: 600px;
-    margin: 2rem auto; /* space above */
+    height: 70vh; /* adjust as needed */
+    overflow-y: auto; /* enables scrolling when overflow */
+    margin: 2rem auto;
     padding: 20px;
     box-sizing: border-box;
+    /* border: 1px solid var(--border); optional visual boundary */
+    /* border-radius: 10px; */
 }
 
 msg {
-    display: block;
-    padding: 10px 15px;
+    display: inline-block;
+    position: relative; /* for timestamp positioning */
+    padding: 10px 15px 18px; /* extra bottom padding for timestamp */
     border-radius: 12px;
     max-width: 75%;
     word-wrap: break-word;
-    color: var(--bg); /* text contrast */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 25);
+    color: var(--accent-bg);
 }
 
 msg.from {
     align-self: flex-start;
-    background: var(--accent-hover); /* your darker green */
+    background: var(--accent-hover);
     border-top-left-radius: 0;
 }
 
 msg.to {
     align-self: flex-end;
-    background: var(--accent-hover); /* lighter accent */
+    background: var(--accent-hover);
     border-top-right-radius: 0;
+}
+
+msg .timestamp {
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.5);
+    font-style: italic;
+}
+
+.chat-layout {
+    display: flex;
+    width: 100%;
+    max-width: 100%; /* full browser width */
+    margin: 0 auto;
+    gap: 1rem;
+}
+
+/* Chat gets a fixed or max width */
+chat {
+    flex: 0 0 600px; /* Static width of 600px */
+    /* max-width: 600px; */
+    width: 100%;
+}
+
+/* Left panel expands until it hits chat */
+.chat-info-left {
+    flex: 1 0 250px; /* grow */
+    max-width: 250px;
+    display: none; /* hidden on mobile */
+}
+
+/* Right panel is optional - give it fixed width */
+.chat-info-right {
+    flex: 0 0 250px;
+    max-width: 250px;
+    display: none; /* hidden on mobile */
+}
+
+/* Show panels on desktop only */
+@media (min-width: 900px) {
+    .chat-info-left,
+    .chat-info-right {
+        display: block;
+        background: var(--accent-bg, #f2f2f2);
+        padding: 1rem;
+        border-radius: 8px;
+    }
 }
