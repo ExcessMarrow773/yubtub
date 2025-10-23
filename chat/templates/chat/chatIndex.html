@@ -1,1 +1,13 @@
 {% extends "css.html" %}
+
+{% block title %}YubTub Chat{% endblock title %}
+
+{% block page_content %}
+<h1>Welcome to the YubTub Chat index!</h1>
+<ul>
+{% for account in friends %}
+		<li><a href="{% url 'chat:chat' account.username %}">{{ account.username }}</a></li>
+{% endfor %}
+<ul>
+ 
+{% endblock page_content %}
