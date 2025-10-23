@@ -218,8 +218,3 @@ db.*
 CONFIG
 *.tmp
 tmp.py
-
-eslint.config.mjs
-node_modules/
-package-lock.json
-package.json
