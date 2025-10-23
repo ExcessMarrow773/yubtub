@@ -4,7 +4,7 @@
 	<h1>People you Follow</h1>
 	<ul>
 	{% for account in following %}
-		<li><a href="{% url 'account' account.username %}">{{ account.username }}</a></li>
+		<li><a href="{% url 'app:account' account.username %}">{{ account.username }}</a></li>
 	{% endfor %}
 	</ul>
 
@@ -12,13 +12,13 @@
 	{% if videos %}
 	        {% for video in videos %}
 	            <div style="display: flex">
-	            <a href="{% url 'watch' video.id %}">
+				<a href="{% url 'app:watch' video.id %}">
 	                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
 	            </a>
 	            <p>{{ video.description | markdown_truncate:100 | linebreaks }}</p>
 	            </div> 
 	            <small>
-	                <a href="{% url 'account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
+					<a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
 	            </small>
 	            
 	        {% endfor %}
@@ -32,7 +32,7 @@
 	    <ul>
         	{% for post in posts %}
         	<li>
-	            <h1><a href="{% url 'post' post.pk %}">{{ post.author }} posted: {{ post.title }}</a></h1>
+				<h1><a href="{% url 'app:post' post.pk %}">{{ post.author }} posted: {{ post.title }}</a></h1>
 	            <small>
 	                {{ post.created_on.date }}
 	            </small>

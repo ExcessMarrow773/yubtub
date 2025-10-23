@@ -10,7 +10,7 @@
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>
     <p>
-      By <a href="{% url 'account' post.author %}">{{ post.author }}</a>
+    By <a href="{% url 'app:account' post.author %}">{{ post.author }}</a>
 </p>
     <p>{{ post.body | markdown }}</p>
         <h3>Leave a comment:</h3>

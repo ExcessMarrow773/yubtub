@@ -28,7 +28,7 @@
 
 {% block extra_navbar %}
 
-<a href="{% url 'following' %}" class="button">Following</a>
+<a href="{% url 'app:following' %}" class="button">Following</a>
 
 {% endblock extra_navbar %}
 
@@ -37,14 +37,14 @@
     {% block videos %}
         {% for thing in combined %}
             {% if thing.type == "video" %}
-                <a href="{% url 'watch' thing.id %}">
+                <a href="{% url 'app:watch' thing.id %}">
                     <img src="{{ thing.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
                 </a>
                 <small>
                     {{ thing.author }} Posted "{{ thing.title }}" on: {{ thing.created_on }}<br><br>
                 </small>
             {% elif thing.type == "post" %}
-                <h3>Post: "<a href="{% url 'post' thing.pk %}">{{ thing.title }}</a>"</h3>
+                <h3>Post: "<a href="{% url 'app:post' thing.pk %}">{{ thing.title }}</a>"</h3>
                 <p>{{ thing.body | markdown_truncate:100 | markdown}}</p>
                 <small>Posted by {{ thing.author }} on {{ thing.created_on }}</small>
                 <hr>

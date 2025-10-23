@@ -2,19 +2,19 @@
 {% load markdown_truncate %}
 {% block title %}YubTub - Home{% endblock title %}
 {% block extra_navbar %}
-<a href="{% url 'postIndex' %}" class="button">Posts</a>
+<a href="{% url 'app:postIndex' %}" class="button">Posts</a>
 {% endblock extra_navbar %}
 {% block page_content %}
     {% if videos %}
         {% for video in videos %}
             <div style="display: flex">
-            <a href="{% url 'watch' video.id %}">
+            <a href="{% url 'app:watch' video.id %}">
                 <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
             </a>
             <p>{{ video.description | markdown_truncate:100 | linebreaks }}</p>
             </div> 
             <small>
-                <a href="{% url 'account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
+                <a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
             </small>
             
         {% endfor %}
