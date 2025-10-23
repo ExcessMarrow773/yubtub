@@ -119,3 +119,15 @@ function removeToast(toastElement) {
         toastElement.remove();
     }, { once: true });
 }
+
+window.addEventListener('load', () => {
+    const chat = document.querySelector('chat');
+    if (chat) {
+        chat.scrollTop = chat.scrollHeight;
+    }
+});
+
+chat.scrollTo({
+    top: chat.scrollHeight,
+    behavior: 'smooth'
+});
