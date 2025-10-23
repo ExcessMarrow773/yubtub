@@ -6,5 +6,5 @@ from . import views
 app_name = 'chat'
 
 urlpatterns = [
-    path('chat/', views.index, name='index'),
+    path('', views.index, name='index'),
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

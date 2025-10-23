@@ -3,6 +3,6 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 User = get_user_model()
 
-def chatIndex(request):
+def index(request):
     context = {}
     return render(request, 'chatIndex.html', context)
