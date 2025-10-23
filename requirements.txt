@@ -12,3 +12,4 @@ pillow==11.3.0
 pyflakes==3.4.0
 sqlparse==0.5.3
 tzdata==2025.2
+dotenv==1.1.1
