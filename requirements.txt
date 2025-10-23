@@ -1,5 +1,9 @@
 asgiref==3.10.0
 Django==5.2.7
 dotenv==0.9.9
+Markdown==3.9
+numpy==2.2.6
+opencv-python==4.12.0.88
+pillow==12.0.0
 python-dotenv==1.1.1
 sqlparse==0.5.3
