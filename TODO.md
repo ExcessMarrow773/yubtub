@@ -18,7 +18,7 @@
 - [x] add description viewer for posts
 
 - [x] Add feature to follow people
-  - [x] add page to check up on people you follow
+    - [x] add page to check up on people you follow
 
 - [x] add bug reporting
 
