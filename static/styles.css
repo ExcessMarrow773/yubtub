@@ -718,6 +718,10 @@ msg .timestamp {
     font-style: italic;
 }
 
+chat, input {
+    width: 88%;
+}
+
 .chat-layout {
     display: flex;
     width: 100%;

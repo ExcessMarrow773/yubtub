@@ -10,13 +10,24 @@
     </aside>
 
     <chat>
-        <msg class="from">Hello!</msg>
-        <msg class="to">Hey!</msg>
+        <msg class="from">
+			I'm good! You?
+			<span class="timestamp">10:03 AM</span>
+    	</msg>
+        <msg class="to">
+			Hey!
+			<span class="timestamp">10:04 AM</span>
+		</msg>
+        <div>
+			<input id="msg" type="text" placeholder="Type a message..."/>
+			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" type="submit">Send</button>
+		</div>
     </chat>
+	
     <aside class="chat-info-right">
         <h1>{{ account }}
     </aside>
-    {% comment %} <aside class="chat-info-right"></aside> {% endcomment %}
+    
 </div>
 
 {% endblock page_content %}
