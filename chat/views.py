@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 
 import json
 
+from chat.models import Message
 # Create your views here.
 User = get_user_model()
 
@@ -27,11 +28,13 @@ def index(request):
 	return render(request, 'chatIndex.html', context)
 
 def chat(request, account):
-	user = get_object_or_404(User, username=account)
+	other_user = get_object_or_404(User, username=account)
+	this_user = request.user.username
 	context = {
-		'account': user
+		'account': other_user,
+		'this_user': this_user
 	}
-
+	print(this_user, other_user)
 	return render(request, 'chat.html', context)
 
 @require_POST
@@ -45,7 +48,23 @@ def sendMsg(request):
 		return JsonResponse({'message': 'Invalid JSON'}, status=400)
 
 
-	msg=data.get('msg')
-	to = data.get('to')
+	msg = data.get('msg')
+	to_user_data = data.get('to')
+	from_user_data = data.get('from')	
 
-	return JsonResponse({'message': msg, 'to': to}, status=200)
+	things = {'data': data, 'to_user_data': to_user_data, 'from_user_data': from_user_data}
+	print(things)
+
+	to_user = get_object_or_404(User, username=to_user_data)
+	from_user = get_object_or_404(User, username=from_user_data)
+
+	message = Message(
+		from_user=from_user,
+		to_user=to_user,
+		body=msg
+	)
+	message.save()
+
+	print(message)
+
+	return JsonResponse({'message': msg}, status=200)
