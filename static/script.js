@@ -135,6 +135,7 @@ window.addEventListener('load', () => {
 function appendChatMessage(text, direction = 'to') {
     // direction: 'to' (you) or 'from' (other)
     const chatWindow = document.querySelector('chat');
+	const msgBox = document.getElementById('msgDiv');
     if (!chatWindow) return;
 
     // create message element (matches your template's <msg> tag)
@@ -150,7 +151,7 @@ function appendChatMessage(text, direction = 'to') {
     msgEl.appendChild(ts);
 
     // append and scroll into view
-    chatWindow.appendChild(msgEl);
+    msgBox.before(msgEl);
     // smooth scroll to bottom
     chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
 }
@@ -162,7 +163,7 @@ function sendMsg() {
     const chatUser = sendButton.dataset.toUser;
 
     if (msgText === "") {
-        showToast("error", "You cant send an empty message.");
+        showToast("error", "You can't send an empty message.");
         return;
     }
 
