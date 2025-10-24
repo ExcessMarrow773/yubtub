@@ -1,6 +1,6 @@
 # IN PROGRESS ITEM
 
-- [ ] add bug reporting
+- [ ] Add Chat Capabilitys
 
 ## TODO
 
@@ -20,12 +20,14 @@
 - [x] Add feature to follow people
   - [x] add page to check up on people you follow
 
-- [ ] Add different communities
+- [x] add bug reporting
 
 - [x] start adding custom error pages
+
+- [ ] Add different communities
 
 ## DEBUG TODO
 
 - [x] add tests
 
-- [ ] add namespacing
+- [x] add namespacing
