@@ -20,12 +20,12 @@
 		</msg>
         <div id="msgDiv">
 			<input id="msg" type="text" placeholder="Type a message..."/>
-			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" type="submit">Send</button>
+			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" data-from-user="{{ this_user }}" type="submit">Send</button>
 		</div>
     </chat>
 	
     <aside class="chat-info-right">
-        <h1>{{ account }}
+        <h1>{{ this_user }}
     </aside>
     
 </div>
