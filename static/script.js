@@ -124,10 +124,69 @@ window.addEventListener('load', () => {
     const chat = document.querySelector('chat');
     if (chat) {
         chat.scrollTop = chat.scrollHeight;
+		chat.scrollTo({
+    		top: chat.scrollHeight,
+    		behavior: 'smooth'
+		});
     }
 });
 
-chat.scrollTo({
-    top: chat.scrollHeight,
-    behavior: 'smooth'
-});
+
+function appendChatMessage(text, direction = 'to') {
+    // direction: 'to' (you) or 'from' (other)
+    const chatWindow = document.querySelector('chat');
+    if (!chatWindow) return;
+
+    // create message element (matches your template's <msg> tag)
+    const msgEl = document.createElement('msg');
+    msgEl.classList.add(direction);
+    msgEl.textContent = text;
+
+    // add timestamp
+    const ts = document.createElement('span');
+    ts.classList.add('timestamp');
+    const now = new Date();
+    ts.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    msgEl.appendChild(ts);
+
+    // append and scroll into view
+    chatWindow.appendChild(msgEl);
+    // smooth scroll to bottom
+    chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+}
+
+function sendMsg() {
+    const msgInput = document.getElementById('msg');
+    const msgText = msgInput.value;
+    const sendButton = document.getElementById('sendButton');
+    const chatUser = sendButton.dataset.toUser;
+
+    if (msgText === "") {
+        showToast("error", "You cant send an empty message.");
+        return;
+    }
+
+    appendChatMessage(msgText, 'to');
+    msgInput.value = '';
+
+    fetch('/chat/send-message/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ msg: msgText, to: chatUser})
+    })
+    .then(response => response.json().then(data => ({ status: response.status, data: data })))
+    .then(({ status, data }) => {
+        if (status === 200) {
+            showToast("success", "Message sent");
+        } else {
+            showToast("error", data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast("error", "Something went wrong.");
+    });
+}
