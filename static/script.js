@@ -161,7 +161,7 @@ function sendMsg() {
     const msgText = msgInput.value;
     const sendButton = document.getElementById('sendButton');
     const chatUser = sendButton.dataset.toUser;
-    const fromUser = sendButton.dataset.fronUser;
+    const fromUser = sendButton.dataset.fromUser;
 
     showToast("success", chatUser)
     showToast("success", fromUser)
@@ -174,13 +174,16 @@ function sendMsg() {
     appendChatMessage(msgText, 'to');
     msgInput.value = '';
 
+	const requestBody = { msg: msgText, to: chatUser, from: fromUser}
+	console.log(requestBody);
+
     fetch('/chat/send-message/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken'),
         },
-        body: JSON.stringify({ msg: msgText, to: chatUser, from: fromUser})
+        body: JSON.stringify(requestBody)
     })
     .then(response => response.json().then(data => ({ status: response.status, data: data })))
     .then(({ status, data }) => {
