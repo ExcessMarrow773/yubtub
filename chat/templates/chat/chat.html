@@ -10,14 +10,18 @@
     </aside>
 
     <chat>
-        <msg class="from">
-			I'm good! You?
-			<span class="timestamp">10:03 AM</span>
-    	</msg>
-        <msg class="to">
-			Hey!
-			<span class="timestamp">10:04 AM</span>
-		</msg>
+		{% if messages %}
+			{% for message in messages %}
+			{% if message.from_user == this_user %}
+				<msg class="to">
+			{% else %}
+				<msg class="from">
+			{% endif %}
+					{{ message.body }}
+					<span class="timestamp">{{ message.sent_on.time }}</span>
+				</msg>
+			{% endfor %}
+		{% endif %}
         <div id="msgDiv">
 			<input id="msg" type="text" placeholder="Type a message..."/>
 			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" data-from-user="{{ this_user }}" type="submit">Send</button>
@@ -25,7 +29,7 @@
     </chat>
 	
     <aside class="chat-info-right">
-        <h1>{{ this_user }}
+        <h1>{{ username }}
     </aside>
     
 </div>
