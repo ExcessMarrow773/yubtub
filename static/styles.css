@@ -674,10 +674,11 @@ div
 chat {
     display: flex;
     flex-direction: column;
+    flex: 0 0 600px; /* Static width of 600px */
     gap: 12px;
-    width: 60%;
-    max-width: 600px;
-    height: 70vh; /* adjust as needed */
+    width: 66%;
+    max-width: 650px;
+    height: 91vh; /* adjust as needed */
     overflow-y: auto; /* enables scrolling when overflow */
     margin: 2rem auto;
     padding: 20px;
@@ -730,12 +731,6 @@ chat, input {
     gap: 1rem;
 }
 
-/* Chat gets a fixed or max width */
-chat {
-    flex: 0 0 600px; /* Static width of 600px */
-    /* max-width: 600px; */
-    width: 100%;
-}
 
 /* Left panel expands until it hits chat */
 .chat-info-left {
@@ -760,4 +755,8 @@ chat {
         padding: 1rem;
         border-radius: 8px;
     }
+}
+
+::-webkit-scrollbar {
+    width: 1px;
 }
