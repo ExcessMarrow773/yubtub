@@ -174,7 +174,7 @@ function sendMsg() {
     appendChatMessage(msgText, 'to');
     msgInput.value = '';
 
-	const requestBody = { msg: msgText, to: chatUser, from: fromUser}
+	const requestBody = { msg: msgText, to: chatUser, from: fromUser, dateTime: new Date().toISOString() };
 	console.log(requestBody);
 
     fetch('/chat/send-message/', {
