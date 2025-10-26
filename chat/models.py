@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from django.utils import timezone
 # Avoid importing the user model at import-time to keep migrations portable.
 def _get_sentinel_user_pk():
 	"""Return a pk for a sentinel/system user, creating it if needed.
@@ -44,7 +44,7 @@ class Message(models.Model):
 		default=_get_sentinel_user_pk,
 	)
 	body = models.TextField()
-	sent_on = models.DateTimeField(auto_now_add=True)
+	sent_on = models.DateTimeField(default=timezone.now())
 
 
 	class Meta:
