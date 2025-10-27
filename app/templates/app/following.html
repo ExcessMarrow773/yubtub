@@ -43,3 +43,7 @@
 	        <p>No posts available.</p>
 	    {% endif %}
 {% endblock page_content %}
+
+{% block extra_navbar %}
+<a class="button" href="{% url 'chat:index' %}">Chat</a>
+{% endblock %}
