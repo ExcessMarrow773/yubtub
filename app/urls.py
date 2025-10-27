@@ -20,6 +20,7 @@ urlpatterns = [
     path('posts/', views.postIndex, name="postIndex"),
     path('post/<int:pk>/', views.viewPost, name='post'),
     path('mdHelp/', views.mdHelp, name='mdHelp'),
+    path('EconProject/', views.EconProject, name="EconProject"),
     path('follow-user/', views.follow_user, name="follow-user"),
     path('following/', views.following, name="following"),
     path('bug/', views.bug_report, name='bugReport')

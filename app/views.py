@@ -186,6 +186,16 @@ def mdHelp(request):
 	}
 	return render(request, "app/mdHelp.html", context)
 
+def EconProject(request):
+    file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/EconProject.md')
+    with open(file_path, 'r') as f:
+        markdown_content = f.read()
+    
+    context = {
+        'mdHelp': markdown_content,
+    }
+    return render(request, "app/mdHelp.html", context)
+
 def following(request):
 	user = get_object_or_404(User, username=request.user.username)
 	following = user.following.all()
