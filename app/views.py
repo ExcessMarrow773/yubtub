@@ -50,7 +50,7 @@ def postVideo(request):
                 video_file=form.cleaned_data["video_file"],
             )
             video.save()
-            return redirect('index')
+            return redirect('app:index')
     else:
         form = PostVideo()
 
@@ -225,7 +225,7 @@ def bug_report(request):
             if bug.github_issue != None:
                 bug.has_github_issue = True
             bug.save()
-            return redirect('bugReport')
+            return redirect('app:index')
     else:
         form = BugReportForm()
     context = {
