@@ -1,0 +1,37 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+<div>
+  {% if conversations %}
+    {% for key, messages in conversations %}
+      {% with from_user=key.0 to_user=key.1 %}
+      <div class="conversation-block">
+        <h3 class="conversation-header" style="cursor:pointer;">
+          {{ from_user }} → {{ to_user }} ({{ messages|length }} message{{ messages|length|pluralize }})
+        </h3>
+        <div class="conversation-messages" style="display:none; margin-bottom: 1em;">
+          <ul>
+            {% for msg in messages %}
+              <li>
+                <strong>{{ msg.sent_on }}</strong> - {{ msg.body|truncatechars:80 }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    <p>No messages found.</p>
+  {% endif %}
+</div>
+
+<script>
+document.querySelectorAll('.conversation-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    content.style.display = content.style.display === 'none' ? 'block' : 'none';
+  });
+});
+</script>
+{% endblock %}
