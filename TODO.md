@@ -24,6 +24,8 @@
 
 - [x] start adding custom error pages
 
+- [ ] add Black Bar Program
+
 - [ ] Add different communities
 
 ## DEBUG TODO
