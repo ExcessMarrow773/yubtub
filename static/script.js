@@ -66,9 +66,9 @@ function followUser() {
             } else {
             	followButton.innerHTML = "Follow";
             }
-            console.log(followButton.innerHTML);
         } else {
             showToast("error", data.message);
+            console.log(followButton.innerHTML);
         }
     })
     .catch(error => {
@@ -162,6 +162,7 @@ function sendMsg() {
     const sendButton = document.getElementById('sendButton');
     const chatUser = sendButton.dataset.toUser;
     const fromUser = sendButton.dataset.fromUser;
+    const leftBar = document.getElementById('leftBar')
 
     showToast("success", chatUser)
     showToast("success", fromUser)
@@ -175,6 +176,7 @@ function sendMsg() {
     msgInput.value = '';
 
 	const requestBody = { msg: msgText, to: chatUser, from: fromUser, dateTime: new Date().toISOString() };
+    // leftBar.innerHTML = Object.values(requestBody);
 	console.log(requestBody);
 
     fetch('/chat/send-message/', {
