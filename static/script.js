@@ -164,9 +164,6 @@ function sendMsg() {
     const fromUser = sendButton.dataset.fromUser;
     const leftBar = document.getElementById('leftBar')
 
-    showToast("success", chatUser)
-    showToast("success", fromUser)
-
     if (msgText === "") {
         showToast("error", "You can't send an empty message.");
         return;
