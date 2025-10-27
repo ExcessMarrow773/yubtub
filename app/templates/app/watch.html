@@ -4,6 +4,7 @@
 
 {% block page_content %}
 <h1>{{ videos.title }}</h1>
+Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}</a>
 <div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
   <source src="../media/{{ videos.video_file }}" type="video/mp4">
