@@ -10,5 +10,6 @@ def follow_system_account(sender, instance, created, **kwargs):
         system_account = User.objects.get(username='system')  # Replace 'system' with the actual username of the system account
         instance.following.add(system_account)  # Assuming a ManyToMany field named 'following'\
         system_account.following.add(instance)  # Make the relationship mutual
+        system_account.unfollow(system_account)
     except User.DoesNotExist:
         pass
