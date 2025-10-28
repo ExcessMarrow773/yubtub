@@ -8,6 +8,7 @@ from itertools import chain
 import json
 
 from chat.models import Message
+import chat.bot as bot
 # Create your views here.
 User = get_user_model()
 
@@ -67,7 +68,6 @@ def sendMsg(request):
 	from_user_data = data.get('from')	
 	dateTime = data.get('dateTime')
 	things = {'data': data, 'to_user_data': to_user_data, 'from_user_data': from_user_data, 'dateTime': dateTime}
-	print(things)
 
 	to_user = get_object_or_404(User, username=to_user_data)
 	from_user = get_object_or_404(User, username=from_user_data)
@@ -77,8 +77,11 @@ def sendMsg(request):
 		to_user=to_user,
 		body=msg
 	)
+	
+	if msg.startswith('!'):
+		bot_response = bot.command(msg, from_user)
+
 	message.save()
-
-	print(message)
-
+	if bot_response != None:
+		return JsonResponse({'type': 'bot_response','message': bot_response}, status=200)
 	return JsonResponse({'message': msg}, status=200)
