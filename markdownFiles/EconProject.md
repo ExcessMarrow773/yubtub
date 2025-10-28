@@ -1,8 +1,6 @@
-*    [test](#start)
-*    [Ending Paragraph](#endingParagraph)
-<h1 id=“start”>Final Unemployment Project</h1>
+<h1 id=“start”>Econ Unemployment Project</h1>
 The Job we chose was Game Programmer. We make about $17, 000 monthly, and after paying bills and expenses for the month, we had about $15, 000 left. After taxes, we only had about $10, 000 left.
-
+<h2>Unemployment Insurance</h2>
 Unemployment Insurance is financial assistance for people who are currently unemployed. To eligible for it you have to be
 
 1. Unemployed Through No Fault of Your Own
@@ -16,9 +14,9 @@ But if you are any of the following, you become ineligible
 1. Voluntarily quit without good work-related cause
 2. Discharged for work-related misconduct
 3. Participation in a labor dispute other than a lockout that is in active progress
-5. Failure to seek or accept suitable work
+4. Failure to seek or accept suitable work
 
 Unemployment benefits will last twenty-one weeks 
 
-<h1 id=“endingParagraph”></h1>
+<h2 id=“endingParagraph”>Our opinion on Unemployment Insurance</h1>
 I think unemployment insurance is effective but could be better, because unemployment insurance helps people a lot economically because there are people that need that help when they lose their job, and is effective because it serves the purpose of helping people. But I think that it could use more resources to help people that need it, including helping people find affordable housing and food. Here are some ways Unemployment Insurance could be better, including, expanding eligibility and better information from employers about applying for unemployment insurance benefits.
