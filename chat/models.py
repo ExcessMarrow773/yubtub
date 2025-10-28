@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 from datetime import datetime
 
 # Avoid importing the user model at import-time to keep migrations portable.
