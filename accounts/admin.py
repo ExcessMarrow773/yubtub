@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
 		})
 	)
 	def followers_display(self, obj):
-	        return ", ".join([user.username for user in obj.followers.all()])
+		return ", ".join([user.username for user in obj.followers.all()])
 	followers_display.short_description = 'Followers'
 
 	def follower_count(self, obj):
