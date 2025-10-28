@@ -1,7 +1,9 @@
 <h1 id=“start”>Economics Unemployment Project</h1>
 The Job we chose was Game Programmer. We make about $17, 000 monthly, and after paying bills and expenses for the month, we had about $15, 000 left. After taxes, we only had about $10, 000 left.
 <h2>Unemployment Insurance</h2>
-Unemployment Insurance is financial assistance for people who are currently unemployed. To eligible for it you have to be
+Unemployment Insurance is financial assistance for people who are currently unemployed. 
+
+To eligible for it you have to be
 
 1. Unemployed Through No Fault of Your Own
 2. You Must Have Qualifying Base Period Wages
