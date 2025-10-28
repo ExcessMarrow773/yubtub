@@ -11,16 +11,16 @@ class MessageAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context=None):
         """
-        Override the change list view to group messages by conversation (from_user → to_user)
-        and pass it to the template.
+        Group messages by conversation (A ↔ B, not just A → B)
+        and pass them to the template.
         """
-        qs = self.get_queryset(request).order_by('from_user', 'to_user', '-sent_on')
+        qs = self.get_queryset(request).order_by('-sent_on')
 
-        # Group into dict: {(from_user, to_user): [messages]}
         conversations = {}
         for message in qs:
-            key = (message.from_user, message.to_user)
-            conversations.setdefault(key, []).append(message)
+            # Create a direction-independent key for the pair of users
+            user_pair = tuple(sorted([message.from_user, message.to_user], key=lambda u: u.id))
+            conversations.setdefault(user_pair, []).append(message)
 
         extra_context = extra_context or {}
         extra_context['conversations'] = conversations.items()
