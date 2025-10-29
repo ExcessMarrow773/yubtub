@@ -49,7 +49,7 @@ def chat(request, account):
 		'this_user': this_user,
 		'messages': messages
 	}
-	print(this_user, other_user)
+
 	return render(request, 'chat.html', context)
 
 @require_POST
@@ -80,6 +80,8 @@ def sendMsg(request):
 	
 	if msg.startswith('!'):
 		bot_response = bot.command(msg, from_user)
+	else:
+		bot_response = None
 
 	message.save()
 	if bot_response != None:
