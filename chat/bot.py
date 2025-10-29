@@ -25,7 +25,7 @@ def command(body, from_user):
 				match commandArgs[1]:
 					case s if s.startswith('user'):
 						try:
-							user = commandArgs[1].split('`')[1]
+							user = commandArgs[1].split('"')[1]
 							userInfo = User.objects.get(username=user)
 							posts_count = len(Post.objects.filter(author=userInfo.username).all())
 							videos_count = len(Video.objects.filter(author=userInfo.username).all())
@@ -42,6 +42,25 @@ def command(body, from_user):
 						except IndexError as e:
 							print(commandArgs)
 							msg = f'Please specify a user\n {e}'
+
+					case s if s.startswith('video'):
+						match commandArgs[2]:
+							case s if s.startswith('from'):
+								try:
+									user = commandArgs[2].split('"')[1]
+									userInfo = User.objects.get(username=user)
+									posts = Post.objects.filter(author=userInfo.username)
+									items = [f'[{p.id}], title: {p.title}' for p in posts]
+									msg = f"Posts by {user}:\n" + "\n".join(items)
+								except IndexError as e:
+									msg = f'Videos by who?'
+
+							case _:
+								msg = "Make sure to say how you want to search"
+
+
+					case _:
+						msg = "What would you like information about?"
 		
 		case _:
 			msg = 'You can use the ! character to run commands'
