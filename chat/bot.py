@@ -20,7 +20,7 @@ def command(body, from_user):
 	match commandArgs[0]:
 		case 'info':
 			if len(commandArgs) == 1:
-				msg = 'Put what you want info about, after a colon'
+				msg = 'Put what you want info about after a colon'
 			else:
 				match commandArgs[1]:
 					case s if s.startswith('user'):
