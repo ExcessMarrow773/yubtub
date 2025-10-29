@@ -25,12 +25,12 @@ def command(body, from_user):
 				match commandArgs[1]:
 					case s if s.startswith('user'):
 						try:
-							user = commandArgs[1].split('"')[1]
+							user = commandArgs[1].split('`')[1]
 							userInfo = User.objects.get(username=user)
-							posts_count = Post.objects.filter(author=userInfo.username).count()
-							videos_count = Video.objects.filter(author=userInfo.username).count()
-							messages_sent_count = Message.objects.filter(from_user=from_user).count()
-							messages_receved_count = Message.objects.filter(to_user=from_user).count()
+							posts_count = len(Post.objects.filter(author=userInfo.username).all())
+							videos_count = len(Video.objects.filter(author=userInfo.username).all())
+							messages_sent_count = len(Message.objects.filter(from_user=from_user).all())
+							messages_receved_count = len(Message.objects.filter(to_user=from_user).all())
 							msg = (f"Information about user: \"{userInfo.username}\"\n"
 								f"User ID: {userInfo.id}\n"
 								f"{userInfo.username} has made {posts_count} posts\n"
@@ -39,8 +39,9 @@ def command(body, from_user):
 								f"{userInfo.username} has receved {messages_receved_count} messages")
 						except models.CustomUser.DoesNotExist as e:
 							msg = f'User "{user}" not found\n Error: {e}'
-						except IndexError:
-							msg = f'Please specify a user'
+						except IndexError as e:
+							print(commandArgs)
+							msg = f'Please specify a user\n {e}'
 		
 		case _:
 			msg = 'You can use the ! character to run commands'
