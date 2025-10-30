@@ -760,3 +760,10 @@ chat, input {
 ::-webkit-scrollbar {
     width: 1px;
 }
+
+.markdown-content h1, 
+.markdown-content h2, 
+.markdown-content h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
