@@ -32,3 +32,11 @@ Unemployment benefits will last twenty-one weeks
 ## Our opinion on Unemployment Insurance
 
 I think unemployment insurance is effective but could be better, because unemployment insurance helps people a lot economically because there are people that need that help when they lose their job, and is effective because it serves the purpose of helping people. But I think that it could use more resources to help people that need it, including helping people find affordable housing and food. Here are some ways Unemployment Insurance could be better, including, expanding eligibility and better information from employers about applying for unemployment insurance benefits.
+
+## Where to get help
+
+Some good places to start are
+
+- [The TN.gov website](https://www.tn.gov/workforce/unemployment/apply-for-benefits-redirect-2/do-i-qualify.html)
+- [The Departemnt of Labor website](https://www.dol.gov/general/topic/unemployment-insurance)
+- [Tennessee Unemployment Insurance Program](https://www.tn.gov/workforce/unemployment.html)
