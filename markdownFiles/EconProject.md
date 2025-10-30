@@ -1,9 +1,18 @@
-*    [test](#start)
-*    [Ending Paragraph](#endingParagraph)
-<h1 id=“start”>Final Unemployment Project</h1>
+# Economics Unemployment Project
+
 The Job we chose was Game Programmer. We make about $17, 000 monthly, and after paying bills and expenses for the month, we had about $15, 000 left. After taxes, we only had about $10, 000 left.
 
-Unemployment Insurance is financial assistance for people who are currently unemployed. To eligible for it you have to be
+<div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin:0; padding:0;">
+  <h2 style="margin:0;">Unemployment Insurance</h2>
+  <img src="{% static 'img/code.jpg' %}" alt="Example Image"
+       style="width:250px; height:auto; border-radius:8px; margin:0;">
+</div>
+
+<p style="margin-top:0.5rem;">
+  Unemployment Insurance is financial assistance for people who are currently unemployed.
+</p>
+
+To eligible for it you have to be
 
 1. Unemployed Through No Fault of Your Own
 2. You Must Have Qualifying Base Period Wages
@@ -16,9 +25,10 @@ But if you are any of the following, you become ineligible
 1. Voluntarily quit without good work-related cause
 2. Discharged for work-related misconduct
 3. Participation in a labor dispute other than a lockout that is in active progress
-5. Failure to seek or accept suitable work
+4. Failure to seek or accept suitable work
 
-Unemployment benefits will last twenty-one weeks 
+Unemployment benefits will last twenty-one weeks
 
-<h1 id=“endingParagraph”></h1>
+## Our opinion on Unemployment Insurance
+
 I think unemployment insurance is effective but could be better, because unemployment insurance helps people a lot economically because there are people that need that help when they lose their job, and is effective because it serves the purpose of helping people. But I think that it could use more resources to help people that need it, including helping people find affordable housing and food. Here are some ways Unemployment Insurance could be better, including, expanding eligibility and better information from employers about applying for unemployment insurance benefits.

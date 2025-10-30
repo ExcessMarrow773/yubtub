@@ -1,6 +1,6 @@
 # IN PROGRESS ITEM
 
-- [ ] Add Chat Capabilitys
+- [ ] add bot commands
 
 ## TODO
 
@@ -23,6 +23,8 @@
 - [x] add bug reporting
 
 - [x] start adding custom error pages
+
+- [x] Add Chat Capabilitys
 
 - [ ] add Black Bar Program
 

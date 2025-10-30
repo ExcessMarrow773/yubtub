@@ -129,6 +129,22 @@ window.addEventListener('load', () => {
     		behavior: 'smooth'
 		});
     }
+
+    // Wire textarea Enter behavior: Enter sends, Shift+Enter inserts newline
+    const msgInput = document.getElementById('msg');
+    if (msgInput) {
+        msgInput.addEventListener('keydown', function (e) {
+            // Enter without Shift OR Ctrl+Enter sends the message
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMsg();
+            } else if (e.key === 'Enter' && e.ctrlKey) {
+                e.preventDefault();
+                sendMsg();
+            }
+            // Shift+Enter will insert a newline naturally
+        });
+    }
 });
 
 
@@ -141,7 +157,16 @@ function appendChatMessage(text, direction = 'to') {
     // create message element (matches your template's <msg> tag)
     const msgEl = document.createElement('msg');
     msgEl.classList.add(direction);
-    msgEl.textContent = text;
+    // Render text safely: escape HTML then convert newlines to <br>
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+    msgEl.innerHTML = escapeHtml(text).replace(/\r?\n/g, '<br>');
 
     // add timestamp
     const ts = document.createElement('span');
@@ -188,12 +213,21 @@ function sendMsg() {
     .then(({ status, data }) => {
         if (status === 200) {
             showToast("success", "Message sent");
+            if (data.type === 'bot_response') {
+            	appendChatMessage(data.message, 'from');
+            }
         } else {
             showToast("error", data.message);
         }
+        // Re-enable send button after request completes
+        try { sendButton.disabled = false; } catch (e) {}
     })
     .catch(error => {
         console.error('Error:', error);
         showToast("error", "Something went wrong.");
+        try { sendButton.disabled = false; } catch (e) {}
     });
+
+    // Disable the send button while request is in-flight
+    try { sendButton.disabled = true; } catch (e) {}
 }

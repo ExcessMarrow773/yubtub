@@ -17,14 +17,14 @@
 			{% else %}
 				<msg class="from">
 			{% endif %}
-					{{ message.body }}
+					{{ message.body|linebreaksbr }}
 					<span class="timestamp">{{ message.sent_on.time }}</span>
 				</msg>
 			{% endfor %}
 		{% endif %}
-        <div id="msgDiv">
-			<input id="msg" type="text" placeholder="Type a message..."/>
-			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" data-from-user="{{ this_user }}" type="submit">Send</button>
+		<div id="msgDiv">
+			<textarea id="msg" placeholder="Type a message..." rows="1"></textarea>
+			<button id="sendButton" onclick="sendMsg()" data-to-user="{{ account }}" data-from-user="{{ this_user }}" type="button">Send</button>
 		</div>
     </chat>
 	
