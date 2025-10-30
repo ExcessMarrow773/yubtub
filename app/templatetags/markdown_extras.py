@@ -1,9 +1,18 @@
 from django import template
-import markdown
+from django.template import Template, Context
+from django.templatetags.static import static
 from django.utils.safestring import mark_safe
+
+import markdown
 
 register = template.Library()
 
 @register.filter(name='markdown')
 def markdown_filter(value):
-    return mark_safe(markdown.markdown(value, extensions=['fenced_code']))
+    markdown_with_load = "{% load static %}\n" + value
+    rendered_template = Template(markdown_with_load).render(Context({}))
+    html = markdown.markdown(
+        rendered_template,
+        extensions=['fenced_code', 'attr_list']
+    )
+    return mark_safe(html)
