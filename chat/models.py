@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from datetime import datetime
-
+from django.utils import timezone
 # Avoid importing the user model at import-time to keep migrations portable.
 def _get_sentinel_user_pk():
 	"""Return a pk for a sentinel/system user, creating it if needed.
