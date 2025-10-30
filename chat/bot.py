@@ -57,7 +57,7 @@ def command(body, from_user):
 									userInfo = User.objects.get(username=user)
 									posts = Post.objects.filter(author=userInfo.username)
 									if posts.count() == 0:
-										msg = f"{user} has not made any posts yet\n\n{posts}"
+										msg = f"{user} has not made any posts yet"
 									else:
 										items = [f'[{p.id}], title: {p.title}' for p in posts]
 										msg = f"Posts by {user}:\n" + "\n".join(items)
