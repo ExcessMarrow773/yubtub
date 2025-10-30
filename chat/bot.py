@@ -17,6 +17,9 @@ def newMessage(msg, from_user):
 def command(body, from_user):
 	command = body[1:]
 	commandArgs = command.split(':')
+	inputChar = '|'
+
+
 	match commandArgs[0]:
 		case 'info':
 			if len(commandArgs) == 1:
@@ -47,7 +50,7 @@ def command(body, from_user):
 						match commandArgs[2]:
 							case s if s.startswith('from'):
 								try:
-									user = commandArgs[2].split('"')[1]
+									user = commandArgs[2].split(inputChar)[1]
 									userInfo = User.objects.get(username=user)
 									posts = Post.objects.filter(author=userInfo.username)
 									items = [f'[{p.id}], title: {p.title}' for p in posts]
@@ -56,7 +59,7 @@ def command(body, from_user):
 									msg = f'Posts by who?'
 
 							case s if s.startswith('id'):
-								id = commandArgs[2].split('"')[1]
+								id = commandArgs[2].split(inputChar)[1]
 								post = Post.objects.get(id=id)
 								msg = f'''Post {id}, posted by {post.author}
 								The title is "{post.title}", the body of the post is as follows\n
