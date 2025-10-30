@@ -76,7 +76,44 @@ def command(body, from_user):
 								msg = "Make sure to say how you want to search"
 
 					case s if s.startswith('video'):
-						msg = "Sorry, but you cant search for videos yet"
+						match commandArgs[2]:
+							case s if s.startswith('from'):
+								try:
+									user = commandArgs[2].split(inputChar)[1]
+									userInfo = User.objects.get(username=user)
+									videos = Video.objects.filter(author=userInfo.username)
+									if videos.count() == 0:
+										msg = f"{user} has not posted any videos yet"
+									else:
+										items = [f'[{p.id}], title: {p.title}' for p in videos]
+										msg = f"Videos by {user}:\n" + "\n".join(items)
+
+								except models.CustomUser.DoesNotExist as e:
+									msg = f'User "{user}" not found\n Error: {e}'
+								
+								except IndexError as e:
+									msg = f'Videos by who?'
+
+							case s if s.startswith('id'):
+								id = commandArgs[2].split(inputChar)[1]
+								video = Video.objects.get(id=id)
+								if video.likes == 1:
+									like = ''
+								else:
+									like = 's'
+								if video.views == 1:
+									view = ''
+								else:
+									view = 's'
+
+								msg = f'''VIdeo {id}, posted by {video.author}
+								The title is "{video.title}", 
+								It has {video.likes} like{like}, and {video.views} view{view}.
+								The description of the video is as follows\n
+								{video.description}'''
+
+							case _:
+								msg = "Make sure to say how you want to search"
 
 
 					case _:
