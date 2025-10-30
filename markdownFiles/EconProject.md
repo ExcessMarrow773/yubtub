@@ -2,11 +2,10 @@
 
 The Job we chose was Game Programmer. We make about $17, 000 monthly, and after paying bills and expenses for the month, we had about $15, 000 left. After taxes, we only had about $10, 000 left.
 
-<div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin:0; padding:0;">
-  <h2 style="margin:0;">Unemployment Insurance</h2>
-  <img src="{% static 'img/code.jpg' %}" alt="Example Image"
-       style="width:250px; height:auto; border-radius:8px; margin:0;">
-</div>
+## Unemployment Insurance
+
+<img src="{% static 'img/code.jpg' %}" alt="Example Image"
+      style="width:250px; height:auto; border-radius:8px; margin:0; float: right;">
 
 <p style="margin-top:0.5rem;">
   Unemployment Insurance is financial assistance for people who are currently unemployed.
