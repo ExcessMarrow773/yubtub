@@ -47,7 +47,7 @@ def chat(request, account):
 		'account': other_user,
 		'username': this_user.username,
 		'this_user': this_user,
-		'messages': messages
+		'messages': messages,
 	}
 
 	return render(request, 'chat.html', context)
@@ -65,9 +65,8 @@ def sendMsg(request):
 
 	msg = data.get('msg')
 	to_user_data = data.get('to')
-	from_user_data = data.get('from')	
-	dateTime = data.get('dateTime')
-	things = {'data': data, 'to_user_data': to_user_data, 'from_user_data': from_user_data, 'dateTime': dateTime}
+	from_user_data = data.get('from')
+	things = {'data': data, 'to_user_data': to_user_data, 'from_user_data': from_user_data}
 
 	to_user = get_object_or_404(User, username=to_user_data)
 	from_user = get_object_or_404(User, username=from_user_data)
@@ -78,7 +77,7 @@ def sendMsg(request):
 		body=msg
 	)
 	
-	if msg.startswith('!'):
+	if msg.startswith('!') and to_user == 'system':
 		bot_response = bot.command(msg, from_user)
 	else:
 		bot_response = None

@@ -117,7 +117,7 @@ AUTH_USER_MODEL	='accounts.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Etc/GMT-5'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 

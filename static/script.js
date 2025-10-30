@@ -197,7 +197,7 @@ function sendMsg() {
     appendChatMessage(msgText, 'to');
     msgInput.value = '';
 
-	const requestBody = { msg: msgText, to: chatUser, from: fromUser, dateTime: new Date().toISOString() };
+	const requestBody = { msg: msgText, to: chatUser, from: fromUser};
     // leftBar.innerHTML = Object.values(requestBody);
 	console.log(requestBody);
 

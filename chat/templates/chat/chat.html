@@ -18,7 +18,7 @@
 				<msg class="from">
 			{% endif %}
 					{{ message.body|linebreaksbr }}
-					<span class="timestamp">{{ message.sent_on.time }}</span>
+					<span class="timestamp">{{ message.sent_on.time|time }}</span>
 				</msg>
 			{% endfor %}
 		{% endif %}

@@ -45,7 +45,7 @@ class Message(models.Model):
 		default=_get_sentinel_user_pk,
 	)
 	body = models.TextField()
-	sent_on = models.DateTimeField(auto_now_add=True)
+	sent_on = models.DateTimeField(auto_now_add=True, blank=False)
 
 
 	class Meta:
