@@ -24,11 +24,12 @@ def command(body, from_user):
 		case 'info':
 			if len(commandArgs) == 1:
 				msg = 'Put what you want info about after a colon'
+
 			else:
 				match commandArgs[1]:
 					case s if s.startswith('user'):
 						try:
-							user = commandArgs[1].split('"')[1]
+							user = commandArgs[1].split(inputChar)[1]
 							userInfo = User.objects.get(username=user)
 							posts_count = len(Post.objects.filter(author=userInfo.username).all())
 							videos_count = len(Video.objects.filter(author=userInfo.username).all())
@@ -40,8 +41,10 @@ def command(body, from_user):
 								f"{userInfo.username} has posted {videos_count} videos\n"
 								f"{userInfo.username} has sent {messages_sent_count} messages\n"
 								f"{userInfo.username} has receved {messages_receved_count} messages")
+							
 						except models.CustomUser.DoesNotExist as e:
 							msg = f'User "{user}" not found\n Error: {e}'
+
 						except IndexError as e:
 							print(commandArgs)
 							msg = f'Please specify a user\n {e}'
