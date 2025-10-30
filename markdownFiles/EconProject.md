@@ -31,7 +31,10 @@ Unemployment benefits will last twenty-one weeks
 
 ## Our opinion on Unemployment Insurance
 
-I think unemployment insurance is effective but could be better, because unemployment insurance helps people a lot economically because there are people that need that help when they lose their job, and is effective because it serves the purpose of helping people. But I think that it could use more resources to help people that need it, including helping people find affordable housing and food. Here are some ways Unemployment Insurance could be better, including, expanding eligibility and better information from employers about applying for unemployment insurance benefits.
+<img src="{% static 'img/gamer.jpg' %}" alt="Example Image"
+    style="width:250px; height:auto; border-radius:8px; margin:0; float: right;">
+
+I think unemployment insurance is effective but could be better, because unemployment insurance helps people a lot economically because there are people that need that help when they lose their job, and is effective because it serves the purpose of helping people. But I think that it could use more resources to help people that need it, including helping people find affordable housing and food. Here are some [ways Unemployment Insurance could be better](https://www.nelp.org/insights-research/boosting-economic-resilience-seven-ways-states-can-support-more-workers-with-unemployment-insurance/), including, expanding eligibility and better information from employers about applying for unemployment insurance benefits.
 
 ## Where to get help
 
