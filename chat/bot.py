@@ -58,6 +58,10 @@ def command(body, from_user):
 									posts = Post.objects.filter(author=userInfo.username)
 									items = [f'[{p.id}], title: {p.title}' for p in posts]
 									msg = f"Posts by {user}:\n" + "\n".join(items)
+
+								except models.CustomUser.DoesNotExist as e:
+									msg = f'User "{user}" not found\n Error: {e}'
+								
 								except IndexError as e:
 									msg = f'Posts by who?'
 
