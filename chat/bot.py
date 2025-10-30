@@ -56,8 +56,11 @@ def command(body, from_user):
 									user = commandArgs[2].split(inputChar)[1]
 									userInfo = User.objects.get(username=user)
 									posts = Post.objects.filter(author=userInfo.username)
-									items = [f'[{p.id}], title: {p.title}' for p in posts]
-									msg = f"Posts by {user}:\n" + "\n".join(items)
+									if posts.count() == 0:
+										msg = f"{user} has not made any posts yet\n\n{posts}"
+									else:
+										items = [f'[{p.id}], title: {p.title}' for p in posts]
+										msg = f"Posts by {user}:\n" + "\n".join(items)
 
 								except models.CustomUser.DoesNotExist as e:
 									msg = f'User "{user}" not found\n Error: {e}'
