@@ -82,8 +82,68 @@ def command(body, from_user):
 					case _:
 						msg = "What would you like information about?"
 		
+		case 'create':
+			if len(commandArgs) == 1:
+				msg = 'Put what you want to create after a colon'
+			else:
+				match commandArgs[1]:
+					case 'post':
+						try:
+							match commandArgs[2]:
+								case s if s.startswith('title'):
+									title = commandArgs[2].split(inputChar)[1]
+
+								case s if s.startswith('body'):
+									body = commandArgs[2].split(inputChar)[1]
+
+								case _:
+									msg = 'This command only supports body and title'
+							
+							match commandArgs[3]:
+								case s if s.startswith('title'):
+									title = commandArgs[3].split(inputChar)[1]
+
+								case s if s.startswith('body'):
+									body = commandArgs[3].split(inputChar)[1]
+
+								case _:
+									msg = 'This command only supports body and title'
+
+							msg = f'Created Post with\nTitle: {title}\nBody: {body}'
+							post = Post(
+								author=User.objects.get(username=from_user),
+								title=title,
+								body=body + '<br><br><small><i>Created using Commands</i></small>',
+							).save()
+							msg = msg
+
+						except IndexError as e:
+							msg = 'Be sure to add the body and title'
+
+					case 'video':
+						msg = 'You cannot create videos thrugh commands yet'
+
+					case 'comment':
+						try:
+							match commandArgs[2]:
+								case s if s.startswith('type'):
+									commentType = commandArgs[2].split(inputChar)[1]
+
+									if commentType == 'video':
+										msg = 'Making a comment on a video I see'
+									elif commentType == 'post':
+										msg = 'Making a comment on a post I see'
+									else:
+										msg = "You must specify what type of comment you are making"
+								case _:
+									msg = 'You can create posts and comments'
+
+						except IndexError as e:
+							msg = 'Be sure to add the type, id, and body'
+
 		case _:
 			msg = 'You can use the ! character to run commands'
+			
 	print(commandArgs)
 	newMessage(msg, from_user)
 	return msg
