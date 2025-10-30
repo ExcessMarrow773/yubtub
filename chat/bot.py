@@ -43,7 +43,7 @@ def command(body, from_user):
 							print(commandArgs)
 							msg = f'Please specify a user\n {e}'
 
-					case s if s.startswith('video'):
+					case s if s.startswith('post'):
 						match commandArgs[2]:
 							case s if s.startswith('from'):
 								try:
@@ -53,10 +53,20 @@ def command(body, from_user):
 									items = [f'[{p.id}], title: {p.title}' for p in posts]
 									msg = f"Posts by {user}:\n" + "\n".join(items)
 								except IndexError as e:
-									msg = f'Videos by who?'
+									msg = f'Posts by who?'
+
+							case s if s.startswith('id'):
+								id = commandArgs[2].split('"')[1]
+								post = Post.objects.get(id=id)
+								msg = f'''Post {id}, posted by {post.author}
+								The title is "{post.title}", the body of the post is as follows\n
+								{post.body}'''
 
 							case _:
 								msg = "Make sure to say how you want to search"
+
+					case s if s.startswith('video'):
+						msg = "Sorry, but you cant search for videos yet"
 
 
 					case _:
@@ -64,6 +74,6 @@ def command(body, from_user):
 		
 		case _:
 			msg = 'You can use the ! character to run commands'
-		
+	print(commandArgs)
 	newMessage(msg, from_user)
 	return msg
