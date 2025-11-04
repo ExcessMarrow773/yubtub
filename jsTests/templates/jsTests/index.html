@@ -1,0 +1,11 @@
+{% extends "css.html" %}
+{% load static %}
+{% block extra_static %}
+<script src={% static "jsTests/script.js" %} type="module"></script>
+{% endblock extra_static %}
+
+
+
+{% block page_content %}
+<button onclick="showToast('success', 'test')">Test</button>
+{% endblock page_content %}
