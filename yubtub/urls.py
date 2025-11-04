@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
     path('chat/', include('chat.urls')),
+    path('jsTest/', include('jsTests.urls')),
 ]
 
 handler405 = 'app.views.handler405'
