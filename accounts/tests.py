@@ -11,7 +11,7 @@ class FollowTests(TestCase):
 		self.bob = User.objects.create_user(username='bob', password='pass')
 
 	def test_follow_and_unfollow(self):
-		# initially not following
+		# initially not following (except system user due to signal)
 		self.assertFalse(self.alice.is_following(self.bob))
 
 		# follow
@@ -19,13 +19,14 @@ class FollowTests(TestCase):
 		self.assertTrue(self.alice.is_following(self.bob))
 		self.assertTrue(self.bob.is_followed_by(self.alice))
 
-		# follower count on bob should be 1
-		self.assertEqual(self.bob.follower_count(), 1)
+		# follower count on bob should be 2 (alice + system from signal)
+		self.assertEqual(self.bob.follower_count(), 2)
 
 		# unfollow
 		self.alice.unfollow(self.bob)
 		self.assertFalse(self.alice.is_following(self.bob))
-		self.assertEqual(self.bob.follower_count(), 0)
+		# back to 1 (just system)
+		self.assertEqual(self.bob.follower_count(), 1)
 
 	def test_follow_self_is_allowed_but_idempotent(self):
 		# following self should not error and should be idempotent
@@ -33,4 +34,5 @@ class FollowTests(TestCase):
 		self.assertTrue(self.alice.is_following(self.alice))
 		# calling follow again shouldn't duplicate
 		self.alice.follow(self.alice)
-		self.assertEqual(self.alice.follower_count(), 1)
+		# Count is 2: system user + self
+		self.assertEqual(self.alice.follower_count(), 2)
