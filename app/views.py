@@ -40,7 +40,6 @@ def register(request):
 def postVideo(request):
     if request.method == "POST":
         form = PostVideo(request.POST, request.FILES)
-        print(request.POST)
         if form.is_valid():
             video = Video(
                 author=request.user.username,
@@ -99,12 +98,10 @@ def account(request, username):
     )
 
     following = request.user.following.all()
-    print(following)
 
     following_names = []
     for i in following:
         following_names.append(i.username)
-    print(following_names)
 
     context = {
         'combined': combined,
@@ -281,7 +278,6 @@ def follow_user(request):
 
 
 	username=data.get('account')
-	print(request.user.is_authenticated)
 
 	try:
 		user = User.objects.get(username=username)

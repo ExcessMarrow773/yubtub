@@ -46,7 +46,6 @@ def command(body, from_user):
 							msg = f'User "{user}" not found\n Error: {e}'
 
 						except IndexError as e:
-							print(commandArgs)
 							msg = f'Please specify a user\n {e}'
 
 					case s if s.startswith('post'):
@@ -63,7 +62,7 @@ def command(body, from_user):
 										msg = f"Posts by {user}:\n" + "\n".join(items)
 
 								except models.CustomUser.DoesNotExist as e:
-									msg = f'User "{user}" not found\n Error: {e}'
+									msg = f'User "{user}" not found'
 								
 								except IndexError as e:
 									msg = f'Posts by who?'
@@ -184,6 +183,5 @@ def command(body, from_user):
 		case _:
 			msg = 'You can use the ! character to run commands'
 			
-	print(commandArgs)
 	newMessage(msg, from_user)
 	return msg
