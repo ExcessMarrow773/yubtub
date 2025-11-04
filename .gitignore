@@ -218,4 +218,5 @@ db.*
 CONFIG
 *.tmp
 tmp.py
+tmp.txt
 .linuxVenv
