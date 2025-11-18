@@ -2,6 +2,57 @@
 {% load static %}
 {% block extra_static %}
 <script src={% static "jsTests/script.js" %}></script>
+
+<script defer="" src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var snowDiv = document.createElement("div");
+    snowDiv.id = "snow-container";
+    snowDiv.style.position = "fixed";
+    snowDiv.style.top = "0";
+    snowDiv.style.left = "0";
+    snowDiv.style.width = "100%";
+    snowDiv.style.height = "100%";
+    snowDiv.style.pointerEvents = "none"; 
+    snowDiv.style.zIndex = "9999";
+    snowDiv.style.overflow = "hidden";
+    document.body.appendChild(snowDiv);
+
+    particlesJS("snow-container", {
+      particles: {
+        number: { value: 150, density: { enable: true, value_area: 800 } },
+        shape: { type: "circle" },
+        color: { value: "#fff" },
+        opacity: { value: 0.8, random: true },
+        size: { value: 2, random: true },
+        line_linked: { enable: false },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: "bottom",
+          random: true,
+          straight: false,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        events: { 
+          onhover: { enable: false }, 
+          onclick: { enable: false } 
+        }
+      },
+      retina_detect: true
+    });
+
+    setTimeout(() => {
+      const canvas = snowDiv.querySelector("canvas");
+      if (canvas) canvas.style.pointerEvents = "none";
+    }, 500);
+  });
+</script>
+
+
 {% endblock extra_static %}
 
 

@@ -206,3 +206,4 @@ document.addEventListener('keyup', function(e) {
 });
 
 // start the game
+
