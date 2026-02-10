@@ -36,7 +36,6 @@ class PostCommentForm(forms.ModelForm):
         fields = ['body']
 
 class BugReportForm(forms.ModelForm):
-    
     class Meta:
         model = BugReport
         fields = ['title', 'body', 'type', 'github_issue']

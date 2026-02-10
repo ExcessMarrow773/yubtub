@@ -7,16 +7,15 @@
 {% block page_content %}
     {% if videos %}
         {% for video in videos %}
-            <div style="display: flex">
+            <div style="display: flex, display:'flex', flexDirection:'row', flexWrap:'wrap', gap:'16px'">
             <a href="{% url 'app:watch' video.id %}">
-                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
+                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150">
             </a>
             <p style="padding: 5px;"> {{ video.description | markdown_truncate:100 | linebreaks }}</p>
             </div> 
             <small>
-                <a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
+                <a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" at: {{ video.created_on }}
             </small>
-            
         {% endfor %}
         
     {% else %}

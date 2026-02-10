@@ -15,6 +15,7 @@ def newMessage(msg, from_user):
 	return message
 
 def command(body, from_user):
+	print("COMMAND")
 	command = body[1:]
 	commandArgs = command.split(':')
 	inputChar = '|'
@@ -41,7 +42,6 @@ def command(body, from_user):
 								f"{userInfo.username} has posted {videos_count} videos\n"
 								f"{userInfo.username} has sent {messages_sent_count} messages\n"
 								f"{userInfo.username} has receved {messages_receved_count} messages")
-							
 						except models.CustomUser.DoesNotExist as e:
 							msg = f'User "{user}" not found\n Error: {e}'
 

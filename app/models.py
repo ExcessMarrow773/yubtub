@@ -14,7 +14,7 @@ class Video(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(default='', null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    thumbnail = models.ImageField(upload_to="thumbnail", blank=True, height_field=None, width_field=None, max_length=None, null=True)
+    thumbnail = models.ImageField(upload_to="thumbnail/", blank=True, height_field=None, width_field=None, max_length=None, null=True)
     views = models.IntegerField(default=0)
     viewedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='watched_videos', blank=True)
     likes = models.IntegerField(default=0)

@@ -12,7 +12,11 @@
     <p>
     By <a href="{% url 'app:account' post.author %}">{{ post.author }}</a>
 </p>
+
     <p>{{ post.body | markdown }}</p>
+
+	<hr>
+
         <h3>Leave a comment:</h3>
     <form method="post">
         {% csrf_token %}

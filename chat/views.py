@@ -77,9 +77,11 @@ def sendMsg(request):
 		body=msg
 	)
 	
-	if msg.startswith('!') and to_user == 'system':
+	if msg.startswith('!'):
 		bot_response = bot.command(msg, from_user)
+		print("command")
 	else:
+		print('not a command')
 		bot_response = None
 
 	message.save()
