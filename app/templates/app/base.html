@@ -30,7 +30,7 @@
 	            {% block extra_navbar %}{% endblock extra_navbar %}
                 <a id="name" class="button" href="{% url 'app:account' user.username %}">{{ user.username }}</a>
 	            {% csrf_token %}
-	            <button type="submit">Logout</button>
+	            <button class="a" type="submit">Logout</button>
 	            {% if user.is_staff %}
 	                <a class="button" href="/admin">Admin Site</a>
 	            {% endif %}

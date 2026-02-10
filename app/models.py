@@ -46,7 +46,7 @@ class Video(models.Model):
         success, image = cap.read()
         if success:
             cv2.imwrite(thumbnail_path, image)
-            self.thumbnail = 'videos/' + os.path.basename(thumbnail_path)
+            self.thumbnail = 'thumbnail/' + os.path.basename(thumbnail_path)
             with open('debug.txt', 'a') as f:
                 f.write(f"Thumbnail generated at: {thumbnail_path}\n")
                 f.write(f"Thumbnail Exists: {os.path.exists(thumbnail_path)}\n")

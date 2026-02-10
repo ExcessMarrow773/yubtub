@@ -1,24 +1,45 @@
 {% extends "base.html" %}
 {% load markdown_truncate %}
+
 {% block title %}YubTub - Home{% endblock title %}
-{% block extra_navbar %}
-<a href="{% url 'app:postIndex' %}" class="button">Posts</a>
-{% endblock extra_navbar %}
+
+
 {% block page_content %}
-    {% if videos %}
-        {% for video in videos %}
-            <div style="justify-content:'left', display:'flex', flexDirection:'row', flexWrap:'wrap', gap:'16px'">
-            <a href="{% url 'app:watch' video.id %}">
-                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150">
-            </a>
-            <p style="padding: 5px;"> {{ video.description | markdown_truncate:100 | linebreaks }}</p>
-            </div> 
-            <small>
-                <a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" at: {{ video.created_on }}
-            </small>
+    {% if combined %}
+    <div class="video-grid">
+        {% for thing in combined %}
+
+            {% if thing.type == "video" %}
+                <div class="video-card">
+                    <a href="{% url 'app:watch' thing.id %}">
+                        <img src="{{ thing.thumbnail.url }}" alt="Thumbnail">
+                    </a>
+                    <div class="video-card-info">
+                        <strong>{{ video.title }}</strong>
+                        <p>{{ video.description | markdown_truncate:80 }}</p>
+                        <small>
+                            <a href="{% url 'app:account' thing.author %}">{{ thing.author }}</a>
+                            · {{ thing.created_on }}
+                        </small>
+                    </div> 
+                </div>
+
+            {% elif thing.type == "post" %}
+                <div class="post-card">
+                    <div class="post-card-label">Post - {{ thing.author }}</div>
+                    
+                    <a href="{% url 'app:post' thing.pk %}">
+                        <strong>{{ thing.title }}</strong>
+                    </a>
+                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <small>{{ thing.created_on }}</small>
+                </div>
+
+            {% endif %}
+
         {% endfor %}
-        
-    {% else %}
-        <p>No videos available.</p>
-    {% endif %}
+    </div>
+{% else %}
+    <p>Nothing posted yet.</p>
+{% endif %}
 {% endblock page_content %}

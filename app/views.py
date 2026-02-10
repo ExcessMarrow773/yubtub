@@ -19,10 +19,28 @@ User = get_user_model()
 # Create your views here.
 
 def index(request):
+    user_videos = Video.objects.order_by('-created_on')
+    user_posts = Post.objects.order_by('-created_on')
+
+    # Combine and sort by created_on
+    combined = sorted(
+        chain(user_videos, user_posts),
+        key=attrgetter('created_on'),
+        reverse=True
+    )
+
+    following = request.user.following.all()
+
+    following_names = []
+    for i in following:
+        following_names.append(i.username)
+
     context = {
-        'videos': Video.objects.all().order_by('-created_on'),
+        'combined': combined,
     }
     return render(request, 'index.html', context)
+
+
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -135,7 +153,7 @@ def makePost(request):
                 body=form.cleaned_data["body"],
             )
             post.save()
-            return redirect('app:postIndex')
+            return redirect('app:index')
     else:
         form = CreatePost()
     context = {
@@ -143,12 +161,6 @@ def makePost(request):
     }
     return render(request, 'app/makePost.html', context)
 
-def postIndex(request):
-    posts = Post.objects.all().order_by("-created_on")
-    context = {
-        "posts": posts,
-    }
-    return render(request, "app/postIndex.html", context)
 
 def viewPost(request, pk):
     post = Post.objects.get(pk=pk)

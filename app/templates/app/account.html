@@ -1,55 +1,60 @@
 {% extends "base.html" %}
 {% load static %}
 {% load markdown_truncate markdown_extras %}
-{% block extra_head%}
+
+{% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
     <script src="{% static 'admin/js/core.js' %}"></script>
-    <script src="{% static 'admin/js/admin/RelatedObjectLookup.js' %}"></script>
-    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
-    <script src="{% static 'admin/js/actions.js' %}"></script>
-    <script src="{% static 'admin/js/calendar.js' %}"></script>
-    <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
-    <script>
-    </script>
 {% endblock extra_head %}
 
-{% block heading %}{{ username.capitalize }}'s posted things
-{% if not isUsersAccount %}
-<button id="follow-button" data-account="{{ username }}" onclick="followUser()">
-	{% if followingUser %}
-		Unfollow 
-	{% else %}
-		Follow 
-	{% endif %}
-</button>
-{% endif %}
+{% block heading %}
+    {{ username }}'s stuff
+    {% if not isUsersAccount %}
+        <button id="follow-button" data-account="{{ username }}" onclick="followUser()">
+            {% if followingUser %}Unfollow{% else %}Follow{% endif %}
+        </button>
+    {% endif %}
 {% endblock heading %}
 
 {% block extra_navbar %}
-
-<a href="{% url 'app:following' %}" class="button">Following</a>
-
+    <a href="{% url 'app:following' %}" class="button">Following</a>
 {% endblock extra_navbar %}
 
 {% block page_content %}
 <p id="follow-response"></p>
-    {% block videos %}
+
+{% if combined %}
+    <div class="video-grid">
         {% for thing in combined %}
+
             {% if thing.type == "video" %}
-                <a href="{% url 'app:watch' thing.id %}">
-                    <img src="{{ thing.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
-                </a>
-                <small>
-                    {{ thing.author }} Posted "{{ thing.title }}" on: {{ thing.created_on }}<br><br>
-                </small>
+                <div class="video-card">
+                    <a href="{% url 'app:watch' thing.id %}">
+                        <img src="{{ thing.thumbnail.url }}" alt="Thumbnail">
+                    </a>
+                    <div class="video-card-info">
+                        <strong>{{ thing.title }}</strong>
+                        <small>{{ thing.created_on }}</small>
+                    </div>
+                </div>
+
             {% elif thing.type == "post" %}
-                <h3>Post: "<a href="{% url 'app:post' thing.pk %}">{{ thing.title }}</a>"</h3>
-                <p>{{ thing.body | markdown_truncate:100 | markdown}}</p>
-                <small>Posted by {{ thing.author }} on {{ thing.created_on }}</small>
-                <hr>
+                <div class="post-card">
+                    <div class="post-card-label">Post</div>
+                    <a href="{% url 'app:post' thing.pk %}">
+                        <strong>{{ thing.title }}</strong>
+                    </a>
+                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <small>{{ thing.created_on }}</small>
+                </div>
+
             {% endif %}
+
         {% endfor %}
-    {% endblock videos %}
-    <div id="toast-container"></div>
+    </div>
+{% else %}
+    <p>Nothing posted yet.</p>
+{% endif %}
+
+<div id="toast-container"></div>
 {% endblock page_content %}
