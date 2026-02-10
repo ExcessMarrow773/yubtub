@@ -46,7 +46,7 @@ def command(body, from_user):
 							msg = f'User "{user}" not found\n Error: {e}'
 
 						except IndexError as e:
-							msg = f'Please specify a user\n {e}'
+							msg = f'Please specify a user\n Error: {e}'
 
 					case s if s.startswith('post'):
 						match commandArgs[2]:
