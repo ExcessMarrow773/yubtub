@@ -7,13 +7,13 @@
 Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}</a>
 <div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
-  <source src="../media/{{ videos.video_file }}" type="video/mp4">
+  <source src="{{ videos.video_file.url }}" type="video/mp4">
   No video support.
 </video>
 </div>
 
 <div>
-<a href="../media/{{ videos.video_file }}" class="button">vid</a>
+<a href="{{ videos.video_file.url }}" class="button">vid</a>
 <button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button> <small>Views: {{ videos.views }}</small>
 
 

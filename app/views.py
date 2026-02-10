@@ -29,12 +29,6 @@ def index(request):
         reverse=True
     )
 
-    following = request.user.following.all()
-
-    following_names = []
-    for i in following:
-        following_names.append(i.username)
-
     context = {
         'combined': combined,
     }
@@ -77,7 +71,8 @@ def watchVideo(request, pk):
     videos = Video.objects.get(pk=pk)
     likes = videos.likes
     if not request.user in videos.viewedUsers.all():
-        videos.viewedUsers.add(request.user)
+        if request.user.is_authenticated:
+            videos.viewedUsers.add(request.user)
         videos.views += 1
     videos.save()
 
