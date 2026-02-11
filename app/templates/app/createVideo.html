@@ -7,7 +7,7 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
-        {{ form.title }}
+        {{ form.title }}*
     </div>
     <div>
         {{ form.description }}
@@ -16,8 +16,9 @@
         Thumbnail: {{ form.thumbnail }}
     </div>
     <div>
-        Video: {{ form.video_file }}
+        Video: {{ form.video_file }}*
     </div>
+    <small>* marks a field as required</small><br>
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{% url 'app:index' %}">Cancel</a>
 </form>
