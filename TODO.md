@@ -1,5 +1,7 @@
 # IN PROGRESS ITEM
 
+- [ ] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
+
 - [ ] add bot commands
 
 ## TODO
