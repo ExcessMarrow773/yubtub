@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from django.conf import settings
 from datetime import datetime
 from django.utils import timezone
+
 # Avoid importing the user model at import-time to keep migrations portable.
 def _get_sentinel_user_pk():
 	"""Return a pk for a sentinel/system user, creating it if needed.
@@ -26,7 +27,7 @@ def _get_sentinel_user_pk():
 
 
 # Create your models here.
-User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 
 class Message(models.Model):

@@ -85,6 +85,10 @@ def watchVideo(request, pk):
                 video=videos
             )
             comment.save()
+
+            mentions = comment.get_valid_mentions()
+            if mentions:
+                print(f"Mentioned users: {mentions}")
     else:
         form = VideoCommentForm()
 
@@ -169,6 +173,11 @@ def viewPost(request, pk):
                 post=post,
             )
             comment.save()
+
+            mentions = comment.get_valid_mentions()
+            if mentions:
+                print(f"Mentioned users: {mentions}")
+
             return HttpResponseRedirect(request.path_info)
     comments = PostComment.objects.filter(post=post)
     context = {

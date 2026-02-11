@@ -3,11 +3,14 @@ from django.utils import timezone
 from django.core.validators import FileExtensionValidator
 from django.conf import settings
 from yubtub import settings
+from django.contrib.auth import get_user_model
+
 import datetime
 import cv2
 import os
+import re
 
-User = settings.AUTH_USER_MODEL
+User = get_user_model()
 
 class Video(models.Model):
     author = models.CharField(max_length=100, default='admin')
@@ -95,6 +98,18 @@ class VideoComment(models.Model):
 
     def __str__(self):
          return self.author
+    
+    def get_mentions(self):
+        """Extract all @mentions from the comment body"""
+        pattern = r'@(\w+)'
+        mentions = re.findall(pattern, self.body)
+        return mentions
+    
+    def get_valid_mentions(self):
+        """Return only usernames that exist in the database"""
+        mentioned_usernames = self.get_mentions()
+        valid_users = User.objects.filter(username__in=mentioned_usernames)
+        return list(valid_users.values_list('username', flat=True))
 
 class Post(models.Model):
     author = models.CharField(max_length=100, default='admin')
@@ -105,7 +120,7 @@ class Post(models.Model):
 
     def was_published_recently(self):
        return self.created_on >= timezone.now() - datetime.timedelta(days=1)
-
+    
     def __str__(self):
         return self.title
 
@@ -118,6 +133,18 @@ class PostComment(models.Model):
 
     def __str__(self):
          return self.author
+    
+    def get_mentions(self):
+        """Extract all @mentions from the comment body"""
+        pattern = r'@(\w+)'
+        mentions = re.findall(pattern, self.body)
+        return mentions
+    
+    def get_valid_mentions(self):
+        """Return only usernames that exist in the database"""
+        mentioned_usernames = self.get_mentions()
+        valid_users = User.objects.filter(username__in=mentioned_usernames)
+        return list(valid_users.values_list('username', flat=True))
 
 TYPE_CHOICES = {
     'BUG': 'Bug',
