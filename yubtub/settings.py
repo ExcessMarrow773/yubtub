@@ -38,7 +38,7 @@ for i in ALLOWED_HOSTS:
 	CSRF_TRUSTED_ORIGINS.append("http://" + i)
 
 # CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = False
 
 # Application definition
