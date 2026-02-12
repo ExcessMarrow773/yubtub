@@ -1,11 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Your Email Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You have been mentioned in a Yubtub message</title>
 </head>
-<body>
-    <h1>Hello!</h1>
-    <p>This is an HTML email example.</p>
-	<p>{{ Message }}</p>
+<body style="
+    margin: 0;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Avenir Next', Avenir, 'Nimbus Sans L', Roboto, 'Noto Sans', 'Segoe UI', Arial, Helvetica, 'Helvetica Neue', sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: #bbe47b;
+    background-color: #0d2e1e;
+">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="margin-top: 0;">Hello!</h1>
+        <p>You have been mentioned in a message on yubtub</p>
+
+        <div style="
+            background-color: #145235;
+            border: 1px solid #bbe47b;
+            border-radius: 6px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin: 1.5rem 0;
+        ">
+            <div style="
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                opacity: 0.6;
+            ">Message</div>
+            
+            <p style="
+                font-size: 0.95rem;
+                margin: 0.5rem 0;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            ">{{ message.body }}</p><br>
+            
+            <small style="
+                font-size: 0.85rem;
+                opacity: 0.85;
+                margin-top: 0.5rem;
+            ">{{ message.created_on }}</small>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="http://yeti.local" style="
+                color: #bbe47b;
+                text-decoration: none;
+                border: 1px solid #bbe47b;
+                background-color: #bbe47b;
+                color: #0d2e1e;
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                display: inline-block;
+                font-weight: bold;
+            ">View on YubTub</a>
+        </div>
+    </div>
 </body>
 </html>

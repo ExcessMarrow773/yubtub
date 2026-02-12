@@ -16,7 +16,6 @@
                     </a>
                     <div class="video-card-info">
                         <strong>{{ thing.title }}</strong>
-                        <p>{{ thing.description | markdown_truncate:80 }}</p>
                         <small>
                             <a href="{% url 'app:account' thing.author %}">{{ thing.author }}</a>
                             · {{ thing.created_on }}

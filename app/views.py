@@ -179,7 +179,7 @@ def viewPost(request, pk):
 
             mentions = comment.get_valid_mentions()
             if mentions:
-                mail.mention_email(mentions, comment.body)
+                mail.mention_email(mentions, comment)
                 print(f"Mentioned users: {mentions}")
 
             return HttpResponseRedirect(request.path_info)
