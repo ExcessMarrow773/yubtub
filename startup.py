@@ -1,4 +1,11 @@
-import subprocess, time, os, platform
+import subprocess, time, os, platform, sys
+
+args = sys.argv
+
+if len(args) == 2:
+	port = int(args[1])
+else:
+	port = 8000
 
 if os.path.exists('CONFIG') == False:
 	with open('CONFIG', 'w') as f:
@@ -19,8 +26,8 @@ try:
 		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'makemigrations'])
 
 		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'migrate'])
-		print("Starting server on http://127.0.0.1:8000\n")
-		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'runserver', '0.0.0.0:80'])
+		print(f"Starting server on http://127.0.0.1:{port}\n")
+		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
 	else:
 		print("Starting application...\n")
 		subprocess.run(['git', 'pull'])
@@ -28,8 +35,8 @@ try:
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'makemigrations'])
 
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
-		print("Starting server on http://127.0.0.1:8000\n")
-		subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', '0.0.0.0:8000'])
+		print(f"Starting server on http://127.0.0.1:{port}\n")
+		subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
 except KeyboardInterrupt:
 	print('\n\nStopping server and exiting program')
 	print('Server stopped, database saved')
