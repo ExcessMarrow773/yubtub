@@ -10,12 +10,16 @@ def mention_email(user, message):
 		"message": message
 	}
 	html_content = render_to_string('mail/mention.html', context)
-	print(*user)
+	user = [*user]
+	users = []
+	for i in user:
+		users.append(get_object_or_404(User, username=i).email)
+	print(users)
 	email = EmailMessage(
 		"You have been mentioned in a Yubtub message",
 		html_content,
 		"spector.studio.games@gmail.com",
-		['atticus.falkner.walton@gmail.com']
+		users
 	)
 
 	email.content_subtype = "html"
