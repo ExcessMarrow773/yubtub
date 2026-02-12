@@ -15,8 +15,8 @@
                         <img src="{{ thing.thumbnail.url }}" alt="Thumbnail">
                     </a>
                     <div class="video-card-info">
-                        <strong>{{ video.title }}</strong>
-                        <p>{{ video.description | markdown_truncate:80 }}</p>
+                        <strong>{{ thing.title }}</strong>
+                        <p>{{ thing.description | markdown_truncate:80 }}</p>
                         <small>
                             <a href="{% url 'app:account' thing.author %}">{{ thing.author }}</a>
                             · {{ thing.created_on }}

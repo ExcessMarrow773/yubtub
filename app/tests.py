@@ -170,14 +170,9 @@ class ViewTests(TestCase):
         response = self.client.get(reverse('app:index'))
         self.assertContains(response, 'Test Video')
 
-    def test_post_index_view(self):
-        response = self.client.get(reverse('app:postIndex'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'app/postIndex.html')
-
     def test_post_index_displays_posts(self):
         Post.objects.create(title='Test Post', body='Test body', author='testuser')
-        response = self.client.get(reverse('app:postIndex'))
+        response = self.client.get(reverse('app:index'))
         self.assertContains(response, 'Test Post')
 
     def test_watch_video_increments_views(self):
