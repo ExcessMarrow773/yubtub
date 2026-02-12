@@ -24,7 +24,7 @@ def mention_email(user, message):
 	email = EmailMessage(
 		"You have been mentioned in a Yubtub message",
 		html_content,
-		"YubTub",
+		"YubTub Server Email <spector.studio.games@gmail.com",
 		users
 	)
 
