@@ -3,8 +3,14 @@ from django.contrib.auth import get_user_model
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
+import threading
 
 User = get_user_model()
+
+def email_deamon(email):
+	print("Sending email in Deamon")
+	email.send()
+
 def mention_email(user, message):
 	context = {
 		"message": message
@@ -18,10 +24,12 @@ def mention_email(user, message):
 	email = EmailMessage(
 		"You have been mentioned in a Yubtub message",
 		html_content,
-		"spector.studio.games@gmail.com",
+		"YubTub",
 		users
 	)
 
 	email.content_subtype = "html"
 
-	email.send()
+	# email.send()
+	x = threading.Thread(target=email_deamon, args=(email,), daemon=True)
+	x.start()
