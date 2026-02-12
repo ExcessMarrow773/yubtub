@@ -152,7 +152,7 @@ def command(body, from_user):
 							post = Post(
 								author=User.objects.get(username=from_user),
 								title=title,
-								body=body + '<br><br><small><i>Created using Commands</i></small>',
+								body=body + ' <br><br><small><i>Created using Commands</i></small>',
 							).save()
 							msg = msg
 

@@ -1,14 +1,8 @@
 {% extends 'css.html' %}
 
 {% block title %}Cornhub{% endblock %}
-{% block page_content %}
-<h1 style="text-align: center">You Sick Fuck</h1>
 
-<div id="toast-container"></div>
-
-<div id="twitch-embed"></div>
-
-<!-- Load the Twitch embed script -->
+{% block extra_head %}
 <script src="https://player.twitch.tv/js/embed/v1.js"></script>
 
 <!-- Create a Twitch.Player object. This will render within the placeholder div -->
@@ -17,5 +11,16 @@
     channel: "4cvit"
   });
 </script>
+{% endblock extra_head %}
+
+{% block page_content %}
+<h1 style="text-align: center">You Sick Fuck</h1>
+
+<div id="toast-container"></div>
+
+<div id="twitch-embed"></div>
+
+<!-- Load the Twitch embed script -->
+
 
 {% endblock page_content %}
