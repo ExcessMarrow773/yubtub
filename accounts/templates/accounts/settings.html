@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<form method="post" enctype="multipart/form-data">
+	{% if request.path == '/settings/' %}
+	<a class='button' href='{% url 'accounts:changeUsername' %}'>Change Username</a>
+	<a class='button' href='{% url 'accounts:changePassword' %}'>Change Password</a>
+ 	{% endif %}
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit">Save Changes</button>
+</form>
+{% endblock page_content %}
