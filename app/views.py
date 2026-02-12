@@ -12,6 +12,9 @@ from app.models import Video, VideoComment, Post, PostComment, BugReport
 
 from itertools import chain
 from operator import attrgetter
+
+from app import mail
+
 import os
 import json
 
@@ -176,6 +179,7 @@ def viewPost(request, pk):
 
             mentions = comment.get_valid_mentions()
             if mentions:
+                mail.mention_email(mentions, comment.body)
                 print(f"Mentioned users: {mentions}")
 
             return HttpResponseRedirect(request.path_info)
