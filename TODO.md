@@ -1,10 +1,12 @@
 # IN PROGRESS ITEM
 
-- [ ] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
+- [ ] add a way to upload images to posts (multi file upload)
 
 - [ ] add bot commands
 
 ## TODO
+
+- [x] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
 
 - [x] Add feature to mass remove videos and thumbnails from storage and db
 
