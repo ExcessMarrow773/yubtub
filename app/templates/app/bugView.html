@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load markdown_extras %}
+
+{% block page_title %}
+    <h2>{{ bug.title.capitalize }}</h2>
+{% endblock page_title %}
+
+{% block page_content %}
+    <div class="bug-card">
+        <div class="bug-card-label">{{ bug.get_type_display }} - <u>{{ bug.author }}</u></div>
+        <small>
+            {{ bug.created_on.date }} at {{ bug.created_on.time }}
+        </small>
+        <p>
+            By <a href="{% url 'app:account' bug.author %}">{{ bug.author }}</a>
+        </p>
+
+        <p>{{ bug.body | markdown }}</p>
+
+        {% if bug.github_issue %}
+            <a href="{{ bug.github_issue }}"><h3>{{bug.github_issue}}</h3></a>
+        {% endif %}
+    </div>
+{% endblock page_content %}

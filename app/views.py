@@ -37,7 +37,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -49,7 +48,6 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
-
 
 @login_required
 def postVideo(request):
@@ -71,7 +69,7 @@ def postVideo(request):
     return render(request, 'createVideo.html', {'form': form})
 
 def watchVideo(request, pk):
-    videos = Video.objects.get(pk=pk)
+    videos = get_object_or_404(Video, pk=pk)
     likes = videos.likes
     if not request.user in videos.viewedUsers.all():
         if request.user.is_authenticated:
@@ -163,9 +161,8 @@ def makePost(request):
     }
     return render(request, 'app/makePost.html', context)
 
-
 def viewPost(request, pk):
-    post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     form = PostCommentForm()
     if request.method == "POST":
         form = PostCommentForm(request.POST)
@@ -191,7 +188,6 @@ def viewPost(request, pk):
     }
 
     return render(request, "app/viewPost.html", context)
-
 
 def mdHelp(request):
 	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/help.md')
@@ -238,7 +234,6 @@ def following(request):
 	return render(request, "app/following.html", context)
 
 def bug_report(request):
-    
     if request.method == "POST":
         form = BugReportForm(request.POST)
         if form.is_valid():
@@ -259,6 +254,23 @@ def bug_report(request):
         'form': form
     }
     return render(request, "app/bugReport.html", context)
+
+def bug_reportIndex(request):
+    bugs = BugReport.objects.order_by('created_on').order_by('-created_on')
+
+    context = {
+         'bugs': bugs
+    }
+    return render(request, 'bugReportIndex.html', context)
+
+def bugView(request, pk):
+    bug = get_object_or_404(BugReport, pk=pk)
+
+    context = {
+        'bug': bug
+    }
+
+    return render(request, 'bugView.html', context)
 
 @require_POST
 def like_video(request):

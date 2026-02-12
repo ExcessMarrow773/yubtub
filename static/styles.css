@@ -384,3 +384,21 @@ msg .timestamp {
     letter-spacing: 0.08em;
     opacity: 0.6;
 }
+
+.bug-card {
+  background-color: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-right: inherit;
+  display: block;
+  width: fit-content;
+  gap: 0.4rem;
+}
+
+.bug-card-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}

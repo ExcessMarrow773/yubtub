@@ -22,5 +22,7 @@ urlpatterns = [
     path('EconProject/', views.EconProject, name="EconProject"),
     path('follow-user/', views.follow_user, name="follow-user"),
     path('following/', views.following, name="following"),
-    path('bug/', views.bug_report, name='bugReport')
+    path('bug/', views.bug_report, name='bugReport'),
+    path('bugReports/', views.bug_reportIndex, name="bugReportIndex"),
+    path('bugView/<int:pk>', views.bugView, name="bugView"),
  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
