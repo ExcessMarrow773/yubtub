@@ -7,18 +7,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 
 User = get_user_model()
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ("username", "email", "password1", "password2")
-
-class CustomAuthenticationForm(AuthenticationForm):
-    pass
-
 class ProfileDetailsChange(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['profile_image', 'first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email']
 
 class ProfileUsernameChange(forms.ModelForm):
     class Meta:
