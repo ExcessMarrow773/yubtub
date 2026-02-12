@@ -11,7 +11,7 @@ def email_deamon(email):
 	print("Sending email in Deamon")
 	email.send()
 
-def mention_email(user, message):
+def mention_email(user, message, type):
 	context = {
 		"message": message
 	}
@@ -21,8 +21,15 @@ def mention_email(user, message):
 	for i in user:
 		users.append(get_object_or_404(User, username=i).email)
 	print(users)
+
+	types = {
+		'message': 'message',
+		'desc': 'description',
+		'post': 'post'
+	}
+
 	email = EmailMessage(
-		"You have been mentioned in a Yubtub message",
+		f"You have been mentioned in a Yubtub {types[str(type)]}",
 		html_content,
 		"YubTub Server Email <spector.studio.games@gmail.com",
 		users
@@ -33,3 +40,4 @@ def mention_email(user, message):
 	# email.send()
 	x = threading.Thread(target=email_deamon, args=(email,), daemon=True)
 	x.start()
+

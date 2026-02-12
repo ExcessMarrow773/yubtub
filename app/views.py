@@ -62,6 +62,9 @@ def postVideo(request):
                 video_file=form.cleaned_data["video_file"],
             )
             video.save()
+            mentions = video.description.get_valid_mentions()
+            if mentions:
+                mail.mention_email(mentions, video, 'desc')
             return redirect('app:index')
     else:
         form = PostVideo()
@@ -89,6 +92,7 @@ def watchVideo(request, pk):
 
             mentions = comment.get_valid_mentions()
             if mentions:
+                mail.mention_email(mentions, comment, 'message')
                 print(f"Mentioned users: {mentions}")
     else:
         form = VideoCommentForm()
@@ -153,6 +157,9 @@ def makePost(request):
                 body=form.cleaned_data["body"],
             )
             post.save()
+            mentions = post.get_valid_mentions()
+            if mentions:
+                mail.mention_email(mentions, post, 'post')
             return redirect('app:index')
     else:
         form = CreatePost()
@@ -176,7 +183,7 @@ def viewPost(request, pk):
 
             mentions = comment.get_valid_mentions()
             if mentions:
-                mail.mention_email(mentions, comment)
+                mail.mention_email(mentions, comment, 'message')
                 print(f"Mentioned users: {mentions}")
 
             return HttpResponseRedirect(request.path_info)
