@@ -74,7 +74,7 @@ ROOT_URLCONF = 'yubtub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', 'app/templates/app', 'chat/templates/chat'],
+        'DIRS': [BASE_DIR / 'templates', 'app/templates/app', 'chat/templates/chat', 'bugs/templates/bugs'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
