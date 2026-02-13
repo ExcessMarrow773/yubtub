@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.utils import timezone
-from app.models import Video, VideoComment, Post, PostComment, BugReport
+from app.models import Video, VideoComment, Post, PostComment
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
@@ -35,7 +35,3 @@ class PostCommentForm(forms.ModelForm):
         model = PostComment
         fields = ['body']
 
-class BugReportForm(forms.ModelForm):
-    class Meta:
-        model = BugReport
-        fields = ['title', 'body', 'type', 'github_issue']

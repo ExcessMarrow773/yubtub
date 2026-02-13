@@ -7,8 +7,8 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm, BugReportForm
-from app.models import Video, VideoComment, Post, PostComment, BugReport
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
+from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
 from operator import attrgetter
@@ -240,44 +240,7 @@ def following(request):
 
 	return render(request, "app/following.html", context)
 
-def bug_report(request):
-    if request.method == "POST":
-        form = BugReportForm(request.POST)
-        if form.is_valid():
-            bug = BugReport(
-                author=request.user.username,
-                title=form.cleaned_data["title"],
-                body=form.cleaned_data["body"],
-                type=form.cleaned_data["type"],
-                github_issue=form.cleaned_data["github_issue"]
-            )
-            if bug.github_issue != None:
-                bug.has_github_issue = True
-            bug.save()
-            return redirect('app:index')
-    else:
-        form = BugReportForm()
-    context = {
-        'form': form
-    }
-    return render(request, "app/bugReport.html", context)
 
-def bug_reportIndex(request):
-    bugs = BugReport.objects.order_by('created_on').order_by('-created_on')
-
-    context = {
-         'bugs': bugs
-    }
-    return render(request, 'bugReportIndex.html', context)
-
-def bugView(request, pk):
-    bug = get_object_or_404(BugReport, pk=pk)
-
-    context = {
-        'bug': bug
-    }
-
-    return render(request, 'bugView.html', context)
 
 @require_POST
 def like_video(request):
@@ -302,9 +265,7 @@ def like_video(request):
         video.likes += 1
         video.save()
         return JsonResponse({'message': 'Thanks for liking!', 'likes': video.likes}, status=200)
-    
-    
-    
+ 
 @require_POST
 def follow_user(request):
 	if not request.user.is_authenticated:

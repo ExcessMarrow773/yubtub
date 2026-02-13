@@ -46,6 +46,7 @@ for i in ALLOWED_HOSTS:
 INSTALLED_APPS = [
     'app.apps.AppConfig',
 	'chat.apps.ChatConfig',
+	'bugs.apps.BugsConfig',
 	'jsTests.apps.JstestsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
