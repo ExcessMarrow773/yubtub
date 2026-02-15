@@ -62,7 +62,7 @@ class Video(models.Model):
 
     def save(self, *args, **kwargs):
         # Ensure empty descriptions become the default before saving
-        if not self.description:
+        if not self.description or self.description.isspace():
             self.description = "There was no description provided for this video"
 
         # Track kwargs so we can avoid re-using force_insert/force_update on subsequent saves
