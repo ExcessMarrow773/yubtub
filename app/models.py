@@ -128,6 +128,17 @@ class Post(models.Model):
     def was_published_recently(self):
        return self.created_on >= timezone.now() - datetime.timedelta(days=1)
     
+    def get_mentions(self):
+        """Extract all @mentions from the comment body"""
+        pattern = r'@(\w+)'
+        mentions = re.findall(pattern, self.body)
+        return mentions
+    
+    def get_valid_mentions(self):
+        """Return only usernames that exist in the database"""
+        mentioned_usernames = self.get_mentions()
+        valid_users = User.objects.filter(username__in=mentioned_usernames)
+        return list(valid_users.values_list('username', flat=True))
     def __str__(self):
         return self.title
 
