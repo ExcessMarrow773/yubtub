@@ -28,7 +28,7 @@ class PostVideo(forms.ModelForm):
 class CreatePost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'body']
+        fields = ['title', 'body', 'images']
 
 class PostCommentForm(forms.ModelForm):
     class Meta:

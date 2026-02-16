@@ -98,7 +98,7 @@ class VideoComment(models.Model):
 
     def __str__(self):
          return self.author
-    
+
     def get_mentions(self):
         """Extract all @mentions from the comment body"""
         pattern = r'@(\w+)'
@@ -117,6 +117,13 @@ class Post(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=20, default='post')
+
+    images = models.FileField(
+        upload_to='postImages/',
+        validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'webp', 'heif', 'jpg'])],
+        null=True,
+        blank=True
+    )
 
     def was_published_recently(self):
        return self.created_on >= timezone.now() - datetime.timedelta(days=1)

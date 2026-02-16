@@ -155,6 +155,7 @@ def makePost(request):
                 author=request.user.username,
                 title=form.cleaned_data["title"],
                 body=form.cleaned_data["body"],
+                images=form.cleaned_data["images"],
             )
             post.save()
             mentions = post.get_valid_mentions()

@@ -2,7 +2,7 @@
 
 - [ ] add moderator buttons/ abilities
 
-- [ ] add a way to upload images to posts (multi file upload)
+- [~] add a way to upload images to posts (multi file upload)
 
 - [ ] add bot commands
 

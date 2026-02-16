@@ -12,6 +12,9 @@
         {{ form.body }}<br>
     <small><a href="{% url 'app:mdHelp' %}">Markdown</a> is supported!</small>
     </div>
+    <div>
+    	{{ form.images }}
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{% url 'app:index' %}">Cancel</a>
 </form>
