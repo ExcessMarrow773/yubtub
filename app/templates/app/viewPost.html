@@ -14,16 +14,15 @@
 </p>
 
     <p>{{ post.body | markdown }}</p>
-    <div>
-    	
+    <div style="float: none">	
     	{% if post.images %}
     	<img src="{{ post.images.url }}" alt="" width="200" height="200">
     	{% endif %}
     </div>
 
 	<hr>
-
-        <h3>Leave a comment:</h3>
+    {% if user.is_authenticated %}
+    <h3>Leave a comment:</h3>
     <form method="post">
         {% csrf_token %}
         <div>
@@ -31,7 +30,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
+    {% endif %}
     <h3>Comments:</h3>
     <div>
     {% for comment in comments %}

@@ -86,6 +86,7 @@ input[type="submit"], input[type="reset"], input[type="button"] {
   font-family: inherit;
   cursor: pointer;
   display: inline-block;
+  text-align: center;
 }
 
 button:hover, .button:hover,
