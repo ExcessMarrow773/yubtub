@@ -8,7 +8,14 @@
 
 ## TODO
 
+- [ ] refacter folders and files to be easer to follow
+
+- [ ] add Black Bar Program
+
+- [ ] Add different communities
 - [x] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
+
+- [x] Add Chat Capabilitys
 
 - [x] Add feature to mass remove videos and thumbnails from storage and db
 
@@ -24,17 +31,12 @@
 - [x] add description viewer for posts
 
 - [x] Add feature to follow people
-    - [x] add page to check up on people you follow
+  - [x] add page to check up on people you follow
 
 - [x] add bug reporting
 
 - [x] start adding custom error pages
 
-- [x] Add Chat Capabilitys
-
-- [ ] add Black Bar Program
-
-- [ ] Add different communities
 
 ## DEBUG TODO
 
