@@ -17,3 +17,5 @@ match i:
 		cursor.execute('DELETE FROM polls_choice')
 		conn.commit()
 		conn.close()
+	case _:
+		subprocess.run(['./.venv/bin/python', './manage.py', 'collectstatic', '--no-input'])
