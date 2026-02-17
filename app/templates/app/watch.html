@@ -35,7 +35,10 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}
 <p>
     On {{ comment.created_on.date }}, at {{ comment.created_on.time }} <b>{{ comment.author }}</b> wrote: 
     <div style="margin-left: 25px;">
-    	{{ comment.body | linebreaks }}
+		{% if comment.author.username == "admin" %}
+    		{{ comment.body | markdown | linebreaks }}
+		{% else %}
+			{{ comment.body | linebreaks }}
     </div>
 </p>
 {% endfor %}
