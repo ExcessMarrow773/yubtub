@@ -10,8 +10,8 @@
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>
     <p>
-    By <a href="{% url 'app:account' post.author %}">{{ post.author }}</a>
-</p>
+        By <a href="{% url 'app:account' post.author %}">{{ post.author }}</a>
+    </p>
 
     <p>{{ post.body | markdown }}</p>
     <div style="float: none">	
@@ -40,7 +40,8 @@
                 {% if comment.author.username == "admin" %}
                     {{ comment.body | markdown | linebreaks }}
                 {% else %}
-                    {{ commend.body | linebreaks }}
+                    {{ comment.body | linebreaks }}
+                    <script>console.log({{ comment.body }})</script>
                 {% endif %}
             </div>
         </p>
