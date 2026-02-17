@@ -85,7 +85,17 @@ class Video(models.Model):
             except Exception:
                 # thumbnail generation should not break saving the model during tests
                 pass
-
+    def get_mentions(self):
+        pattern = r'@(\w+)'
+        mentions = re.findall(pattern, self.description)
+        return mentions
+    
+    def get_valid_mentions(self):
+        """Return only usernames that exist in the database"""
+        mentioned_usernames = self.get_mentions()
+        valid_users = User.objects.filter(username__in=mentioned_usernames)
+        return list(valid_users.values_list('username', flat=True))
+    
     def __str__(self):
         return self.title
 
@@ -139,6 +149,7 @@ class Post(models.Model):
         mentioned_usernames = self.get_mentions()
         valid_users = User.objects.filter(username__in=mentioned_usernames)
         return list(valid_users.values_list('username', flat=True))
+    
     def __str__(self):
         return self.title
 

@@ -62,7 +62,7 @@ def postVideo(request):
                 video_file=form.cleaned_data["video_file"],
             )
             video.save()
-            mentions = video.description.get_valid_mentions()
+            mentions = video.get_valid_mentions()
             if mentions:
                 mail.mention_email(mentions, video, 'desc')
             return redirect('app:index')
