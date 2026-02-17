@@ -24,19 +24,18 @@
 - [x] Add feature to react to people's videos
 
 - [x] add feature for regular, text only, posts
-  - [x] add markdown support for posts
+    - [x] add markdown support for posts
 
 - [x] add post viewer
 
 - [x] add description viewer for posts
 
 - [x] Add feature to follow people
-  - [x] add page to check up on people you follow
+    - [x] add page to check up on people you follow
 
 - [x] add bug reporting
 
 - [x] start adding custom error pages
-
 
 ## DEBUG TODO
 
