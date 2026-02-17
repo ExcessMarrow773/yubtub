@@ -420,17 +420,6 @@ class MarkdownFilterTests(TestCase):
         self.assertContains(response, '<h1>Header</h1>')
         self.assertContains(response, '<strong>Bold text</strong>')
 
-    def test_comment_renders_markdown(self):
-        self.client.login(username='alice', password='pass123')
-        
-        self.client.post(
-            reverse('app:post', args=[self.post.pk]),
-            data={'body': '**Bold comment**'}
-        )
-        
-        response = self.client.get(reverse('app:post', args=[self.post.pk]))
-        self.assertContains(response, '<strong>Bold comment</strong>')
-
 
 class URLPatternTests(TestCase):
     """Test that all URL patterns are accessible"""

@@ -39,6 +39,7 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}
     		{{ comment.body | markdown | linebreaks }}
 		{% else %}
 			{{ comment.body | linebreaks }}
+		{% endif %}
     </div>
 </p>
 {% endfor %}
