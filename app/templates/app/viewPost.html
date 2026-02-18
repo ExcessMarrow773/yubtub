@@ -21,7 +21,7 @@
     </div>
 
 	<hr>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and not muted %}
     <h3>Leave a comment:</h3>
     <form method="post">
         {% csrf_token %}

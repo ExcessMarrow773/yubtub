@@ -14,6 +14,7 @@ from itertools import chain
 from operator import attrgetter
 
 from app import mail
+from app.qol import isVMuted, isPMuted, isMuted
 
 import os
 import json
@@ -51,6 +52,9 @@ def register(request):
 
 @login_required
 def postVideo(request):
+    if isVMuted(request.user) or isMuted(request.user):
+        return redirect('app:index')
+
     if request.method == "POST":
         form = PostVideo(request.POST, request.FILES)
         if form.is_valid():
@@ -103,7 +107,8 @@ def watchVideo(request, pk):
         'pk': pk,
         'comments': comments,
         'likes': likes,
-        'form': form
+        'form': form,
+        'muted': isMuted(request.user)
     }
 
     return render(request, 'watch.html', context)
@@ -148,6 +153,8 @@ def cornhub(request):
 
 @login_required
 def makePost(request):
+    if isPMuted(request.user) or isMuted(request.user):
+         return redirect('app:index')
     if request.method == "POST":
         form = CreatePost(request.POST, request.FILES)
         if form.is_valid():
@@ -193,6 +200,7 @@ def viewPost(request, pk):
         "post": post,
         "comments": comments,
         "form": PostCommentForm(),
+        "muted": isMuted(request.user)
     }
 
     return render(request, "app/viewPost.html", context)

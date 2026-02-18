@@ -21,6 +21,7 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}
 </div>
 
 <div>
+	{% if user.is_authenticated and not muted %}
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<div>
@@ -28,6 +29,7 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
+	{% endif %}
 </div>
 {% block comments %}
 <h3>Comments:</h3>
