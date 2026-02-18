@@ -31,6 +31,7 @@ try:
 	else:
 		print("Starting application...\n")
 		subprocess.run(['git', 'pull'])
+		subprocess.run(['./.venv/bin/python3', 'manage.py', 'collectstatic', '--no-input'])
 		print("\nRunning migrations and starting server...\n")
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'makemigrations'])
 

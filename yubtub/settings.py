@@ -27,19 +27,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'Ay|nBe8~ha/,TnLroK<>x7`bXq,.&c|e3-*pt$7+e43r-jwwoqmw_^*#g47)fr$&2)!(f2*awn!%u0qr6@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", True) == 'True'
+DEBUG = os.getenv("DEBUG", True) != 'True'
 # DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.199', '192.168.68.120', '192.168.68.134', 'yubtub', 'raspberrypi.local', 'yeti.local']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.199', '192.168.68.120', '192.168.68.134', 'raspberrypi.local', 'yeti.local', '187.77.203.207', 'atticusfw.dev']
 
 CSRF_TRUSTED_ORIGINS=[]
 
 for i in ALLOWED_HOSTS:
-	CSRF_TRUSTED_ORIGINS.append("http://" + i)
+	CSRF_TRUSTED_ORIGINS.append("https://" + i)
 
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = False
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
 
 # Application definition
 
@@ -59,7 +58,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'app.middleware.PortRedirectMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

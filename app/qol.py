@@ -3,15 +3,27 @@ from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
+def isVMuted(request):
+	if not request.is_authenticated:
+		return False
+	username = request.user.username
 
-def isVMuted(username: str):
-	user = get_object_or_404(User, username=username)
+	user = User.objects.get(username=username)
 	return user.groups.filter(name='vMuted').exists()
 
-def isPMuted(username: str):
-	user = get_object_or_404(User, username=username)
+def isPMuted(request):
+	if not request.is_authenticated:
+		return False
+	username = request.user.username
+
+	user = User.objects.get(username=username)
 	return user.groups.filter(name='pMuted').exists()
 
-def isMuted(username: str):
-	user = get_object_or_404(User, username=username)
+def isMuted(request):
+	if not request.is_authenticated:
+		return False
+
+	username = request.user.username
+
+	user = User.objects.get(username=username)
 	return user.groups.filter(name='Muted').exists()

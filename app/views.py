@@ -52,7 +52,7 @@ def register(request):
 
 @login_required
 def postVideo(request):
-    if isVMuted(request.user) or isMuted(request.user):
+    if isVMuted(request) or isMuted(request):
         return redirect('app:index')
 
     if request.method == "POST":
@@ -78,10 +78,13 @@ def postVideo(request):
 def watchVideo(request, pk):
     videos = get_object_or_404(Video, pk=pk)
     likes = videos.likes
-    if not request.user in videos.viewedUsers.all():
-        if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        print("Authenticated")
+        if not request.user in videos.viewedUsers.all():
             videos.viewedUsers.add(request.user)
         videos.views += 1
+    else:
+        print("Not Authenticated")
     videos.save()
 
     if request.method == "POST":
@@ -123,8 +126,10 @@ def account(request, username):
         key=attrgetter('created_on'),
         reverse=True
     )
-
-    following = request.user.following.all()
+    if request.user.is_authenticated:
+        following = request.user.following.all()
+    else:
+        following = []
 
     following_names = []
     for i in following:
@@ -134,9 +139,10 @@ def account(request, username):
         'combined': combined,
         'username': username,
         'isUsersAccount': username == request.user.username,
-        'followingUser': username in following_names
+        'followingUser': username in following_names,
+        'user': request.user
     }
-    return render(request, 'account.html', context)
+    return render(request, 'app/account.html', context)
 
 def TODO(request):
     file_path = os.path.join(os.path.dirname(__file__), '../TODO.md')
@@ -153,7 +159,7 @@ def cornhub(request):
 
 @login_required
 def makePost(request):
-    if isPMuted(request.user) or isMuted(request.user):
+    if isPMuted(request) or isMuted(request):
          return redirect('app:index')
     if request.method == "POST":
         form = CreatePost(request.POST, request.FILES)
@@ -179,6 +185,7 @@ def makePost(request):
 def viewPost(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form = PostCommentForm()
+
     if request.method == "POST":
         form = PostCommentForm(request.POST)
         if form.is_valid():

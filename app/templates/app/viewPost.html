@@ -41,7 +41,7 @@
                     {{ comment.body | markdown | linebreaks }}
                 {% else %}
                     {{ comment.body | linebreaks }}
-                    <script>console.log({{ comment.body }})</script>
+                    <script>console.log("{{ comment.body }}")</script>
                 {% endif %}
             </div>
         </p>

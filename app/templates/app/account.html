@@ -9,7 +9,7 @@
 
 {% block heading %}
     {{ username }}'s stuff
-    {% if not isUsersAccount %}
+    {% if not isUsersAccount and user.is_authenticated %}
         <button id="follow-button" data-account="{{ username }}" onclick="followUser()">
             {% if followingUser %}Unfollow{% else %}Follow{% endif %}
         </button>
