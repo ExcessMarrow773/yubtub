@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404
 User = get_user_model()
 
 def isVMuted(request):
-	if not request.is_authenticated:
+	
+	if not request.user.is_authenticated:
 		return False
 	username = request.user.username
 
@@ -12,7 +13,8 @@ def isVMuted(request):
 	return user.groups.filter(name='vMuted').exists()
 
 def isPMuted(request):
-	if not request.is_authenticated:
+	
+	if not request.user.is_authenticated:
 		return False
 	username = request.user.username
 
@@ -20,7 +22,8 @@ def isPMuted(request):
 	return user.groups.filter(name='pMuted').exists()
 
 def isMuted(request):
-	if not request.is_authenticated:
+	
+	if not request.user.is_authenticated:
 		return False
 
 	username = request.user.username

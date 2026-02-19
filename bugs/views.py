@@ -15,8 +15,12 @@ def bug_report(request):
     if request.method == "POST":
         form = BugReportForm(request.POST)
         if form.is_valid():
+            if not request.user.is_authenticated:
+                username='AnonymousUser'
+            else:
+                username=request.user.username
             bug = BugReport(
-                author=request.user.username,
+                author=username,
                 title=form.cleaned_data["title"],
                 body=form.cleaned_data["body"],
                 type=form.cleaned_data["type"],

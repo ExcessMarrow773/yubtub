@@ -111,7 +111,7 @@ def watchVideo(request, pk):
         'comments': comments,
         'likes': likes,
         'form': form,
-        'muted': isMuted(request.user)
+        'muted': isMuted(request)
     }
 
     return render(request, 'watch.html', context)
@@ -207,7 +207,7 @@ def viewPost(request, pk):
         "post": post,
         "comments": comments,
         "form": PostCommentForm(),
-        "muted": isMuted(request.user)
+        "muted": isMuted(request)
     }
 
     return render(request, "app/viewPost.html", context)
