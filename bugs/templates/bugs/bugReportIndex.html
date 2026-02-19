@@ -11,7 +11,7 @@
         <div class="post-card">
             <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ bug.author }}</u></div>
 
-            <a href="{% url "app:bugView" bug.pk %}">
+            <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
             </a>
             <p>{{ bug.body | markdown_truncate:100 }}</p>
@@ -22,19 +22,21 @@
 {% endif %}
 
 {% if resolvedBugs %}
+<div style="margin-top: 50rm">
 <h3>Resolved</h3><hr>
 <div class="video-grid" id="resolvedBugs">
     {% for bug in resolvedBugs %}
         <div class="post-card">
             <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ bug.author }}</u></div>
 
-            <a href="{% url "app:bugView" bug.pk %}">
+            <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
             </a>
             <p>{{ bug.body | markdown_truncate:100 }}</p>
             <small>{{bug.created_on}}</small>
         </div>
     {% endfor %}
+</div>
 </div>
 {% endif %}
 

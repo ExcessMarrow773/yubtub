@@ -25,7 +25,7 @@
 
             {% elif thing.type == "post" %}
                 <div class="post-card">
-                    <div class="post-card-label">Post - <u>{{ thing.author }}</u></div>
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ thing.author }}</a></u></div>
                     
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>
