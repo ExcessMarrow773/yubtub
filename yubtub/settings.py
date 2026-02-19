@@ -39,9 +39,10 @@ CSRF_TRUSTED_ORIGINS=[]
 for i in ALLOWED_HOSTS:
 	CSRF_TRUSTED_ORIGINS.append("https://" + i)
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = False
+if dbOnline:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = False
 
 # Application definition
 

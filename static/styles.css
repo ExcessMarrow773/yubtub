@@ -43,10 +43,10 @@ body {
 
 img, video {
   border-radius: var(--radius);
-  max-width: 100%;
-  height: auto;
+  /* max-width: 100%; */
+  /* height: auto; */
   display: block;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 
 video {
@@ -227,7 +227,16 @@ div { margin: 0.5rem 0; }
   margin-bottom: 2rem;
 }
 
-.navbar-buttons { display: flex; gap: 0.5rem; }
+.navbar img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+navbar-buttons.a { 
+  display:inline-block;
+  gap: 0.5rem;
+  height:min-content;
+}
 
 /* ── Toast notifications ────────────────────────────────────── */
 #toast-container {
