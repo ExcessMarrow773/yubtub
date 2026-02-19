@@ -77,6 +77,40 @@ function followUser() {
     });
 }
 
+function resolveBug() {
+    const resolveButton = document.getElementById("resolve-button");
+    const bug = resolveButton.dataset.bug;
+
+    console.log(bug);
+
+    fetch('/bug/resolve-bug/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ bug: bug })
+    })
+    .then(response => {
+        return response.json().then(data => ({
+            status: response.status,
+            data: data
+        }));
+    })
+    .then(({ status, data }) => {
+        console.log(data);
+
+        if (status === 200) {
+            showToast("success", data.message);
+        } else {
+            showToast("error", data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast("error", "Something went wrong.");
+    });
+}
 
 function showToast(type, message, duration = 3000) {
     const toastContainer = document.getElementById('toast-container');
@@ -231,3 +265,4 @@ function sendMsg() {
     // Disable the send button while request is in-flight
     try { sendButton.disabled = true; } catch (e) {}
 }
+

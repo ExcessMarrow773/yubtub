@@ -1,12 +1,16 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
 
 from bugs.forms import BugReportForm
 from bugs.models import BugReport
 
 
 from app import mail
+
+import json
 
 User = get_user_model()
 # Create your views here.
@@ -55,3 +59,28 @@ def bugView(request, pk):
     }
 
     return render(request, 'bugs/bugView.html', context)
+
+@require_POST
+def resolveBug(request):
+	if not request.user.is_authenticated:
+		return JsonResponse({'message': 'Login required'}, status=403)
+
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({'message': 'Invalid JSON'}, status=400)
+
+
+	bug=data.get('bug')
+
+	try:
+		bug = BugReport.objects.get(pk=bug)
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found.'}, status=404)
+
+	if bug.resolved:
+		bug.resolved = False
+		return JsonResponse({'message': 'Opened bug'})
+	else:
+		bug.resolved = True
+		return JsonResponse({'message': 'Bug Resolved'})

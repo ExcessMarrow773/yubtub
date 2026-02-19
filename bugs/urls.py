@@ -9,4 +9,5 @@ urlpatterns = [
     path('', views.bug_report, name='bugReport'),
     path('reports/', views.bug_reportIndex, name="bugReportIndex"),
     path('view/<int:pk>', views.bugView, name="bugView"),
+    path('resolve/', views.resolveBug, name="resolveBug"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
