@@ -46,7 +46,7 @@ img, video {
   /* max-width: 100%; */
   /* height: auto; */
   display: block;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 
 video {
@@ -225,6 +225,11 @@ div { margin: 0.5rem 0; }
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
+}
+
+.navbar img {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 navbar-buttons.a { 

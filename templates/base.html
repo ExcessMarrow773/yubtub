@@ -14,7 +14,9 @@
     
 <div class="navbar">
     <h1>
-        {% block heading %} 
+        {% block heading %}
+        <a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
+
         Welcome to <a class="button" href="{% url 'app:index' %}">YubTub</a> 
         {% endblock heading %}
     </h1>
@@ -34,7 +36,6 @@
         <form method="post" action="{% url 'app:logout' %}">
             {% block extra_navbar %}{% endblock extra_navbar %}
             {% if "/account/" not in request.path and username != user.username %}
-            <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image"> 
             <a id="name" class="button" href="{% url 'app:account' user.username %}">{{ user.username }}</a>
             {% endif %}
             {% csrf_token %}
@@ -46,7 +47,6 @@
     </navbar-buttons>
     {% else %}
     <navbar-buttons>
-        <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image"> 
         <a class="button" href="{% url 'app:login' %}">Login</a>
     <a class="button" href="{% url 'app:register' %}">Sign Up</a>
     </navbar-buttons>
