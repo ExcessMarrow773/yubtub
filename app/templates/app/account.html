@@ -5,6 +5,11 @@
 {% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
     <script src="{% static 'admin/js/core.js' %}"></script>
+    <script>
+        console.log("{{ username.lower }}")
+        console.log("{{ username.upper }}")
+        console.log("{{ username }}")
+    </script>
 {% endblock extra_head %}
 
 {% block heading %}
@@ -24,7 +29,8 @@
 <hr>
 <p id="follow-response"></p>
 
-{% if combined %}
+
+    {% if combined %}
     <div class="video-grid">
         {% for thing in combined %}
 
@@ -35,13 +41,17 @@
                     </a>
                     <div class="video-card-info">
                         <strong>{{ thing.title }}</strong>
-                        <small>{{ thing.created_on }}</small>
-                    </div>
+                        <small>
+                            <a href="{% url 'app:account' thing.author %}">{{ thing.author }}</a>
+                            · {{ thing.created_on }}
+                        </small>
+                    </div> 
                 </div>
 
             {% elif thing.type == "post" %}
                 <div class="post-card">
-                    <div class="post-card-label">Post</div>
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ thing.author }}</a></u></div>
+                    
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>
                     </a>
