@@ -80,9 +80,9 @@ def watchVideo(request, pk):
     likes = videos.likes
     if request.user.is_authenticated:
         print("Authenticated")
-        if not request.user in videos.viewedUsers.all():
+        if not (request.user in videos.viewedUsers.all()):
             videos.viewedUsers.add(request.user)
-        videos.views += 1
+            videos.views += 1
     else:
         print("Not Authenticated")
     videos.save()
