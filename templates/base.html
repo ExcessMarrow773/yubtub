@@ -14,8 +14,8 @@
     
 <div class="navbar">
     <h1>
-        {% block heading %}
         <a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
+        {% block heading %}
 
         Welcome to <a class="button" href="{% url 'app:index' %}">YubTub</a> 
         {% endblock heading %}
