@@ -100,7 +100,7 @@ class Video(models.Model):
         return self.title
 
 class VideoComment(models.Model):
-    author = models.CharField(max_length=60)
+    author = models.IntegerField(default=0)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     video = models.ForeignKey("Video", on_delete=models.CASCADE)
@@ -154,7 +154,7 @@ class Post(models.Model):
         return self.title
 
 class PostComment(models.Model):
-    author = models.CharField(max_length=60)
+    author = models.IntegerField(default=0)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_extras %}
+{% load markdown_extras dict_extras %}
 
 {% block page_title %}
     <h2>{{ post.title }}</h2>
@@ -10,7 +10,7 @@
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>
     <p>
-        By <a href="{% url 'app:account' post.author %}">{{ post.author }}</a>
+        By <a href="{% url 'app:account' post.author %}">{{ postAuthor }}</a>
     </p>
 
     <p>{{ post.body | markdown }}</p>
@@ -35,7 +35,7 @@
     <div>
     {% for comment in comments %}
         <p>
-            On {{ comment.created_on.date }} <b>{{ comment.author }}</b> wrote:
+            On {{ comment.created_on.date }} <b>{{ authors | get_item:comment.author }}</b> wrote:
             <div style="margin-left: 25px;">
                 {% if comment.author.username == "admin" %}
                     {{ comment.body | markdown | linebreaks }}

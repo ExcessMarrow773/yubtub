@@ -58,8 +58,52 @@ def postMigrate():
         post.author=postAuthorID[i]
         post.save()
 
+def videoCommentMigrate():
+    commentCount = VideoComment.objects.count()
+    comments = VideoComment.objects.all()
+    commentAuthors = []
 
+    for i in range(commentCount):
+        comment = comments[i]
+        commentAuthors.append(comment.author)
+    print(commentAuthors)
+
+    commentAuthorID = []
+
+    for i in commentAuthors:
+        commentAuthorID.append(User.objects.get(username=i).id)
+
+    print(commentAuthorID)
+
+    for i in range(commentCount):
+        comment = comments[i]
+        comment.author=commentAuthorID[i]
+        comment.save()
+
+def postCommentMigrate():
+    commentCount = PostComment.objects.count()
+    comments = PostComment.objects.all()
+    commentAuthors = []
+
+    for i in range(commentCount):
+        comment = comments[i]
+        commentAuthors.append(comment.author)
+    print(commentAuthors)
+
+    commentAuthorID = []
+
+    for i in commentAuthors:
+        commentAuthorID.append(User.objects.get(username=i).id)
+
+    print(commentAuthorID)
+
+    for i in range(commentCount):
+        comment = comments[i]
+        comment.author=commentAuthorID[i]
+        comment.save()
 
 if __name__ == "__main__":
-    videoMigrate()
-    postMigrate()
+    # videoMigrate()
+    # postMigrate()
+    # videoCommentMigrate()
+    postCommentMigrate()

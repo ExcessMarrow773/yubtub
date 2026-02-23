@@ -114,13 +114,23 @@ def watchVideo(request, pk):
         form = VideoCommentForm()
 
     comments = VideoComment.objects.filter(video=videos).order_by("-created_on")
+
+    authors = {}
+    for i in comments:
+        user = User.objects.get(id=i.author).username
+        authors[i.author] = user
+
+    videoAuthor = User.objects.get(id=videos.author).username
+
     context = {
         'videos': videos,
         'pk': pk,
         'comments': comments,
         'likes': likes,
         'form': form,
-        'muted': isMuted(request)
+        'muted': isMuted(request),
+        'authors': authors,
+        'videoAuthor': videoAuthor
     }
 
     return render(request, 'watch.html', context)
@@ -212,11 +222,21 @@ def viewPost(request, pk):
 
             return HttpResponseRedirect(request.path_info)
     comments = PostComment.objects.filter(post=post)
+
+    authors = {}
+    for i in comments:
+        user = User.objects.get(id=i.author).username
+        authors[i.author] = user
+
+    postAuthor = User.objects.get(id=post.author).username
+
     context = {
         "post": post,
         "comments": comments,
         "form": PostCommentForm(),
-        "muted": isMuted(request)
+        "muted": isMuted(request),
+        'authors': authors,
+        'postAuthor': postAuthor
     }
 
     return render(request, "app/viewPost.html", context)

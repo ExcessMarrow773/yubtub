@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_truncate %}
+{% load markdown_truncate dict_extras %}
 
 {% block title %}YubTub - Home{% endblock title %}
 
@@ -17,7 +17,7 @@
                     <div class="video-card-info">
                         <strong>{{ thing.title }}</strong>
                         <small>
-                            <a href="{% url 'app:account' thing.author %}">{{ author.thing }}</a>
+                            <a href="{% url 'app:account' thing.author %}">{{ authors | get_item:thing.author }}</a>
                             · {{ thing.created_on }}
                         </small>
                     </div> 
@@ -25,7 +25,7 @@
 
             {% elif thing.type == "post" %}
                 <div class="post-card">
-                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ authors.thing.author }}</a></u></div>
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ authors | get_item:thing.author }}</a></u></div>
                     
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>
