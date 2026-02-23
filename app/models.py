@@ -13,7 +13,7 @@ import re
 User = get_user_model()
 
 class Video(models.Model):
-    author = models.CharField(max_length=100, default='admin')
+    author = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
     description = models.TextField(default='', null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -100,7 +100,7 @@ class Video(models.Model):
         return self.title
 
 class VideoComment(models.Model):
-    author = models.CharField(max_length=60)
+    author = models.IntegerField(default=0)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     video = models.ForeignKey("Video", on_delete=models.CASCADE)
@@ -122,7 +122,7 @@ class VideoComment(models.Model):
         return list(valid_users.values_list('username', flat=True))
 
 class Post(models.Model):
-    author = models.CharField(max_length=100, default='admin')
+    author = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -154,7 +154,7 @@ class Post(models.Model):
         return self.title
 
 class PostComment(models.Model):
-    author = models.CharField(max_length=60)
+    author = models.IntegerField(default=0)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
@@ -175,3 +175,11 @@ class PostComment(models.Model):
         valid_users = User.objects.filter(username__in=mentioned_usernames)
         return list(valid_users.values_list('username', flat=True))
 
+class Banner(models.Model):
+    message = models.TextField()
+    active = models.BooleanField(default=True)
+    created_by = models.CharField(max_length=150, default='system')
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.message[:50]

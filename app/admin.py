@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import Video, VideoComment, Post, PostComment
+from app.models import Video, VideoComment, Post, PostComment, Banner
 # Register your models here.
 
 @admin.register(Video)
@@ -29,3 +29,9 @@ class PostCommentAdmin(admin.ModelAdmin):
     list_filter = ('created_on',)
     date_hierarchy = 'created_on'
     search_fields = ('author', 'body')
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('active', 'created_on')
+    list_filter = ('created_on',)
+    date_hierarchy = 'created_on'

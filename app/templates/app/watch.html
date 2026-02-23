@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% load markdown_extras %}
+{% load markdown_extras dict_extras %}
 {% block title %}YubTub: {{ videos.title }}{% endblock title %}
 
 {% block page_content %}
 <h1>{{ videos.title }}</h1>
-Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}</a>
+Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videoAuthor }}</a>
 <div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
   <source src="{{ videos.video_file.url }}" type="video/mp4">
@@ -35,7 +35,7 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videos.author }}
 <h3>Comments:</h3>
 {% for comment in comments %}
 <p>
-    On {{ comment.created_on.date }}, at {{ comment.created_on.time }} <b>{{ comment.author }}</b> wrote: 
+    On {{ comment.created_on.date }}, at {{ comment.created_on.time }} <b>{{ authors | get_item:comment.author }}</b> wrote: 
     <div style="margin-left: 25px;">
 		{% if comment.author.username == "admin" %}
     		{{ comment.body | markdown | linebreaks }}
