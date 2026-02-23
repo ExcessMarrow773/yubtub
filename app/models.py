@@ -175,3 +175,11 @@ class PostComment(models.Model):
         valid_users = User.objects.filter(username__in=mentioned_usernames)
         return list(valid_users.values_list('username', flat=True))
 
+class Banner(models.Model):
+    message = models.TextField()
+    active = models.BooleanField(default=True)
+    created_by = models.CharField(max_length=150, default='system')
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.message[:50]

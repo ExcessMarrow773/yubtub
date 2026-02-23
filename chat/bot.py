@@ -179,6 +179,46 @@ def command(body, from_user):
 
 						except IndexError as e:
 							msg = 'Be sure to add the type, id, and body'
+		case 'banner':
+			if not hasattr(from_user, 'is_staff') or not from_user.is_staff:
+				msg = 'You do not have permission to manage banners.'
+			elif len(commandArgs) == 1:
+				msg = 'Usage: !banner:add|<message>, !banner:list, !banner:remove|<id>, !banner:clear'
+			else:
+				from app.models import Banner
+				match commandArgs[1]:
+					case s if s.startswith('add'):
+						try:
+							text = commandArgs[1].split(inputChar)[1]
+							Banner.objects.create(message=text, created_by=from_user.username)
+							msg = f'Banner added: "{text}"'
+						except IndexError:
+							msg = 'Usage: !banner:add|<your message here>'
+
+					case 'list':
+						banners = Banner.objects.filter(active=True)
+						if banners.exists():
+							items = [f'[{b.id}] {b.message[:40]}' for b in banners]
+							msg = 'Active banners:\n' + '\n'.join(items)
+						else:
+							msg = 'No active banners.'
+
+					case s if s.startswith('remove'):
+						try:
+							banner_id = commandArgs[1].split(inputChar)[1]
+							banner = Banner.objects.get(id=banner_id)
+							banner.delete()
+							msg = f'Banner [{banner_id}] removed.'
+						except (IndexError, Banner.DoesNotExist):
+							msg = f'Banner not found. Use !banner:list to see IDs.'
+
+					case 'clear':
+						count = Banner.objects.filter(active=True).count()
+						Banner.objects.all().delete()
+						msg = f'Cleared {count} banner(s).'
+
+					case _:
+						msg = 'Unknown banner command. Try !banner:list'
 
 		case _:
 			msg = 'You can use the ! character to run commands'

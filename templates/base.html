@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="toast-container"></div>
-    
+
 <div class="navbar">
     <h1>
         <a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
@@ -52,6 +52,16 @@
     </navbar-buttons>
     {% endif %}
 </div>
+{% if banners %}
+<div class="banner-track-wrapper">
+    <div class="banner-track" id="bannerTrack">
+        {% for banner in banners %}
+            <span class="banner-item">{{ banner.message }}</span>
+            <span class="banner-sep">✦</span>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
     {% block page_content %}
     {% endblock page_content %}
 </body>

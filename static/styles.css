@@ -417,3 +417,38 @@ msg .timestamp {
   letter-spacing: 0.08em;
   opacity: 0.9;
 }
+
+/* ── Scrolling banner ───────────────────────────────────────── */
+.banner-track-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--accent);
+    color: var(--accent-text);
+    padding: 0.3rem 0;
+    margin-bottom: 1rem;
+    border-radius: var(--radius);
+}
+
+.banner-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: scroll-banner 20s linear infinite;
+}
+
+.banner-track:hover {
+    animation-play-state: paused;
+}
+
+.banner-item {
+    padding: 0 2rem;
+    font-weight: 600;
+}
+
+.banner-sep {
+    opacity: 0.6;
+}
+
+@keyframes scroll-banner {
+    from { transform: translateX(100vw); }
+    to   { transform: translateX(-100%); }
+}
