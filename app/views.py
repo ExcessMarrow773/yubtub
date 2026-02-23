@@ -22,6 +22,9 @@ import json
 User = get_user_model()
 # Create your views here.
 
+def getUserFromID(id):
+    User.objects.get(id=id)
+
 def index(request):
     user_videos = Video.objects.order_by('-created_on')
     user_posts = Post.objects.order_by('-created_on')
@@ -33,8 +36,14 @@ def index(request):
         reverse=True
     )
 
+    authors = {}
+    for i in combined:
+        user = User.objects.get(id=i.author).username
+        authors[i.author] = user
+        
     context = {
         'combined': combined,
+        'authors': authors,
     }
     return render(request, 'index.html', context)
 
@@ -59,7 +68,7 @@ def postVideo(request):
         form = PostVideo(request.POST, request.FILES)
         if form.is_valid():
             video = Video(
-                author=request.user.username,
+                author=request.user.pk,
                 title=form.cleaned_data["title"],
                 description=form.cleaned_data["description"],
                 thumbnail=form.cleaned_data["thumbnail"],
@@ -116,9 +125,9 @@ def watchVideo(request, pk):
 
     return render(request, 'watch.html', context)
 
-def account(request, username):
-    user_videos = Video.objects.filter(author=username).order_by('-created_on')
-    user_posts = Post.objects.filter(author=username).order_by('-created_on')
+def account(request, pk):
+    user_videos = Video.objects.filter(author=pk).order_by('-created_on')
+    user_posts = Post.objects.filter(author=pk).order_by('-created_on')
 
     # Combine and sort by created_on
     combined = sorted(
@@ -134,12 +143,12 @@ def account(request, username):
     following_names = []
     for i in following:
         following_names.append(i.username)
-
+    user = get_object_or_404(User, id=pk)
     context = {
         'combined': combined,
-        'username': username,
-        'isUsersAccount': username == request.user.username,
-        'followingUser': username in following_names,
+        'username': user,
+        'isUsersAccount': user.username == request.user.username,
+        'followingUser': user.username in following_names,
         'user': request.user
     }
     return render(request, 'app/account.html', context)
@@ -165,7 +174,7 @@ def makePost(request):
         form = CreatePost(request.POST, request.FILES)
         if form.is_valid():
             post = Post(
-                author=request.user.username,
+                author=request.user.pk,
                 title=form.cleaned_data["title"],
                 body=form.cleaned_data["body"],
                 images=form.cleaned_data["images"],

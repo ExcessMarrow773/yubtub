@@ -13,7 +13,7 @@ import re
 User = get_user_model()
 
 class Video(models.Model):
-    author = models.CharField(max_length=100, default='admin')
+    author = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
     description = models.TextField(default='', null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -122,7 +122,7 @@ class VideoComment(models.Model):
         return list(valid_users.values_list('username', flat=True))
 
 class Post(models.Model):
-    author = models.CharField(max_length=100, default='admin')
+    author = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
