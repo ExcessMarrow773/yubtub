@@ -1,109 +1,82 @@
+# ...existing code...
 import os
 import django
+import sys
 
 # Set the DJANGO_SETTINGS_MODULE environment variable
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yubutb.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yubtub.settings")
 
 # Initialize Django
 django.setup()
 
-# Now you can import and use your Django models and other components
 from app.models import Video, Post, VideoComment, PostComment
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Your script logic goes here
-def videoMigrate():
-    videoCount = Video.objects.count()
-    videos = Video.objects.all()
-    videoAuthors = []
+def fix_model_authors(model, field_name='author', do_commit=False):
+    qs = model.objects.all()
+    total = qs.count()
+    print(f"Processing {model.__name__}: {total} records")
+    changed = 0
 
-    for i in range(videoCount):
-        video = videos[i]
-        videoAuthors.append(video.author)
-    print(videoAuthors)
+    for obj in qs:
+        current = getattr(obj, field_name)
+        # Skip if already an int and matches a user id
+        if isinstance(current, int):
+            # if it's an int but not a valid user id, try to resolve via string
+            try:
+                User.objects.get(id=current)
+                continue
+            except Exception:
+                pass
 
-    videoAuthorID = []
-    
-    for i in videoAuthors:
-        videoAuthorID.append(User.objects.get(username=i).id)
+        username = str(current).strip()
+        if not username:
+            continue
 
-    print(videoAuthorID)
+        # If username looks like a numeric id string, try to convert
+        if username.isdigit():
+            try:
+                user = User.objects.get(id=int(username))
+                setattr(obj, field_name, user.id)
+                if do_commit:
+                    obj.save()
+                changed += 1
+                continue
+            except User.DoesNotExist:
+                # fall through to try username lookup
+                pass
 
-    for i in range(videoCount):
-        video = videos[i]
-        video.author=videoAuthorID[i]
-        video.save()
+        try:
+            user = User.objects.get(username=username)
+            setattr(obj, field_name, user.id)
+            if do_commit:
+                obj.save()
+            changed += 1
+        except User.DoesNotExist:
+            print(f"  No matching user for '{username}' (model={model.__name__}, pk={obj.pk})")
+        except Exception as e:
+            print(f"  Error for pk={obj.pk}: {e}")
 
-def postMigrate():
-    postCount = Post.objects.count()
-    posts = Post.objects.all()
-    postAuthors = []
+    print(f"Finished {model.__name__}: changed {changed} records\n")
+    return changed
 
-    for i in range(postCount):
-        post = posts[i]
-        postAuthors.append(post.author)
-    print(postAuthors)
-
-    postAuthorID = []
-
-    for i in postAuthors:
-        postAuthorID.append(User.objects.get(username=i).id)
-
-    print(postAuthorID)
-
-    for i in range(postCount):
-        post = posts[i]
-        post.author=postAuthorID[i]
-        post.save()
-
-def videoCommentMigrate():
-    commentCount = VideoComment.objects.count()
-    comments = VideoComment.objects.all()
-    commentAuthors = []
-
-    for i in range(commentCount):
-        comment = comments[i]
-        commentAuthors.append(comment.author)
-    print(commentAuthors)
-
-    commentAuthorID = []
-
-    for i in commentAuthors:
-        commentAuthorID.append(User.objects.get(username=i).id)
-
-    print(commentAuthorID)
-
-    for i in range(commentCount):
-        comment = comments[i]
-        comment.author=commentAuthorID[i]
-        comment.save()
-
-def postCommentMigrate():
-    commentCount = PostComment.objects.count()
-    comments = PostComment.objects.all()
-    commentAuthors = []
-
-    for i in range(commentCount):
-        comment = comments[i]
-        commentAuthors.append(comment.author)
-    print(commentAuthors)
-
-    commentAuthorID = []
-
-    for i in commentAuthors:
-        commentAuthorID.append(User.objects.get(username=i).id)
-
-    print(commentAuthorID)
-
-    for i in range(commentCount):
-        comment = comments[i]
-        comment.author=commentAuthorID[i]
-        comment.save()
+def run_all(commit=False):
+    print("START author -> user id migration")
+    for mdl in (Video, Post, VideoComment, PostComment):
+        fix_model_authors(mdl, 'author', do_commit=commit)
+    print("DONE")
 
 if __name__ == "__main__":
-    # videoMigrate()
-    # postMigrate()
-    # videoCommentMigrate()
-    postCommentMigrate()
+    commit_flag = False
+    if len(sys.argv) > 1 and sys.argv[1].lower() in ("commit", "apply", "yes"):
+        commit_flag = True
+
+    if commit_flag:
+        print("Running in COMMIT mode (changes will be saved).")
+    else:
+        print("Running in DRY-RUN mode (no changes saved). Use: python migrate.py commit")
+
+    run_all(commit=commit_flag)
+# ...existing code...
