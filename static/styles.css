@@ -420,13 +420,18 @@ msg .timestamp {
 
 /* ── Scrolling banner ───────────────────────────────────────── */
 .banner-track-wrapper {
-    width: 100%;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
     overflow: hidden;
-    background-color: var(--accent);
-    color: var(--accent-text);
-    padding: 0.3rem 0;
+    background-color: #f5c800;  /* yellow */
+    color: #000;
+    padding: 0.4rem 0;
     margin-bottom: 1rem;
-    border-radius: var(--radius);
+    /* removed border-radius so it bleeds edge to edge */
 }
 
 .banner-track {
@@ -442,10 +447,12 @@ msg .timestamp {
 .banner-item {
     padding: 0 2rem;
     font-weight: 600;
+    color: #000;
 }
 
 .banner-sep {
     opacity: 0.6;
+    color: #000;
 }
 
 @keyframes scroll-banner {
