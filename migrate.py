@@ -1,20 +1,24 @@
-# ...existing code...
 import os
 import django
 import sys
 
-# Set the DJANGO_SETTINGS_MODULE environment variable
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yubtub.settings")
-
-# Initialize Django
 django.setup()
 
 from app.models import Video, Post, VideoComment, PostComment
+from bugs.models import BugReport
+from chat.models import Message
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+ANONYMOUS_SENTINELS = {'anonymoususer', 'anonymous', '', 'system'}
+
 def fix_model_authors(model, field_name='author', do_commit=False):
+    """
+    Converts CharField author fields (usernames) to integer user IDs.
+    Skips anonymous/system entries and records that are already valid IDs.
+    """
     qs = model.objects.all()
     total = qs.count()
     print(f"Processing {model.__name__}: {total} records")
@@ -22,32 +26,35 @@ def fix_model_authors(model, field_name='author', do_commit=False):
 
     for obj in qs:
         current = getattr(obj, field_name)
-        # Skip if already an int and matches a user id
+
+        # Already a valid integer user ID — skip
         if isinstance(current, int):
-            # if it's an int but not a valid user id, try to resolve via string
             try:
                 User.objects.get(id=current)
                 continue
-            except Exception:
-                pass
+            except User.DoesNotExist:
+                pass  # fall through and try to resolve it
 
         username = str(current).strip()
-        if not username:
+
+        # Skip sentinels like AnonymousUser (common in BugReport)
+        if username.lower() in ANONYMOUS_SENTINELS:
+            print(f"  Skipping sentinel '{username}' (model={model.__name__}, pk={obj.pk})")
             continue
 
-        # If username looks like a numeric id string, try to convert
+        # Already a numeric string — try resolving as an ID first
         if username.isdigit():
             try:
-                user = User.objects.get(id=int(username))
-                setattr(obj, field_name, user.id)
+                User.objects.get(id=int(username))
+                setattr(obj, field_name, int(username))
                 if do_commit:
                     obj.save()
                 changed += 1
                 continue
             except User.DoesNotExist:
-                # fall through to try username lookup
-                pass
+                pass  # fall through to username lookup
 
+        # Standard username -> ID lookup
         try:
             user = User.objects.get(username=username)
             setattr(obj, field_name, user.id)
@@ -62,11 +69,55 @@ def fix_model_authors(model, field_name='author', do_commit=False):
     print(f"Finished {model.__name__}: changed {changed} records\n")
     return changed
 
+
+def fix_message_fks(do_commit=False):
+    """
+    Messages use real FK fields (from_user, to_user) that already point to
+    User objects, so there's no username->ID conversion needed.
+    This just validates that all FK references are still intact and reports
+    any broken ones (e.g. from deleted users).
+    """
+    qs = Message.objects.all()
+    total = qs.count()
+    print(f"Processing Message: {total} records (FK validation only)")
+    broken = 0
+
+    for msg in qs:
+        issues = []
+        try:
+            _ = msg.from_user
+        except Exception:
+            issues.append('from_user')
+        try:
+            _ = msg.to_user
+        except Exception:
+            issues.append('to_user')
+
+        if issues:
+            broken += 1
+            print(f"  Broken FK(s) {issues} on Message pk={msg.pk}")
+
+    if broken == 0:
+        print(f"  All Message FK references are valid.")
+    else:
+        print(f"  Found {broken} broken Message record(s) — delete them manually or reassign.")
+
+    print(f"Finished Message\n")
+    return broken
+
+
 def run_all(commit=False):
-    print("START author -> user id migration")
-    for mdl in (Video, Post, VideoComment, PostComment):
+    print("START author -> user id migration\n")
+
+    # CharField author fields — convert username -> user ID
+    for mdl in (Video, Post, VideoComment, PostComment, BugReport):
         fix_model_authors(mdl, 'author', do_commit=commit)
+
+    # Message FKs — validate only, no conversion needed
+    fix_message_fks(do_commit=commit)
+
     print("DONE")
+
 
 if __name__ == "__main__":
     commit_flag = False
@@ -78,5 +129,5 @@ if __name__ == "__main__":
     else:
         print("Running in DRY-RUN mode (no changes saved). Use: python migrate.py commit")
 
+    print()
     run_all(commit=commit_flag)
-# ...existing code...
