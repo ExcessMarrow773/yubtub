@@ -77,13 +77,13 @@ function followUser() {
     });
 }
 
-function resolveBug() {
+function resolveBug(bug) {
     const resolveButton = document.getElementById("resolve-button");
-    const bug = resolveButton.dataset.bug;
+    
 
     console.log(bug);
 
-    fetch('/bug/resolve-bug/', {
+    fetch('/bug/resolve/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

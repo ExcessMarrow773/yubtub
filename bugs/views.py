@@ -92,7 +92,9 @@ def resolveBug(request):
 
 	if bug.resolved:
 		bug.resolved = False
+		bug.save()
 		return JsonResponse({'message': 'Opened bug'})
 	else:
 		bug.resolved = True
+		bug.save()
 		return JsonResponse({'message': 'Bug Resolved'})
