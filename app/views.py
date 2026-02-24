@@ -103,7 +103,6 @@ def watchVideo(request, pk):
             user = User.objects.get(username=request.user.username)
             comment = VideoComment(
                 author=user.id,
-                author=request.user.username,
                 body=form.cleaned_data["body"],
                 video=videos
             )
