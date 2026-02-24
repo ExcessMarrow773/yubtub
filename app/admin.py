@@ -32,6 +32,6 @@ class PostCommentAdmin(admin.ModelAdmin):
 
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ('active', 'created_on')
+    list_display = ('message','active', 'created_on')
     list_filter = ('created_on',)
     date_hierarchy = 'created_on'
