@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-ANONYMOUS_SENTINELS = {'anonymoususer', 'anonymous', '', 'system'}
+ANONYMOUS_SENTINELS = {'anonymous', '', 'system'}
 
 def fix_model_authors(model, field_name='author', do_commit=False):
     """
@@ -62,7 +62,13 @@ def fix_model_authors(model, field_name='author', do_commit=False):
                 obj.save()
             changed += 1
         except User.DoesNotExist:
-            print(f"  No matching user for '{username}' (model={model.__name__}, pk={obj.pk})")
+            if username == 'AnonymousUser':
+                setattr(obj, field_name, 1)
+                if do_commit:
+                    obj.save()
+                changed += 1
+            else:
+                print(f"  No matching user for '{username}' (model={model.__name__}, pk={obj.pk})")
         except Exception as e:
             print(f"  Error for pk={obj.pk}: {e}")
 

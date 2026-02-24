@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_truncate %}
+{% load markdown_truncate dict_extras %}
 
 {% block title %}YubTub - Bugs{% endblock title %}
 
@@ -9,7 +9,7 @@
 <div class="video-grid" id="bugs">
     {% for bug in bugs %}
         <div class="post-card">
-            <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ bug.author }}</u></div>
+            <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ authors | get_item:bug.author }}</u></div>
 
             <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
@@ -27,7 +27,7 @@
 <div class="video-grid" id="resolvedBugs">
     {% for bug in resolvedBugs %}
         <div class="post-card">
-            <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ bug.author }}</u></div>
+            <div class="post-card-label">{{ bug.get_type_display }} - <u>{{ authors | get_item:bug.author }}</u></div>
 
             <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
