@@ -31,7 +31,7 @@ SECRET_KEY = 'Ay|nBe8~ha/,TnLroK<>x7`bXq,.&c|e3-*pt$7+e43r-jwwoqmw_^*#g47)fr$&2)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == 'True'
-DEBUG = True
+#DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.199', '192.168.68.120', '192.168.68.134', 'raspberrypi.local', 'yeti.local', '187.77.203.207', 'atticusfw.dev']
 
 CSRF_TRUSTED_ORIGINS=[]

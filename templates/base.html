@@ -52,7 +52,7 @@
     </navbar-buttons>
     {% endif %}
 </div>
-{% comment %} {% if banners %}
+{% if banners %}
 <div class="banner-track-wrapper">
     <div class="banner-track" id="bannerTrack">
         {% for banner in banners %}
@@ -61,7 +61,7 @@
         {% endfor %}
     </div>
 </div>
-{% endif %} {% endcomment %}
+{% endif %}
     {% block page_content %}
     {% endblock page_content %}
 </body>
