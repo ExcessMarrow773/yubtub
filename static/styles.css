@@ -26,7 +26,6 @@
 /* ── Reset / Base ───────────────────────────────────────────── */
 *, *::before, *::after { 
 	box-sizing: border-box;
-	background-image: url("https://www.milkywayidle.com/static/media/background.92b38e14.svg")
 }
 
 html {

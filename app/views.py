@@ -87,10 +87,11 @@ def postVideo(request):
 def watchVideo(request, pk):
     videos = get_object_or_404(Video, pk=pk)
     likes = videos.likes
+    user = get_object_or_404(User, id=request.user.id)
     if request.user.is_authenticated:
         print("Authenticated")
-        if not (request.user in videos.viewedUsers.all()):
-            videos.viewedUsers.add(request.user)
+        if not (user in videos.viewedUsers.all()):
+            videos.viewedUsers.add(user)
             videos.views += 1
     else:
         print("Not Authenticated")
