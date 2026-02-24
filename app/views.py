@@ -100,7 +100,9 @@ def watchVideo(request, pk):
     if request.method == "POST":
         form = VideoCommentForm(request.POST)
         if form.is_valid():
+            user = User.objects.get(username=request.user.username)
             comment = VideoComment(
+                author=user.id,
                 author=request.user.username,
                 body=form.cleaned_data["body"],
                 video=videos
@@ -209,8 +211,9 @@ def viewPost(request, pk):
     if request.method == "POST":
         form = PostCommentForm(request.POST)
         if form.is_valid():
+            user = User.objects.get(username=request.user.username)
             comment = PostComment(
-                author=request.user.username,
+                author=user.id,
                 body=form.cleaned_data["body"],
                 post=post,
             )
