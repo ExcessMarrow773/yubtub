@@ -22,9 +22,9 @@ def bug_report(request):
         form = BugReportForm(request.POST)
         if form.is_valid():
             if not request.user.is_authenticated:
-                username='AnonymousUser'
+                username=1
             else:
-                username=request.user.username
+                username=request.user.id
             bug = BugReport(
                 author=username,
                 title=form.cleaned_data["title"],
