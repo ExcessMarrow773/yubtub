@@ -1,47 +1,50 @@
 {% extends 'base.html' %}
-{% load markdown_truncate %}
+{% load markdown_truncate dict_extras %}
 {% block page_content %}
 	<h1>People you Follow</h1>
 	<ul>
 	{% for account in following %}
-		<li><a href="{% url 'app:account' account.username %}">{{ account.username }}</a></li>
+		<li><a href="{% url 'app:account' account.id %}">{{ account.username }}</a></li>
 	{% endfor %}
 	</ul>
 
 	<h1>Videos from people you follow</h1>
-	{% if videos %}
-	        {% for video in videos %}
-	            <div style="display: flex">
-				<a href="{% url 'app:watch' video.id %}">
-	                <img src="{{ video.thumbnail.url }}" alt="Thumbnail" width="200" height="150"><br>
-	            </a>
-	            <p>{{ video.description | markdown_truncate:100 | linebreaks }}</p>
-	            </div> 
-	            <small>
-					<a href="{% url 'app:account' video.author %}">{{ video.author }}</a> Uploaded "{{ video.title }}" on: {{ video.created_on }}<br><br>
-	            </small>
-	            
-	        {% endfor %}
-	        
-	{% else %}
-        	<p>No videos available.</p>
-        {% endif %}
+{% if combined %}
+    <div class="video-grid">
+        {% for thing in combined %}
 
-        <h1>Posts from people you follow</h1>
-	    {% if posts %}
-	    <ul>
-        	{% for post in posts %}
-        	<li>
-				<h1><a href="{% url 'app:post' post.pk %}">{{ post.author }} posted: {{ post.title }}</a></h1>
-	            <small>
-	                {{ post.created_on.date }}
-	            </small>
-	        </li>
-	        {% endfor %}
-	    </ul>
-	    {% else %}
-	        <p>No posts available.</p>
-	    {% endif %}
+            {% if thing.type == "video" %}
+                <div class="video-card">
+                    <a href="{% url 'app:watch' thing.id %}">
+                        <img src="{{ thing.thumbnail.url }}" alt="Thumbnail">
+                    </a>
+                    <div class="video-card-info">
+                        <strong>{{ thing.title }}</strong>
+                        <small>
+                            <a href="{% url 'app:account' thing.author %}">{{ authors | get_item:thing.author }}</a>
+                            · {{ thing.created_on }}
+                        </small>
+                    </div> 
+                </div>
+
+            {% elif thing.type == "post" %}
+                <div class="post-card">
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ authors | get_item:thing.author }}</a></u></div>
+                    
+                    <a href="{% url 'app:post' thing.pk %}">
+                        <strong>{{ thing.title }}</strong>
+                    </a>
+                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <small>{{ thing.created_on }}</small>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Nothing posted yet.</p>
+{% endif %}
 {% endblock page_content %}
 
 {% block extra_navbar %}

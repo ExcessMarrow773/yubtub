@@ -77,7 +77,7 @@ function followUser() {
     });
 }
 
-function resolveBug(bug) {
+function resolveBug(bug, link) {
     const resolveButton = document.getElementById("resolve-button");
     
 
@@ -102,6 +102,7 @@ function resolveBug(bug) {
 
         if (status === 200) {
             showToast("success", data.message);
+            window.location.replace(link);
         } else {
             showToast("error", data.message);
         }
