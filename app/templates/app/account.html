@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load markdown_truncate markdown_extras %}
+{% load markdown_truncate markdown_extras dict_extras %}
 
 {% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
@@ -42,7 +42,7 @@
                     <div class="video-card-info">
                         <strong>{{ thing.title }}</strong>
                         <small>
-                            <a href="{% url 'app:account' thing.author %}">{{ thing.author }}</a>
+                            <a href="{% url 'app:account' thing.author %}">{{ authors | get_item:thing.author }}</a>
                             · {{ thing.created_on }}
                         </small>
                     </div> 
@@ -50,7 +50,7 @@
 
             {% elif thing.type == "post" %}
                 <div class="post-card">
-                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ thing.author }}</a></u></div>
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ authors | get_item:thing.author }}</a></u></div>
                     
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>

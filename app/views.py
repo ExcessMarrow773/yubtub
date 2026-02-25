@@ -156,9 +156,16 @@ def account(request, pk):
     for i in following:
         following_names.append(i.username)
     user = get_object_or_404(User, id=pk)
+
+    authors = {}
+    for i in combined:
+        useracc = User.objects.get(id=i.author).username
+        authors[i.author] = useracc
+    
     context = {
         'combined': combined,
         'username': user,
+        'authors': authors,
         'isUsersAccount': user.username == request.user.username,
         'followingUser': user.username in following_names,
         'user': request.user
@@ -265,7 +272,6 @@ def EconProject(request):
     return render(request, "app/mdHelp.html", context)
 
 def following(request):
-
 	user = get_object_or_404(User, username=request.user.username)
 	following = user.following.all()
 	print(following)
