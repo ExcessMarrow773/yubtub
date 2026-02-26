@@ -166,7 +166,11 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/yubtubMedia/'
+
+if dbOnline:
+    MEDIA_URL = 'https://atticusfw.dev/yubtubMedia/'
+else:
+    MEDIA_URL = '/yubtubMedia/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
