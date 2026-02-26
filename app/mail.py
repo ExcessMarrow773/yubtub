@@ -11,9 +11,10 @@ def email_deamon(email):
 	print("Sending email in Deamon")
 	email.send()
 
-def mention_email(user, message, type):
+def mention_email(user, message, type, url="https://atticusfw.dev"):
 	context = {
-		"message": message
+		"message": message,
+		"url": url
 	}
 	html_content = render_to_string('mail/mention.html', context)
 	user = [*user]
