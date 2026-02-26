@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.db.utils import ProgrammingError
 
 from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
 from app.models import Video, VideoComment, Post, PostComment
@@ -85,17 +86,19 @@ def postVideo(request):
     return render(request, 'createVideo.html', {'form': form})
 
 def watchVideo(request, pk):
-    videos = get_object_or_404(Video, pk=pk)
-    likes = videos.likes
-    user = get_object_or_404(User, id=request.user.id)
+    video = get_object_or_404(Video, pk=pk)
+    likes = video.likes
     if request.user.is_authenticated:
         print("Authenticated")
-        if not (user in videos.viewedUsers.all()):
-            videos.viewedUsers.add(user)
-            videos.views += 1
+        try:
+            if not (request.user.id in video.viewedUsers.all()):
+                video.viewedUsers.add(user)
+                video.views += 1
+                video.save()
+        except ProgrammingError as e:
+            print(e)
     else:
         print("Not Authenticated")
-    videos.save()
 
     if request.method == "POST":
         form = VideoCommentForm(request.POST)
@@ -115,17 +118,17 @@ def watchVideo(request, pk):
     else:
         form = VideoCommentForm()
 
-    comments = VideoComment.objects.filter(video=videos).order_by("-created_on")
+    comments = VideoComment.objects.filter(video=video).order_by("-created_on")
 
     authors = {}
     for i in comments:
         user = User.objects.get(id=i.author).username
         authors[i.author] = user
 
-    videoAuthor = User.objects.get(id=videos.author).username
+    videoAuthor = User.objects.get(id=video.author).username
 
     context = {
-        'videos': videos,
+        'videos': video,
         'pk': pk,
         'comments': comments,
         'likes': likes,
