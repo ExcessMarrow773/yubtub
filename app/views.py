@@ -107,7 +107,7 @@ def watchVideo(request, pk):
             comment = VideoComment(
                 author=user.id,
                 body=form.cleaned_data["body"],
-                video=videos
+                video=video
             )
             comment.save()
 
@@ -216,6 +216,7 @@ def makePost(request):
 def viewPost(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form = PostCommentForm()
+    url = request.build_absolute_uri()
 
     if request.method == "POST":
         form = PostCommentForm(request.POST)
@@ -230,7 +231,7 @@ def viewPost(request, pk):
 
             mentions = comment.get_valid_mentions()
             if mentions:
-                mail.mention_email(mentions, comment, 'message')
+                mail.mention_email(mentions, comment, 'message', url=url)
                 print(f"Mentioned users: {mentions}")
 
             return HttpResponseRedirect(request.path_info)
