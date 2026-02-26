@@ -1,7 +1,7 @@
 {% extends "css.html" %}
 {% load static %}
 {% block extra_static %}
-<script src={% static "jsTests/script.js" %}></script>
+{% comment %} <script src={% static "jsTests/script.js" %}></script> {% endcomment %}
 
 <script defer="" src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
@@ -15,7 +15,6 @@
     snowDiv.style.width = "100%";
     snowDiv.style.height = "100%";
     snowDiv.style.pointerEvents = "none"; 
-    snowDiv.style.zIndex = "9999";
     snowDiv.style.overflow = "hidden";
     document.body.appendChild(snowDiv);
 
@@ -56,5 +55,5 @@
 {% endblock extra_static %}
 
 {% block page_content %}
-<canvas width="750" height="585" id="game" style='margin-left: auto; margin-right: auto;'></canvas>
+<h1>Hello?</h1>
 {% endblock page_content %}
