@@ -167,7 +167,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if dbOnline:
+if dbOnline and SQLIP != "127.0.0.1":
     MEDIA_URL = 'https://atticusfw.dev/yubtubMedia/'
 else:
     MEDIA_URL = '/yubtubMedia/'
