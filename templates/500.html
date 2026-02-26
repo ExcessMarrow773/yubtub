@@ -11,5 +11,11 @@
 	<h4>Internal Server Error<br><a class="button" href="{% url 'app:index' %}">Head on back to the Homepage</a></h4>
 	<a class="button" href="{% url 'bugs:bugReport' %}"><b>Submit a bug report.</b></a><br><br>
 	<small>If you are not logged in, that might help</small>
+
+	<details>
+		<summary>Error</summary>
+		<p>{{ error }}</p>
+	</details>
+
 </div>
 {% endblock %}
