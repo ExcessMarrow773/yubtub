@@ -21,13 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SQLPASS = os.getenv("SQLPASS", None)
 SQLIP = os.getenv("SQLIP")
-dbOnline = os.getenv("ONLINE", False)
-
+dbOnline = os.getenv("ONLINE", False) == "True"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'Ay|nBe8~ha/,TnLroK<>x7`bXq,.&c|e3-*pt$7+e43r-jwwoqmw_^*#g47)fr$&2)!(f2*awn!%u0qr6@'
+SECRET_KEY = os.getenv("KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == 'True'
@@ -97,6 +96,7 @@ WSGI_APPLICATION = 'yubtub.wsgi.application'
 
 
 if dbOnline == False:
+    print("DB offline")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -104,7 +104,9 @@ if dbOnline == False:
         }
     }
 
-else:
+elif dbOnline == True:
+    print("DB online")
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
