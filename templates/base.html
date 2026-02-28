@@ -1,69 +1,122 @@
 <DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {% block title %}YubTub{% endblock title %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <script src="{% static 'script.js' %}"></script>
-    {% block extra_head %}{% endblock %}
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> {% block title %}YubTub{% endblock title %}</title>
+	<link rel="stylesheet" href="{% static 'styles.css' %}">
+	<script src="{% static 'script.js' %}"></script>
+
+	{% if false %}
+
+	<script defer="" src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		var snowDiv = document.createElement("div");
+		snowDiv.id = "snow-container";
+		snowDiv.style.position = "fixed";
+		snowDiv.style.top = "0";
+		snowDiv.style.left = "0";
+		snowDiv.style.width = "100%";
+		snowDiv.style.height = "100%";
+		snowDiv.style.pointerEvents = "none"; 
+		snowDiv.style.zIndex = "0";
+		snowDiv.style.overflow = "hidden";
+		document.body.appendChild(snowDiv);
+	
+		particlesJS("snow-container", {
+		  particles: {
+			number: { value: 150, density: { enable: true, value_area: 800 } },
+			shape: { type: "circle" },
+			color: { value: "#fff" },
+			opacity: { value: 0.8, random: true },
+			size: { value: 2, random: true },
+			line_linked: { enable: false },
+			move: {
+			  enable: true,
+			  speed: 1.5,
+			  direction: "bottom",
+			  random: true,
+			  straight: false,
+			  out_mode: "out"
+			}
+		  },
+		  interactivity: {
+			events: { 
+			  onhover: { enable: false }, 
+			  onclick: { enable: false } 
+			}
+		  },
+		  retina_detect: true
+		});
+	
+		setTimeout(() => {
+		  const canvas = snowDiv.querySelector("canvas");
+		  if (canvas) canvas.style.pointerEvents = "none";
+		}, 500);
+	  });
+	</script>
+	{% endif %}
+	{% block extra_head %}{% endblock %}
 </head>
 <body>
+	
 <div id="toast-container"></div>
 
 <div class="navbar">
-    <h1>
-        <a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
-        {% block heading %}
+	<h1>
+		<a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
+		{% block heading %}
 
-        Welcome to <a class="button" href="{% url 'app:index' %}">YubTub</a> 
-        {% endblock heading %}
-    </h1>
-    {% if request.path == '/' or 'posts/' %} 
-    <a href="{% url 'app:TODO' %}">TODO</a> 
-    {% endif %}
-    
-    
-    {% if user.is_authenticated %}
-    {% if "/account/" in request.path and username.id == user.id %}
-    <div>
-        <a href="{% url 'app:postVideo' %}" class="button">Make A Video</a>
-        <a href="{% url 'app:makePost' %}" class="button">Make A Post</a>
-    </div>
-    {% endif %}
-    <navbar-buttons>
-        <form method="post" action="{% url 'app:logout' %}">
-            {% block extra_navbar %}{% endblock extra_navbar %}
-            {% if "/account/" not in request.path and username != user.username %}
-            <a id="name" class="button" href="{% url 'app:account' user.id %}">{{ user.username }}</a>
-            {% endif %}
-            {% csrf_token %}
-            <button class="a" type="submit">Logout</button>
-            {% if user.is_staff %}
-            <a class="button" href="/admin">Admin Site</a>
-            {% endif %}
-        </form>
-    </navbar-buttons>
-    {% else %}
-    <navbar-buttons>
-        <a class="button" href="{% url 'app:login' %}">Login</a>
-    <a class="button" href="{% url 'app:register' %}">Sign Up</a>
-    </navbar-buttons>
-    {% endif %}
+		Welcome to <a class="button" href="{% url 'app:index' %}">YubTub</a> 
+		{% endblock heading %}
+	</h1>
+	{% if request.path == '/' or 'posts/' %} 
+	<a href="{% url 'app:TODO' %}">TODO</a> 
+	{% endif %}
+	
+	
+	{% if user.is_authenticated %}
+	{% if "/account/" in request.path and username.id == user.id %}
+	<div>
+		<a href="{% url 'app:postVideo' %}" class="button">Make A Video</a>
+		<a href="{% url 'app:makePost' %}" class="button">Make A Post</a>
+	</div>
+	{% endif %}
+	<navbar-buttons>
+		<form method="post" action="{% url 'app:logout' %}">
+			{% block extra_navbar %}{% endblock extra_navbar %}
+			{% if "/account/" not in request.path and username != user.username %}
+			<a id="name" class="button" href="{% url 'app:account' user.id %}">{{ user.username }}</a>
+			{% endif %}
+			{% csrf_token %}
+			<button class="a" type="submit">Logout</button>
+			{% if user.is_staff %}
+			<a class="button" href="/admin">Admin Site</a>
+			{% endif %}
+		</form>
+	</navbar-buttons>
+	{% else %}
+	<navbar-buttons>
+		<a class="button" href="{% url 'app:login' %}">Login</a>
+	<a class="button" href="{% url 'app:register' %}">Sign Up</a>
+	</navbar-buttons>
+	{% endif %}
 </div>
 {% if banners %}
 <div class="banner-track-wrapper">
-    <div class="banner-track" id="bannerTrack">
-        {% for banner in banners %}
-            <span class="banner-item">{{ banner.message }}</span>
-            <span class="banner-sep">✦</span>
-        {% endfor %}
-    </div>
+	<div class="banner-track" id="bannerTrack">
+		{% for banner in banners %}
+			<span class="banner-item">{{ banner.message }}</span>
+			<span class="banner-sep">✦</span>
+		{% endfor %}
+	</div>
 </div>
 {% endif %}
-    {% block page_content %}
-    {% endblock page_content %}
+	{% block page_content %}
+	{% endblock page_content %}
 </body>
 
 </html>

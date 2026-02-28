@@ -13,6 +13,6 @@ def markdown_filter(value):
     rendered_template = Template(markdown_with_load).render(Context({}))
     html = markdown.markdown(
         rendered_template,
-        extensions=['fenced_code', 'attr_list']
+        extensions=['fenced_code', 'attr_list', 'nl2br']
     )
     return mark_safe(html)

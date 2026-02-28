@@ -41,12 +41,14 @@ body {
 }
 
 
+
 img, video {
   border-radius: var(--radius);
   /* max-width: 100%; */
   /* height: auto; */
   display: block;
   /* opacity: 0.8; */
+
 }
 
 video {
@@ -257,6 +259,7 @@ navbar-buttons.a {
   align-items: center;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
+
 }
 
 .toast.show          { opacity: 1; transform: translateY(0); }
@@ -293,6 +296,7 @@ msg {
   max-width: 75%;
   word-wrap: break-word;
   color: var(--accent-bg);
+
 }
 
 msg.from { align-self: flex-start; background: var(--accent-hover); border-top-left-radius: 0; }
@@ -348,12 +352,12 @@ msg .timestamp {
     height: 160px;
     object-fit: cover;
     border-radius: var(--radius);
-    opacity: 0.85;
+    filter: brightness(0.85);
     transition: opacity 0.2s ease;
 }
 
 .video-card img:hover {
-    opacity: 1;
+  filter: brightness(1.1);
 }
 
 .video-card-info {
@@ -381,6 +385,8 @@ msg .timestamp {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    position: relative;
+    z-index: 10;
 }
 
 .post-card strong {
@@ -409,6 +415,7 @@ msg .timestamp {
   display: block;
   width: fit-content;
   gap: 0.4rem;
+
 }
 
 .bug-card-label {
@@ -451,4 +458,9 @@ msg .timestamp {
 @keyframes scroll-banner {
     from { transform: translateX(100vw); }
     to   { transform: translateX(-100%); }
+}
+
+a, img, video, .video-card, .post-card, .bug-card, .banner-track-wrapper {
+  position: relative;
+  z-index: 10;
 }
