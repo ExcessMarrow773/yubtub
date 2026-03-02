@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load markdown_truncate dict_extras %}
 
-{% block title %}YubTub - Home{% endblock title %}
-
 
 {% block page_content %}
 <form action="{% url 'app:search' %}" method="get">
@@ -42,6 +40,7 @@
         {% endfor %}
     </div>
 {% else %}
-    <p>Nothing posted yet.</p>
+    <p>Nothing matching that search query.</p>
 {% endif %}
+
 {% endblock page_content %}

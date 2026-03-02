@@ -105,7 +105,7 @@ input:disabled, textarea:disabled, select:disabled {
 }
 
 /* ── Forms ──────────────────────────────────────────────────── */
-textarea, select, input {
+textarea, select, input{
   -webkit-appearance: none;
   appearance: none;
   color: var(--text);

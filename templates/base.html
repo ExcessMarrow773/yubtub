@@ -73,9 +73,6 @@
 		Welcome to <a class="button" href="{% url 'app:index' %}">YubTub</a> 
 		{% endblock heading %}
 	</h1>
-	{% if request.path == '/' or 'posts/' %} 
-	<a href="{% url 'app:TODO' %}">TODO</a> 
-	{% endif %}
 	
 	
 	{% if user.is_authenticated %}
@@ -85,6 +82,10 @@
 		<a href="{% url 'app:makePost' %}" class="button">Make A Post</a>
 	</div>
 	{% endif %}
+	{% if request.path == '/' %} 
+	<a href="{% url 'app:TODO' %}">TODO</a> 
+	{% endif %}		</form>
+
 	<navbar-buttons>
 		<form method="post" action="{% url 'app:logout' %}">
 			{% block extra_navbar %}{% endblock extra_navbar %}
