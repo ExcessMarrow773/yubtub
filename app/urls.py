@@ -17,6 +17,7 @@ urlpatterns = [
     path('TODO/', views.TODO, name='TODO'),
     path('cornhub/', views.cornhub, name='cornhub'),
     path('makePost/', views.makePost, name='makePost'),
+    path('search/', views.search, name='search'),
     path('post/<int:pk>/', views.viewPost, name='post'),
     path('mdHelp/', views.mdHelp, name='mdHelp'),
     path('EconProject/', views.EconProject, name="EconProject"),
