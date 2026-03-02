@@ -83,7 +83,11 @@ def postVideo(request):
     else:
         form = PostVideo()
 
-    return render(request, 'createVideo.html', {'form': form})
+    context = {
+        'form': form,
+        'uploadForm': None
+    }
+    return render(request, 'createVideo.html', context=context)
 
 def watchVideo(request, pk):
     video = get_object_or_404(Video, pk=pk)

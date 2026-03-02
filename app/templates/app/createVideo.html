@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% load static %}
-
+{% block extra_head %}
+    <script src="{% static 'app/upload.js' %}"></script>
+{% endblock %}
 {% block page_content %}
-<h1>Post Video</h1>
+<h1 id="title">Post Video</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
