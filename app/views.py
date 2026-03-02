@@ -93,7 +93,7 @@ def watchVideo(request, pk):
 		print("Authenticated")
 		try:
 			if not (request.user.id in video.viewedUsers.all()):
-				video.viewedUsers.add(user)
+				video.viewedUsers.add(request.user)
 				video.views += 1
 				video.save()
 		except ProgrammingError as e:
