@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.db.utils import ProgrammingError
+from django.db.models import Q
 
 from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
 from app.models import Video, VideoComment, Post, PostComment
@@ -24,236 +25,236 @@ User = get_user_model()
 # Create your views here.
 
 def getUserFromID(id):
-    User.objects.get(id=id)
+	User.objects.get(id=id)
 
 def index(request):
-    user_videos = Video.objects.order_by('-created_on')
-    user_posts = Post.objects.order_by('-created_on')
+	user_videos = Video.objects.order_by('-created_on')
+	user_posts = Post.objects.order_by('-created_on')
 
-    # Combine and sort by created_on
-    combined = sorted(
-        chain(user_videos, user_posts),
-        key=attrgetter('created_on'),
-        reverse=True
-    )
+	# Combine and sort by created_on
+	combined = sorted(
+		chain(user_videos, user_posts),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
 
-    authors = {}
-    for i in combined:
-        user = User.objects.get(id=i.author).username
-        authors[i.author] = user
-        
-    context = {
-        'combined': combined,
-        'authors': authors,
-    }
-    return render(request, 'index.html', context)
+	authors = {}
+	for i in combined:
+		user = User.objects.get(id=i.author).username
+		authors[i.author] = user
+		
+	context = {
+		'combined': combined,
+		'authors': authors,
+	}
+	return render(request, 'index.html', context)
 
 @csrf_exempt
 def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()         # important — saves hashed password
-            login(request, user)       # optional: log user in immediately
-            return redirect('app:index')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+	if request.method == 'POST':
+		form = CustomUserCreationForm(request.POST)
+		if form.is_valid():
+			user = form.save()         # important — saves hashed password
+			login(request, user)       # optional: log user in immediately
+			return redirect('app:index')
+	else:
+		form = CustomUserCreationForm()
+	return render(request, 'register.html', {'form': form})
 
 @login_required
 def postVideo(request):
-    if isVMuted(request) or isMuted(request):
-        return redirect('app:index')
+	if isVMuted(request) or isMuted(request):
+		return redirect('app:index')
 
-    if request.method == "POST":
-        form = PostVideo(request.POST, request.FILES)
-        if form.is_valid():
-            video = Video(
-                author=request.user.pk,
-                title=form.cleaned_data["title"],
-                description=form.cleaned_data["description"],
-                thumbnail=form.cleaned_data["thumbnail"],
-                video_file=form.cleaned_data["video_file"],
-            )
-            video.save()
-            mentions = video.get_valid_mentions()
-            if mentions:
-                mail.mention_email(mentions, video, 'desc')
-            return redirect('app:index')
-    else:
-        form = PostVideo()
+	if request.method == "POST":
+		form = PostVideo(request.POST, request.FILES)
+		if form.is_valid():
+			video = Video(
+				author=request.user.pk,
+				title=form.cleaned_data["title"],
+				description=form.cleaned_data["description"],
+				thumbnail=form.cleaned_data["thumbnail"],
+				video_file=form.cleaned_data["video_file"],
+			)
+			video.save()
+			mentions = video.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, video, 'desc')
+			return redirect('app:index')
+	else:
+		form = PostVideo()
 
-    return render(request, 'createVideo.html', {'form': form})
+	return render(request, 'createVideo.html', {'form': form})
 
 def watchVideo(request, pk):
-    video = get_object_or_404(Video, pk=pk)
-    likes = video.likes
-    if request.user.is_authenticated:
-        print("Authenticated")
-        try:
-            if not (request.user.id in video.viewedUsers.all()):
-                video.viewedUsers.add(user)
-                video.views += 1
-                video.save()
-        except ProgrammingError as e:
-            print(e)
-    else:
-        print("Not Authenticated")
+	video = get_object_or_404(Video, pk=pk)
+	likes = video.likes
+	if request.user.is_authenticated:
+		print("Authenticated")
+		try:
+			if not (request.user.id in video.viewedUsers.all()):
+				video.viewedUsers.add(user)
+				video.views += 1
+				video.save()
+		except ProgrammingError as e:
+			print(e)
+	else:
+		print("Not Authenticated")
 
-    if request.method == "POST":
-        form = VideoCommentForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(username=request.user.username)
-            comment = VideoComment(
-                author=user.id,
-                body=form.cleaned_data["body"],
-                video=video
-            )
-            comment.save()
+	if request.method == "POST":
+		form = VideoCommentForm(request.POST)
+		if form.is_valid():
+			user = User.objects.get(username=request.user.username)
+			comment = VideoComment(
+				author=user.id,
+				body=form.cleaned_data["body"],
+				video=video
+			)
+			comment.save()
 
-            mentions = comment.get_valid_mentions()
-            if mentions:
-                mail.mention_email(mentions, comment, 'message')
-                print(f"Mentioned users: {mentions}")
-    else:
-        form = VideoCommentForm()
+			mentions = comment.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, comment, 'message')
+				print(f"Mentioned users: {mentions}")
+	else:
+		form = VideoCommentForm()
 
-    comments = VideoComment.objects.filter(video=video).order_by("-created_on")
+	comments = VideoComment.objects.filter(video=video).order_by("-created_on")
 
-    authors = {}
-    for i in comments:
-        user = User.objects.get(id=i.author).username
-        authors[i.author] = user
+	authors = {}
+	for i in comments:
+		user = User.objects.get(id=i.author).username
+		authors[i.author] = user
 
-    videoAuthor = User.objects.get(id=video.author).username
+	videoAuthor = User.objects.get(id=video.author).username
 
-    context = {
-        'videos': video,
-        'pk': pk,
-        'comments': comments,
-        'likes': likes,
-        'form': form,
-        'muted': isMuted(request),
-        'authors': authors,
-        'videoAuthor': videoAuthor
-    }
+	context = {
+		'videos': video,
+		'pk': pk,
+		'comments': comments,
+		'likes': likes,
+		'form': form,
+		'muted': isMuted(request),
+		'authors': authors,
+		'videoAuthor': videoAuthor
+	}
 
-    return render(request, 'watch.html', context)
+	return render(request, 'watch.html', context)
 
 def account(request, pk):
-    user_videos = Video.objects.filter(author=pk).order_by('-created_on')
-    user_posts = Post.objects.filter(author=pk).order_by('-created_on')
+	user_videos = Video.objects.filter(author=pk).order_by('-created_on')
+	user_posts = Post.objects.filter(author=pk).order_by('-created_on')
 
-    # Combine and sort by created_on
-    combined = sorted(
-        chain(user_videos, user_posts),
-        key=attrgetter('created_on'),
-        reverse=True
-    )
-    if request.user.is_authenticated:
-        following = request.user.following.all()
-    else:
-        following = []
+	# Combine and sort by created_on
+	combined = sorted(
+		chain(user_videos, user_posts),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
+	if request.user.is_authenticated:
+		following = request.user.following.all()
+	else:
+		following = []
 
-    following_names = []
-    for i in following:
-        following_names.append(i.username)
-    user = get_object_or_404(User, id=pk)
+	following_names = []
+	for i in following:
+		following_names.append(i.username)
+	user = get_object_or_404(User, id=pk)
 
-    authors = {}
-    for i in combined:
-        useracc = User.objects.get(id=i.author).username
-        authors[i.author] = useracc
-    
-    context = {
-        'combined': combined,
-        'username': user,
-        'authors': authors,
-        'isUsersAccount': user.username == request.user.username,
-        'followingUser': user.username in following_names,
-        'user': request.user
-    }
-    return render(request, 'app/account.html', context)
+	authors = {}
+	for i in combined:
+		useracc = User.objects.get(id=i.author).username
+		authors[i.author] = useracc
+	
+	context = {
+		'combined': combined,
+		'username': user,
+		'authors': authors,
+		'isUsersAccount': user.username == request.user.username,
+		'followingUser': user.username in following_names,
+		'user': request.user
+	}
+	return render(request, 'app/account.html', context)
 
 def TODO(request):
-    file_path = os.path.join(os.path.dirname(__file__), '../TODO.md')
-    with open(file_path, 'r') as f:
-        markdown_content = f.read()
-    context = {
-        'TODO': markdown_content,
-    }
-    return render(request, 'app/TODO.html', context)
+	file_path = os.path.join(os.path.dirname(__file__), '../TODO.md')
+	with open(file_path, 'r') as f:
+		markdown_content = f.read()
+	context = {
+		'TODO': markdown_content,
+	}
+	return render(request, 'app/TODO.html', context)
 
 def cornhub(request):
-    context = {}
-    return render(request, 'app/cornhub.html', context)
+	context = {}
+	return render(request, 'app/cornhub.html', context)
 
 @login_required
 def makePost(request):
-    if isPMuted(request) or isMuted(request):
-         return redirect('app:index')
-    if request.method == "POST":
-        form = CreatePost(request.POST, request.FILES)
-        if form.is_valid():
-            post = Post(
-                author=request.user.pk,
-                title=form.cleaned_data["title"],
-                body=form.cleaned_data["body"],
-                images=form.cleaned_data["images"],
-            )
-            post.save()
-            mentions = post.get_valid_mentions()
-            if mentions:
-                mail.mention_email(mentions, post, 'post')
-            return redirect('app:index')
-    else:
-        form = CreatePost()
-    context = {
-        'form': form
-    }
-    return render(request, 'app/makePost.html', context)
+	if isPMuted(request) or isMuted(request):
+		 return redirect('app:index')
+	if request.method == "POST":
+		form = CreatePost(request.POST, request.FILES)
+		if form.is_valid():
+			post = Post(
+				author=request.user.pk,
+				title=form.cleaned_data["title"],
+				body=form.cleaned_data["body"],
+				images=form.cleaned_data["images"],
+			)
+			post.save()
+			mentions = post.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, post, 'post')
+			return redirect('app:index')
+	else:
+		form = CreatePost()
+	context = {
+		'form': form
+	}
+	return render(request, 'app/makePost.html', context)
 
 def viewPost(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    form = PostCommentForm()
-    url = request.build_absolute_uri()
+	post = get_object_or_404(Post, pk=pk)
+	form = PostCommentForm()
+	url = request.build_absolute_uri()
 
-    if request.method == "POST":
-        form = PostCommentForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(username=request.user.username)
-            comment = PostComment(
-                author=user.id,
-                body=form.cleaned_data["body"],
-                post=post,
-            )
-            comment.save()
+	if request.method == "POST":
+		form = PostCommentForm(request.POST)
+		if form.is_valid():
+			user = User.objects.get(username=request.user.username)
+			comment = PostComment(
+				author=user.id,
+				body=form.cleaned_data["body"],
+				post=post,
+			)
+			comment.save()
 
-            mentions = comment.get_valid_mentions()
-            if mentions:
-                mail.mention_email(mentions, comment, 'message', url=url)
-                print(f"Mentioned users: {mentions}")
+			mentions = comment.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, comment, 'message', url=url)
+				print(f"Mentioned users: {mentions}")
 
-            return HttpResponseRedirect(request.path_info)
-    comments = PostComment.objects.filter(post=post)
+			return HttpResponseRedirect(request.path_info)
+	comments = PostComment.objects.filter(post=post)
 
-    authors = {}
-    for i in comments:
-        user = User.objects.get(id=i.author).username
-        authors[i.author] = user
+	authors = {}
+	for i in comments:
+		user = User.objects.get(id=i.author).username
+		authors[i.author] = user
 
-    postAuthor = User.objects.get(id=post.author).username
+	postAuthor = User.objects.get(id=post.author).username
 
-    context = {
-        "post": post,
-        "comments": comments,
-        "form": PostCommentForm(),
-        "muted": isMuted(request),
-        'authors': authors,
-        'postAuthor': postAuthor
-    }
+	context = {
+		"post": post,
+		"comments": comments,
+		"form": PostCommentForm(),
+		"muted": isMuted(request),
+		'authors': authors,
+		'postAuthor': postAuthor
+	}
 
-    return render(request, "app/viewPost.html", context)
+	return render(request, "app/viewPost.html", context)
 
 def mdHelp(request):
 	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/help.md')
@@ -266,14 +267,14 @@ def mdHelp(request):
 	return render(request, "app/mdHelp.html", context)
 
 def EconProject(request):
-    file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/EconProject.md')
-    with open(file_path, 'r') as f:
-        markdown_content = f.read()
-    
-    context = {
-        'mdHelp': markdown_content,
-    }
-    return render(request, "app/mdHelp.html", context)
+	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/EconProject.md')
+	with open(file_path, 'r') as f:
+		markdown_content = f.read()
+	
+	context = {
+		'mdHelp': markdown_content,
+	}
+	return render(request, "app/mdHelp.html", context)
 
 def following(request):
 	user = get_object_or_404(User, username=request.user.username)
@@ -293,7 +294,7 @@ def following(request):
 		key=attrgetter('created_on'),
 		reverse=True
 	)
-    
+	
 	authors = {}
 	for i in combined:
 		user = User.objects.get(id=i.author).username
@@ -307,31 +308,60 @@ def following(request):
 
 	return render(request, "app/following.html", context)
 
+def search(request):
+	query = request.GET.get("q")
 
+	if not query:
+		query = ""
+
+	filter_query_p = Q(title__icontains=query) | Q(body__icontains=query)
+	filter_query_v = Q(title__icontains=query) | Q(description__icontains=query)
+
+	posts = Post.objects.filter(filter_query_p).order_by("-created_on")
+	videos = Video.objects.filter(filter_query_v).order_by("-created_on")
+	combined = sorted(
+		chain(posts, videos),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
+
+	authors = {}
+	for i in combined:
+		user = User.objects.get(id=i.author).username
+		authors[i.author] = user
+
+	context = {
+		'combined': combined,
+			'authors': authors,
+	}
+
+	return render(request, "app/search.html", context)
+
+## API REQUESTS
 
 @require_POST
 def like_video(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'message': 'Login required.'}, status=403)
+	if not request.user.is_authenticated:
+		return JsonResponse({'message': 'Login required.'}, status=403)
 
-    data = json.loads(request.body)
-    video_id = data.get('video_id')
+	data = json.loads(request.body)
+	video_id = data.get('video_id')
 
-    try:
-        video = Video.objects.get(id=video_id)
-    except Video.DoesNotExist:
-        return JsonResponse({'message': 'Video not found.'}, status=404)
+	try:
+		video = Video.objects.get(id=video_id)
+	except Video.DoesNotExist:
+		return JsonResponse({'message': 'Video not found.'}, status=404)
 
-    if request.user in video.likedUsers.all():
-        video.likedUsers.remove(request.user)
-        video.likes -= 1
-        video.save()
-        return JsonResponse({'message': 'You unliked this video.', 'likes': video.likes}, status=200)
-    else:
-        video.likedUsers.add(request.user)
-        video.likes += 1
-        video.save()
-        return JsonResponse({'message': 'Thanks for liking!', 'likes': video.likes}, status=200)
+	if request.user in video.likedUsers.all():
+		video.likedUsers.remove(request.user)
+		video.likes -= 1
+		video.save()
+		return JsonResponse({'message': 'You unliked this video.', 'likes': video.likes}, status=200)
+	else:
+		video.likedUsers.add(request.user)
+		video.likes += 1
+		video.save()
+		return JsonResponse({'message': 'Thanks for liking!', 'likes': video.likes}, status=200)
  
 @require_POST
 def follow_user(request):
@@ -359,11 +389,11 @@ def follow_user(request):
 		return JsonResponse({'message': 'Thanks for following!', 'following': True})
 
 class CustomLoginView(LoginView):
-    template_name = 'login.html'
-    authentication_form = CustomAuthenticationForm
+	template_name = 'login.html'
+	authentication_form = CustomAuthenticationForm
 
 class CustomLogoutView(LogoutView):
-    template_name = 'index.html'
+	template_name = 'index.html'
 
 def handler405(request, exception=None):
 	return render(request, '405.html', status=405)
