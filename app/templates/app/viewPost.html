@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 {% load markdown_extras dict_extras %}
 
-{% block page_title %}
-    <h2>{{ post.title }}</h2>
-{% endblock page_title %}
 
 {% block page_content %}
-    <small>
+    <h2 style="margin-bottom: 0px;">{{ post.title }}</h2>
+    <small style="margin-top: 0rem; margin-bottom: 0.5rem;">
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>
-    <p>
+    <p style="margin-top: 0px;">
         By <a href="{% url 'app:account' post.author %}">{{ postAuthor }}</a>
     </p>
 
     <p>{{ post.body | markdown }}</p>
     <div style="justify-content: center; align-items: center; ">	
     	{% if post.images %}
-    	<img src="{{ post.images.url }}" alt="" width="40%" height="auto">
+    	<img src="{{ post.images.url }}" alt="" width="19%" height="auto">
     	{% endif %}
     </div>
 

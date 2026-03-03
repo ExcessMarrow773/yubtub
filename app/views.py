@@ -196,7 +196,7 @@ def cornhub(request):
 @login_required
 def makePost(request):
 	if isPMuted(request) or isMuted(request):
-		 return redirect('app:index')
+		return redirect('app:index')
 	if request.method == "POST":
 		form = CreatePost(request.POST, request.FILES)
 		if form.is_valid():
