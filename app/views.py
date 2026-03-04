@@ -54,8 +54,8 @@ def register(request):
 	if request.method == 'POST':
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
-			user = form.save()         # important — saves hashed password
-			login(request, user)       # optional: log user in immediately
+			user = form.save()
+			login(request, user)
 			return redirect('app:index')
 	else:
 		form = CustomUserCreationForm()
@@ -95,13 +95,13 @@ def watchVideo(request, pk):
 	likes = video.likes
 	if request.user.is_authenticated:
 		try:
-			if not (request.user.id in video.viewedUsers.all()):
+			# FIX: compare User objects, not int vs queryset of Users
+			if not video.viewedUsers.filter(pk=request.user.pk).exists():
 				video.viewedUsers.add(request.user)
 				video.views += 1
 				video.save()
 		except ProgrammingError as e:
 			print(e)
-	else:
 
 	if request.method == "POST":
 		form = VideoCommentForm(request.POST)
@@ -283,8 +283,6 @@ def following(request):
 	following = user.following.all()
 	print(following)
 
-	# Combine and sort by created_on
-	
 	following_names = []
 	for i in following:
 		following_names.append(i.id)
@@ -374,7 +372,6 @@ def follow_user(request):
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
 		return JsonResponse({'message': 'Invalid JSON'}, status=400)
-
 
 	username=data.get('account')
 

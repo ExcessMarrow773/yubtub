@@ -26,7 +26,7 @@ dbOnline = os.getenv("ONLINE", False) == "True"
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("KEY")
+SECRET_KEY = os.getenv("KEY", "u*t/(8jijbuyfrx(y))")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == 'True'

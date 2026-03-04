@@ -32,8 +32,8 @@ def command(body, from_user):
 						try:
 							user = commandArgs[1].split(inputChar)[1]
 							userInfo = User.objects.get(username=user)
-							posts_count = len(Post.objects.filter(author=userInfo.username).all())
-							videos_count = len(Video.objects.filter(author=userInfo.username).all())
+							posts_count = len(Post.objects.filter(author=userInfo.id).all())
+							videos_count = len(Video.objects.filter(author=userInfo.id).all())
 							messages_sent_count = len(Message.objects.filter(from_user=from_user).all())
 							messages_receved_count = len(Message.objects.filter(to_user=from_user).all())
 							msg = (f"Information about user: \"{userInfo.username}\"\n"
@@ -54,7 +54,7 @@ def command(body, from_user):
 								try:
 									user = commandArgs[2].split(inputChar)[1]
 									userInfo = User.objects.get(username=user)
-									posts = Post.objects.filter(author=userInfo.username)
+									posts = Post.objects.filter(author=userInfo.id)
 									if posts.count() == 0:
 										msg = f"{user} has not made any posts yet"
 									else:
@@ -83,7 +83,7 @@ def command(body, from_user):
 								try:
 									user = commandArgs[2].split(inputChar)[1]
 									userInfo = User.objects.get(username=user)
-									videos = Video.objects.filter(author=userInfo.username)
+									videos = Video.objects.filter(author=userInfo.id)
 									if videos.count() == 0:
 										msg = f"{user} has not posted any videos yet"
 									else:
@@ -150,7 +150,7 @@ def command(body, from_user):
 
 							msg = f'Created Post with\nTitle: {title}\nBody: {body}'
 							post = Post(
-								author=User.objects.get(username=from_user),
+								author=from_user.id,
 								title=title,
 								body=body + ' <br><br><small><i>Created using Commands</i></small>',
 							).save()

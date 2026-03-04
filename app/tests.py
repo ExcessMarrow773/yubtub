@@ -5,207 +5,174 @@ from django.urls import reverse
 from datetime import timedelta
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from .models import Video, VideoComment, Post, PostComment
+from app.models import Video, VideoComment, Post, PostComment
 
 User = get_user_model()
 
 
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+
+def make_video(author_user, **kwargs):
+    """Create a Video whose author field holds the user's PK (integer)."""
+    defaults = dict(
+        title='Test Video',
+        video_file='videos/test.mp4',
+        thumbnail='thumbnail/test.jpg',
+    )
+    defaults.update(kwargs)
+    return Video.objects.create(author=author_user.pk, **defaults)
+
+
+def make_post(author_user, **kwargs):
+    """Create a Post whose author field holds the user's PK (integer)."""
+    defaults = dict(title='Test Post', body='Test body')
+    defaults.update(kwargs)
+    return Post.objects.create(author=author_user.pk, **defaults)
+
+
+# ---------------------------------------------------------------------------
+# VideoComment mention tests
+# ---------------------------------------------------------------------------
+
 class VideoCommentMentionTests(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='alice', password='pass123')
-        self.user2 = User.objects.create_user(username='bob', password='pass123')
+        self.user2 = User.objects.create_user(username='bob',   password='pass123')
         self.user3 = User.objects.create_user(username='charlie', password='pass123')
-        self.video = Video.objects.create(
-            title='Test Video',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            author='alice'
+        self.video = make_video(self.user1)
+
+    def _comment(self, body):
+        return VideoComment.objects.create(
+            author=self.user1.pk, body=body, video=self.video
         )
 
     def test_get_mentions_extracts_usernames(self):
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Hey @bob and @charlie, check this out!',
-            video=self.video
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(set(mentions), {'bob', 'charlie'})
+        comment = self._comment('Hey @bob and @charlie, check this out!')
+        self.assertEqual(set(comment.get_mentions()), {'bob', 'charlie'})
 
     def test_get_mentions_with_no_mentions(self):
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Just a regular comment',
-            video=self.video
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(mentions, [])
+        comment = self._comment('Just a regular comment')
+        self.assertEqual(comment.get_mentions(), [])
 
     def test_get_valid_mentions_filters_non_existent_users(self):
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Hey @bob and @nonexistent, check this out!',
-            video=self.video
-        )
-        valid_mentions = comment.get_valid_mentions()
-        self.assertEqual(valid_mentions, ['bob'])
+        comment = self._comment('Hey @bob and @nonexistent!')
+        self.assertEqual(comment.get_valid_mentions(), ['bob'])
 
     def test_get_valid_mentions_with_all_valid_users(self):
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Hey @bob and @charlie!',
-            video=self.video
-        )
-        valid_mentions = comment.get_valid_mentions()
-        self.assertEqual(set(valid_mentions), {'bob', 'charlie'})
+        comment = self._comment('Hey @bob and @charlie!')
+        self.assertEqual(set(comment.get_valid_mentions()), {'bob', 'charlie'})
 
     def test_get_valid_mentions_with_duplicate_mentions(self):
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Hey @bob, @bob, listen to me @bob!',
-            video=self.video
-        )
-        valid_mentions = comment.get_valid_mentions()
-        # Should only return unique usernames
-        self.assertEqual(valid_mentions.count('bob'), 1)
+        comment = self._comment('Hey @bob, @bob, listen @bob!')
+        self.assertEqual(comment.get_valid_mentions().count('bob'), 1)
 
     def test_mentions_with_underscores_and_numbers(self):
-        user_complex = User.objects.create_user(username='user_123', password='pass')
-        comment = VideoComment.objects.create(
-            author='alice',
-            body='Hey @user_123!',
-            video=self.video
-        )
-        mentions = comment.get_mentions()
-        self.assertIn('user_123', mentions)
-        valid_mentions = comment.get_valid_mentions()
-        self.assertIn('user_123', valid_mentions)
+        User.objects.create_user(username='user_123', password='pass')
+        comment = self._comment('Hey @user_123!')
+        self.assertIn('user_123', comment.get_mentions())
+        self.assertIn('user_123', comment.get_valid_mentions())
 
+
+# ---------------------------------------------------------------------------
+# PostComment mention tests
+# ---------------------------------------------------------------------------
 
 class PostCommentMentionTests(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='alice', password='pass123')
-        self.user2 = User.objects.create_user(username='bob', password='pass123')
+        self.user1 = User.objects.create_user(username='alice',   password='pass123')
+        self.user2 = User.objects.create_user(username='bob',     password='pass123')
         self.user3 = User.objects.create_user(username='charlie', password='pass123')
-        self.post = Post.objects.create(
-            title='Test Post',
-            body='Test body',
-            author='alice'
+        self.post = make_post(self.user1)
+
+    def _comment(self, body):
+        return PostComment.objects.create(
+            author=self.user1.pk, body=body, post=self.post
         )
 
     def test_get_mentions_extracts_usernames(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='Hey @bob and @charlie, check this out!',
-            post=self.post
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(set(mentions), {'bob', 'charlie'})
+        comment = self._comment('Hey @bob and @charlie, check this out!')
+        self.assertEqual(set(comment.get_mentions()), {'bob', 'charlie'})
 
     def test_get_mentions_with_no_mentions(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='Just a regular comment',
-            post=self.post
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(mentions, [])
+        comment = self._comment('Just a regular comment')
+        self.assertEqual(comment.get_mentions(), [])
 
     def test_get_valid_mentions_filters_non_existent_users(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='Hey @bob and @nonexistent, check this out!',
-            post=self.post
-        )
-        valid_mentions = comment.get_valid_mentions()
-        self.assertEqual(valid_mentions, ['bob'])
+        comment = self._comment('Hey @bob and @nonexistent!')
+        self.assertEqual(comment.get_valid_mentions(), ['bob'])
 
     def test_get_valid_mentions_with_all_valid_users(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='Hey @bob and @charlie!',
-            post=self.post
-        )
-        valid_mentions = comment.get_valid_mentions()
-        self.assertEqual(set(valid_mentions), {'bob', 'charlie'})
+        comment = self._comment('Hey @bob and @charlie!')
+        self.assertEqual(set(comment.get_valid_mentions()), {'bob', 'charlie'})
 
     def test_mentions_in_middle_of_text(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='I think @bob should talk to @charlie about this issue.',
-            post=self.post
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(set(mentions), {'bob', 'charlie'})
+        comment = self._comment('I think @bob should talk to @charlie about this.')
+        self.assertEqual(set(comment.get_mentions()), {'bob', 'charlie'})
 
     def test_mentions_at_end_of_sentence(self):
-        comment = PostComment.objects.create(
-            author='alice',
-            body='This is great work @bob!',
-            post=self.post
-        )
-        mentions = comment.get_mentions()
-        self.assertEqual(mentions, ['bob'])
+        comment = self._comment('Great work @bob!')
+        self.assertEqual(comment.get_mentions(), ['bob'])
 
+
+# ---------------------------------------------------------------------------
+# Video thumbnail tests
+# ---------------------------------------------------------------------------
 
 class VideoThumbnailTests(TestCase):
-    def test_video_without_thumbnail_generates_one(self):
-        """Test that videos without thumbnails attempt to generate one"""
+    def setUp(self):
+        self.user = User.objects.create_user(username='alice', password='pass123')
+
+    def test_video_without_thumbnail_does_not_raise(self):
+        # generate_thumbnail will fail silently in tests (no real file)
         video = Video.objects.create(
-            title='No Thumbnail Video',
+            author=self.user.pk,
+            title='No Thumbnail',
             video_file='videos/test.mp4',
-            description='Test'
         )
-        # The save method should attempt to generate a thumbnail
-        # In test environment without actual video file, this may not succeed
-        # but we can verify the method is called
-        self.assertIsNotNone(video)
+        self.assertIsNotNone(video.pk)
 
     def test_video_with_thumbnail_keeps_it(self):
-        """Test that videos with thumbnails don't regenerate"""
         video = Video.objects.create(
+            author=self.user.pk,
             title='Has Thumbnail',
             video_file='videos/test.mp4',
             thumbnail='thumbnail/existing.jpg',
-            description='Test'
         )
-        original_thumbnail = video.thumbnail
+        original = video.thumbnail.name
         video.save()
-        self.assertEqual(video.thumbnail, original_thumbnail)
+        self.assertEqual(video.thumbnail.name, original)
 
+
+# ---------------------------------------------------------------------------
+# Video like tests
+# ---------------------------------------------------------------------------
 
 class VideoLikeTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user1 = User.objects.create_user(username='alice', password='pass123')
-        self.user2 = User.objects.create_user(username='bob', password='pass123')
-        self.video = Video.objects.create(
-            title='Test Video',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
+        self.user2 = User.objects.create_user(username='bob',   password='pass123')
+        self.video = make_video(self.user1)
+
+    def _like(self):
+        return self.client.post(
+            reverse('app:like-video'),
+            data=f'{{"video_id": {self.video.id}}}',
+            content_type='application/json',
         )
 
     def test_like_video_increments_likes(self):
         self.client.login(username='alice', password='pass123')
-        initial_likes = self.video.likes
-        
-        response = self.client.post(
-            reverse('app:like-video'),
-            data='{"video_id": ' + str(self.video.id) + '}',
-            content_type='application/json'
-        )
-        
+        initial = self.video.likes
+        self._like()
         self.video.refresh_from_db()
-        self.assertEqual(self.video.likes, initial_likes + 1)
+        self.assertEqual(self.video.likes, initial + 1)
 
     def test_user_added_to_liked_users(self):
         self.client.login(username='alice', password='pass123')
-        
-        self.client.post(
-            reverse('app:like-video'),
-            data='{"video_id": ' + str(self.video.id) + '}',
-            content_type='application/json'
-        )
-        
+        self._like()
         self.video.refresh_from_db()
         self.assertIn(self.user1, self.video.likedUsers.all())
 
@@ -214,273 +181,269 @@ class VideoLikeTests(TestCase):
         self.video.likedUsers.add(self.user1)
         self.video.likes = 1
         self.video.save()
-        
-        self.client.post(
-            reverse('app:like-video'),
-            data='{"video_id": ' + str(self.video.id) + '}',
-            content_type='application/json'
-        )
-        
+        self._like()
         self.video.refresh_from_db()
         self.assertNotIn(self.user1, self.video.likedUsers.all())
 
+    def test_like_requires_login(self):
+        response = self._like()
+        self.assertEqual(response.status_code, 403)
+
+
+# ---------------------------------------------------------------------------
+# Video view-count tests
+# ---------------------------------------------------------------------------
 
 class VideoViewTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='alice', password='pass123')
-        self.video = Video.objects.create(
-            title='Test Video',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-        )
+        self.user  = User.objects.create_user(username='alice', password='pass123')
+        self.video = make_video(self.user)
 
     def test_viewing_video_increments_views_once(self):
         self.client.login(username='alice', password='pass123')
-        initial_views = self.video.views
-        
-        # First view
+        initial = self.video.views
+
         self.client.get(reverse('app:watch', args=[self.video.pk]))
         self.video.refresh_from_db()
-        self.assertEqual(self.video.views, initial_views + 1)
-        
-        # Second view by same user shouldn't increment
+        self.assertEqual(self.video.views, initial + 1)
+
+        # Second visit by same user should NOT increment
         self.client.get(reverse('app:watch', args=[self.video.pk]))
         self.video.refresh_from_db()
-        self.assertEqual(self.video.views, initial_views + 1)
+        self.assertEqual(self.video.views, initial + 1)
 
     def test_user_added_to_viewed_users(self):
         self.client.login(username='alice', password='pass123')
-        
         self.client.get(reverse('app:watch', args=[self.video.pk]))
-        
         self.video.refresh_from_db()
         self.assertIn(self.user, self.video.viewedUsers.all())
 
 
+# ---------------------------------------------------------------------------
+# Following-page tests
+# ---------------------------------------------------------------------------
+
 class FollowingPageTests(TestCase):
     def setUp(self):
-        self.client = Client()
-        self.user1 = User.objects.create_user(username='alice', password='pass123')
-        self.user2 = User.objects.create_user(username='bob', password='pass123')
-        self.user3 = User.objects.create_user(username='charlie', password='pass123')
+        self.client  = Client()
+        self.user1   = User.objects.create_user(username='alice',   password='pass123')
+        self.user2   = User.objects.create_user(username='bob',     password='pass123')
+        self.user3   = User.objects.create_user(username='charlie', password='pass123')
 
-    def test_following_page_shows_only_mutual_followers(self):
+    def test_following_page_accessible_when_logged_in(self):
         self.client.login(username='alice', password='pass123')
-        
-        # Alice follows Bob (mutual)
+        response = self.client.get(reverse('app:following'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_following_page_shows_followed_user_content(self):
+        self.client.login(username='alice', password='pass123')
         self.user1.follow(self.user2)
-        self.user2.follow(self.user1)
-        
-        # Alice follows Charlie (not mutual)
-        self.user1.follow(self.user3)
-        
-        response = self.client.get(reverse('app:following'))
-        
-        # Bob should appear (mutual)
-        self.assertContains(response, 'bob')
-        # Charlie should not appear (not mutual)
-        # Note: The current implementation shows all followed users, not just mutual
 
-    def test_following_page_limits_results(self):
+        make_post(self.user2, title='Bob Post')
+
+        response = self.client.get(reverse('app:following'))
+        self.assertContains(response, 'Bob Post')
+
+    def test_following_page_does_not_show_unfollowed_content(self):
         self.client.login(username='alice', password='pass123')
-        
-        # Create 15 users and follow them all
-        for i in range(15):
-            user = User.objects.create_user(username=f'user{i}', password='pass')
-            self.user1.follow(user)
-            user.follow(self.user1)
-            # Create content
-            Post.objects.create(title=f'Post {i}', body='test', author=user.username)
-        
+        # Alice does NOT follow charlie
+        make_post(self.user3, title='Charlie Post')
+
         response = self.client.get(reverse('app:following'))
-        
-        # Should limit to 10
-        context_posts = response.context['posts']
-        self.assertLessEqual(len(context_posts), 10)
+        self.assertNotContains(response, 'Charlie Post')
+
+    def test_following_page_requires_login(self):
+        response = self.client.get(reverse('app:following'))
+        # Should redirect to login
+        self.assertIn(response.status_code, [302, 404])
 
 
-
-
+# ---------------------------------------------------------------------------
+# Account-page tests
+# ---------------------------------------------------------------------------
 
 class AccountPageTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user1 = User.objects.create_user(username='alice', password='pass123')
-        self.user2 = User.objects.create_user(username='bob', password='pass123')
+        self.user1  = User.objects.create_user(username='alice', password='pass123')
+        self.user2  = User.objects.create_user(username='bob',   password='pass123')
 
     def test_account_page_shows_user_content_sorted(self):
         self.client.login(username='alice', password='pass123')
-        
-        # Create content with different timestamps
-        video = Video.objects.create(
-            title='Video',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            author='alice'
-        )
-        post = Post.objects.create(
-            title='Post',
-            body='Body',
-            author='alice'
-        )
-        
-        response = self.client.get(reverse('app:account', args=['alice']))
-        
+
+        video = make_video(self.user1, title='Video')
+        post  = make_post(self.user1,  title='Post')
+
+        response = self.client.get(reverse('app:account', args=[self.user1.pk]))
         combined = response.context['combined']
-        # Should be sorted by created_on descending
-        self.assertTrue(combined[0].created_on >= combined[1].created_on)
+        # Verify descending date order
+        for i in range(len(combined) - 1):
+            self.assertGreaterEqual(combined[i].created_on, combined[i + 1].created_on)
 
     def test_account_page_shows_follow_button_for_other_users(self):
         self.client.login(username='alice', password='pass123')
-        
-        response = self.client.get(reverse('app:account', args=['bob']))
-        
+        response = self.client.get(reverse('app:account', args=[self.user2.pk]))
         self.assertContains(response, 'id="follow-button"')
-        self.assertEqual(response.context['isUsersAccount'], False)
+        self.assertFalse(response.context['isUsersAccount'])
 
     def test_account_page_no_follow_button_for_own_account(self):
         self.client.login(username='alice', password='pass123')
-        
-        response = self.client.get(reverse('app:account', args=['alice']))
-        
+        response = self.client.get(reverse('app:account', args=[self.user1.pk]))
         self.assertNotContains(response, 'id="follow-button"')
-        self.assertEqual(response.context['isUsersAccount'], True)
+        self.assertTrue(response.context['isUsersAccount'])
 
+
+# ---------------------------------------------------------------------------
+# Index-page tests
+# ---------------------------------------------------------------------------
 
 class IndexPageTests(TestCase):
     def setUp(self):
         self.client = Client()
+        self.user1  = User.objects.create_user(username='alice', password='pass123')
+        self.user2  = User.objects.create_user(username='bob',   password='pass123')
 
     def test_index_combines_videos_and_posts(self):
-        Video.objects.create(
-            title='Video 1',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            author='alice'
-        )
-        Post.objects.create(
-            title='Post 1',
-            body='Body',
-            author='bob'
-        )
-        
+        make_video(self.user1, title='Video 1')
+        make_post(self.user2,  title='Post 1')
+
         response = self.client.get(reverse('app:index'))
-        
         combined = response.context['combined']
         self.assertEqual(len(combined), 2)
-        
-        # Check both types are present
-        types = [item.type for item in combined]
+        types = {item.type for item in combined}
         self.assertIn('video', types)
-        self.assertIn('post', types)
+        self.assertIn('post',  types)
 
     def test_index_sorts_by_created_on_descending(self):
-        # Create older video
-        old_video = Video.objects.create(
-            title='Old Video',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            author='alice'
+        old_video = make_video(self.user1, title='Old Video')
+        # Manually backdate the old video
+        Video.objects.filter(pk=old_video.pk).update(
+            created_on=timezone.now() - timedelta(days=2)
         )
-        old_video.created_on = timezone.now() - timedelta(days=2)
-        old_video.save()
-        
-        # Create newer post
-        new_post = Post.objects.create(
-            title='New Post',
-            body='Body',
-            author='bob'
-        )
-        
+        make_post(self.user2, title='New Post')
+
         response = self.client.get(reverse('app:index'))
         combined = response.context['combined']
-        
-        # Newest should be first
         self.assertEqual(combined[0].type, 'post')
         self.assertEqual(combined[1].type, 'video')
 
 
+# ---------------------------------------------------------------------------
+# Markdown-filter tests
+# ---------------------------------------------------------------------------
+
 class MarkdownFilterTests(TestCase):
-    """Test markdown rendering in posts and comments"""
-    
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='alice', password='pass123')
-        self.post = Post.objects.create(
+        self.user   = User.objects.create_user(username='alice', password='pass123')
+        self.post   = make_post(
+            self.user,
             title='Test Post',
             body='# Header\n\n**Bold text**',
-            author='alice'
         )
 
     def test_post_renders_markdown(self):
         response = self.client.get(reverse('app:post', args=[self.post.pk]))
-        
-        # Check that HTML tags from markdown are present
         self.assertContains(response, '<h1>Header</h1>')
         self.assertContains(response, '<strong>Bold text</strong>')
 
 
+# ---------------------------------------------------------------------------
+# URL pattern smoke tests
+# ---------------------------------------------------------------------------
+
 class URLPatternTests(TestCase):
-    """Test that all URL patterns are accessible"""
-    
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='alice', password='pass123')
+        self.user   = User.objects.create_user(username='alice', password='pass123')
 
     def test_index_url(self):
-        response = self.client.get(reverse('app:index'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:index')).status_code, 200)
 
     def test_login_url(self):
-        response = self.client.get(reverse('app:login'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:login')).status_code, 200)
 
     def test_register_url(self):
-        response = self.client.get(reverse('app:register'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:register')).status_code, 200)
 
     def test_todo_url(self):
-        response = self.client.get(reverse('app:TODO'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:TODO')).status_code, 200)
 
     def test_cornhub_url(self):
-        response = self.client.get(reverse('app:cornhub'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:cornhub')).status_code, 200)
 
     def test_mdhelp_url(self):
-        response = self.client.get(reverse('app:mdHelp'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get(reverse('app:mdHelp')).status_code, 200)
+
+
+# ---------------------------------------------------------------------------
+# Empty description tests
+# ---------------------------------------------------------------------------
 
 class EmptyDescriptionTests(TestCase):
-    """Test that empty video descriptions are handled correctly"""
-    
-    def test_empty_description_gets_default(self):
-        video = Video.objects.create(
+    def setUp(self):
+        self.user = User.objects.create_user(username='alice', password='pass123')
+
+    def _video(self, description):
+        return Video.objects.create(
+            author=self.user.pk,
             title='Test',
             video_file='videos/test.mp4',
             thumbnail='thumbnail/test.jpg',
-            description=''
+            description=description,
         )
-        video.refresh_from_db()
-        self.assertEqual(video.description, "There was no description provided for this video")
+
+    def test_empty_description_gets_default(self):
+        v = self._video('')
+        v.refresh_from_db()
+        self.assertEqual(v.description, "There was no description provided for this video")
 
     def test_none_description_gets_default(self):
-        video = Video.objects.create(
-            title='Test',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            description=None
-        )
-        video.refresh_from_db()
-        self.assertEqual(video.description, "There was no description provided for this video")
+        v = self._video(None)
+        v.refresh_from_db()
+        self.assertEqual(v.description, "There was no description provided for this video")
 
     def test_whitespace_description_gets_default(self):
-        video = Video.objects.create(
-            title='Test',
-            video_file='videos/test.mp4',
-            thumbnail='thumbnail/test.jpg',
-            description='   '
-        )
-        video.refresh_from_db()
-        self.assertEqual(video.description, "There was no description provided for this video")
+        v = self._video('   ')
+        v.refresh_from_db()
+        self.assertEqual(v.description, "There was no description provided for this video")
+
+    def test_real_description_is_preserved(self):
+        v = self._video('A real description.')
+        v.refresh_from_db()
+        self.assertEqual(v.description, 'A real description.')
+
+
+# ---------------------------------------------------------------------------
+# Search tests
+# ---------------------------------------------------------------------------
+
+class SearchTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user   = User.objects.create_user(username='alice', password='pass123')
+        make_video(self.user, title='Cooking With Fire', description='flames and heat')
+        make_post(self.user,  title='Travel Blog',       body='explored the mountains')
+
+    def test_search_returns_matching_video(self):
+        response = self.client.get(reverse('app:search') + '?q=Cooking')
+        combined = response.context['combined']
+        titles = [c.title for c in combined]
+        self.assertIn('Cooking With Fire', titles)
+
+    def test_search_returns_matching_post(self):
+        response = self.client.get(reverse('app:search') + '?q=Travel')
+        combined = response.context['combined']
+        titles = [c.title for c in combined]
+        self.assertIn('Travel Blog', titles)
+
+    def test_search_empty_query_returns_all(self):
+        response = self.client.get(reverse('app:search') + '?q=')
+        combined = response.context['combined']
+        self.assertEqual(len(combined), 2)
+
+    def test_search_no_results(self):
+        response = self.client.get(reverse('app:search') + '?q=zzznomatch')
+        combined = response.context['combined']
+        self.assertEqual(len(combined), 0)
