@@ -101,7 +101,6 @@ def watchVideo(request, pk):
 				video.save()
 		except ProgrammingError as e:
 			print(e)
-	else:
 
 	if request.method == "POST":
 		form = VideoCommentForm(request.POST)

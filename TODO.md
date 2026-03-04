@@ -2,11 +2,12 @@
 
 - [ ] add moderator buttons/ abilities
 
-- [~] add a way to upload images to posts (multi file upload)
-
-- [ ] add bot commands
 
 ## TODO
+
+- [x] add bot commands
+
+- [x] add a way to upload images to posts (multi file upload)
 
 - [ ] refacter folders and files to be easer to follow
 
