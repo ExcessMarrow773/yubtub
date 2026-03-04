@@ -94,7 +94,6 @@ def watchVideo(request, pk):
 	video = get_object_or_404(Video, pk=pk)
 	likes = video.likes
 	if request.user.is_authenticated:
-		print("Authenticated")
 		try:
 			if not (request.user.id in video.viewedUsers.all()):
 				video.viewedUsers.add(request.user)
@@ -103,7 +102,6 @@ def watchVideo(request, pk):
 		except ProgrammingError as e:
 			print(e)
 	else:
-		print("Not Authenticated")
 
 	if request.method == "POST":
 		form = VideoCommentForm(request.POST)
