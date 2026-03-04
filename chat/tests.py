@@ -204,7 +204,7 @@ class BotCommandTests(TestCase):
         self.assertIn('Created Post', res)
         self.assertIn('Test Title', res)
         self.assertTrue(
-            Post.objects.filter(title='Test Title', author=self.sender).exists()
+            Post.objects.filter(title='Test Title', author=self.sender.id).exists()
         )
 
     def test_create_post_missing_parameters(self):
