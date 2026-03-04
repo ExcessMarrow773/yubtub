@@ -1,9 +1,16 @@
+import json
+
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+
 from .models import BugReport
 
 User = get_user_model()
+
+
+def json_body(bug_id):
+    return json.dumps({'bug': bug_id})
 
 
 class BugReportValidationTests(TestCase):
@@ -35,7 +42,6 @@ class BugReportValidationTests(TestCase):
         )
         bug = BugReport.objects.first()
         self.assertIsNotNone(bug)
-        # Empty string → no issue flag
         self.assertFalse(bug.has_github_issue)
 
     def test_bug_report_type_choices(self):
@@ -53,6 +59,12 @@ class BugReportValidationTests(TestCase):
             title='Unresolved', body='x', type='BUG', author=self.user.pk
         )
         self.assertFalse(bug.resolved)
+
+    def test_bug_str(self):
+        bug = BugReport.objects.create(
+            title='My Bug Report', body='details', type='BUG', author=self.user.pk
+        )
+        self.assertEqual(str(bug), 'My Bug Report')
 
     def test_resolve_bug_api(self):
         self.client.login(username='alice', password='pass123')
@@ -92,16 +104,20 @@ class BugReportValidationTests(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
-
-def json_body(bug_id):
-    import json
-    return json.dumps({'bug': bug_id})
+    def test_resolve_invalid_json(self):
+        self.client.login(username='alice', password='pass123')
+        response = self.client.post(
+            reverse('bugs:resolveBug'),
+            data='not json',
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 400)
 
 
 class URLPatternTests(TestCase):
     def setUp(self):
         self.client = Client()
-        User.objects.create_user(username='alice', password='pass123')
+        self.user   = User.objects.create_user(username='alice', password='pass123')
 
     def test_bug_report_url(self):
         self.assertEqual(self.client.get(reverse('bugs:bugReport')).status_code, 200)
@@ -110,10 +126,14 @@ class URLPatternTests(TestCase):
         self.assertEqual(self.client.get(reverse('bugs:bugReportIndex')).status_code, 200)
 
     def test_bug_view_url(self):
-        user = User.objects.get(username='alice')
-        bug  = BugReport.objects.create(
-            title='View Me', body='test', type='BUG', author=user.pk
+        bug = BugReport.objects.create(
+            title='View Me', body='test', type='BUG', author=self.user.pk
         )
         self.assertEqual(
             self.client.get(reverse('bugs:bugView', args=[bug.pk])).status_code, 200
+        )
+
+    def test_bug_view_404_for_missing_bug(self):
+        self.assertEqual(
+            self.client.get(reverse('bugs:bugView', args=[99999])).status_code, 404
         )
