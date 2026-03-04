@@ -5,6 +5,8 @@
 
 ## TODO
 
+- [ ] redo chat app for realtime comunication <https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/>
+
 - [x] add bot commands
 
 - [x] add a way to upload images to posts (multi file upload)
