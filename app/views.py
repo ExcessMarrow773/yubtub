@@ -281,7 +281,6 @@ def EconProject(request):
 def following(request):
 	user = get_object_or_404(User, username=request.user.username)
 	following = user.following.all()
-	print(following)
 
 	following_names = []
 	for i in following:

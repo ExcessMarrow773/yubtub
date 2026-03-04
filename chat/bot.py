@@ -15,7 +15,6 @@ def newMessage(msg, from_user):
 	return message
 
 def command(body, from_user):
-	print("COMMAND")
 	command = body[1:]
 	commandArgs = command.split(':')
 	inputChar = '|'

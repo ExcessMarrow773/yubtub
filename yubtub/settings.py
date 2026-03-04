@@ -96,7 +96,6 @@ WSGI_APPLICATION = 'yubtub.wsgi.application'
 
 
 if dbOnline == False:
-    print("DB offline")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -105,7 +104,6 @@ if dbOnline == False:
     }
 
 elif dbOnline == True:
-    print("DB online")
 
     DATABASES = {
         "default": {
