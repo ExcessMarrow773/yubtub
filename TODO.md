@@ -2,6 +2,13 @@
 
 - [ ] add moderator buttons/ abilities
 
+- [ ] refacter folders and files to be easer to follow
+
+- [ ] Add downloading/ uploading youtube vids from links
+
+- [ ] add Black Bar Program
+
+- [ ] Add different communities
 
 ## TODO
 
@@ -11,13 +18,6 @@
 
 - [x] add a way to upload images to posts (multi file upload)
 
-- [ ] refacter folders and files to be easer to follow
-
-- [ ] Add downloading/ uploading youtube vids from links
-
-- [ ] add Black Bar Program
-
-- [ ] Add different communities
 
 - [x] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
 
