@@ -21,7 +21,6 @@ User = get_user_model()
 
 @login_required(login_url='/login/')
 def settings(request):
-	print(request.POST)
 	userModel = get_object_or_404(User, username=request.user.username)
 
 	if request.method == "POST":

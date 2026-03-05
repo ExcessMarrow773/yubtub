@@ -33,6 +33,8 @@ DEBUG = os.getenv("DEBUG", True) == 'True'
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.199', '192.168.68.120', '192.168.68.134', 'raspberrypi.local', 'yeti.local', '187.77.203.207', 'atticusfw.dev']
 
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
+
 CSRF_TRUSTED_ORIGINS=[]
 
 for i in ALLOWED_HOSTS:
@@ -96,7 +98,6 @@ WSGI_APPLICATION = 'yubtub.wsgi.application'
 
 
 if dbOnline == False:
-    print("DB offline")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -105,7 +106,6 @@ if dbOnline == False:
     }
 
 elif dbOnline == True:
-    print("DB online")
 
     DATABASES = {
         "default": {

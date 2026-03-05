@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 debug = os.getenv("DEBUG", True) == 'True'
-
 args = sys.argv
 
 if len(args) == 2:
@@ -43,9 +42,9 @@ try:
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 		print(f"Starting server on http://127.0.0.1:{port}\n")
 		if debug:
-			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3'])
-		else:
 			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
+		else:
+			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3'])
 
 except KeyboardInterrupt:
 	print('\n\nStopping server and exiting program')

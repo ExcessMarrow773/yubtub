@@ -124,7 +124,7 @@ class VideoComment(models.Model):
 class Post(models.Model):
     author = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
-    body = models.TextField()
+    body = models.TextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=20, default='post')
 
