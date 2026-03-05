@@ -187,6 +187,16 @@ def TODO(request):
 	}
 	return render(request, 'app/TODO.html', context)
 
+def DEMO(request):
+	file_path = os.path.join(os.path.dirname(__file__), '../markdownFiles/DEMO.md')
+	with open(file_path, 'r') as f:
+		markdown_content = f.read()
+	
+	context = {
+		'mdHelp': markdown_content,
+	}
+	return render(request, "app/mdHelp.html", context)
+
 def cornhub(request):
 	context = {}
 	return render(request, 'app/cornhub.html', context)
