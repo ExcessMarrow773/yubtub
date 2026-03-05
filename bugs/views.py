@@ -44,8 +44,8 @@ def bug_report(request):
     return render(request, "bugs/bugReport.html", context)
 
 def bug_reportIndex(request):
-    bugs = BugReport.objects.order_by('created_on').order_by('-created_on').filter(resolved=False)
-    resolvedBugs = BugReport.objects.order_by('created_on').filter(resolved=True, reversed=True)
+    bugs = BugReport.objects.order_by('-created_on').filter(resolved=False)
+    resolvedBugs = BugReport.objects.order_by('-created_on').filter(resolved=True)
     
     combined = bugs | resolvedBugs
 
