@@ -22,7 +22,9 @@
             <a href="{{ bug.github_issue }}"><h3>{{bug.github_issue}}</h3></a>
         {% endif %}
     </div>
+    {% if user.is_staff %}
     <button id="follow-button" onclick="resolveBug({{ bug.id }}, '{% url 'bugs:bugReportIndex' %}')">
         {% if bug.resolved %}Reopen{% else %}Resolve{% endif %}
     </button>
+    {% endif %}
 {% endblock page_content %}
