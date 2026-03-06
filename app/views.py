@@ -256,6 +256,12 @@ def viewPost(request, pk):
 		authors[i.author] = user
 
 	postAuthor = User.objects.get(id=post.author).username
+	
+	superUsers = User.objects.filter(is_superuser=True).all()
+	superUserIds = []
+	for i in superUsers:
+		superUserIds.append(i.id)
+
 
 	context = {
 		"post": post,
@@ -263,7 +269,9 @@ def viewPost(request, pk):
 		"form": PostCommentForm(),
 		"muted": isMuted(request),
 		'authors': authors,
-		'postAuthor': postAuthor
+		'postAuthor': postAuthor,
+		'superUsers': superUsers,
+		'superUserIds': superUserIds
 	}
 
 	return render(request, "app/viewPost.html", context)

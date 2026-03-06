@@ -35,7 +35,7 @@
         <p>
             On {{ comment.created_on.date }} <b>{{ authors | get_item:comment.author }}</b> wrote:
             <div style="margin-left: 25px;">
-                {% if comment.author.is_superuser %}
+				{% if comment.author in superUserIds %}
                     {{ comment.body | markdown | linebreaks }}
                 {% else %}
                     {{ comment.body | linebreaks }}
