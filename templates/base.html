@@ -87,7 +87,7 @@
 	{% endif %}		</form>
 
 	<navbar-buttons>
-		<form method="post" action="{% url 'app:logout' %}">
+		<form method="post" action="{% url 'accounts:logout' %}">
 			{% block extra_navbar %}{% endblock extra_navbar %}
 			{% if "/account/" not in request.path and username != user.username %}
 			<a id="name" class="button" href="{% url 'app:account' user.id %}">{{ user.username }}</a>
@@ -101,8 +101,8 @@
 	</navbar-buttons>
 	{% else %}
 	<navbar-buttons>
-		<a class="button" href="{% url 'app:login' %}">Login</a>
-	<a class="button" href="{% url 'app:register' %}">Sign Up</a>
+		<a class="button" href="{% url 'accounts:login' %}">Login</a>
+	<a class="button" href="{% url 'accounts:register' %}">Sign Up</a>
 	</navbar-buttons>
 	{% endif %}
 </div>
