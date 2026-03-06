@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block page_title %}Create Post{% endblock page_title %}
+
+{% block page_content %}
+<h1>Create Post</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        {{ form.title }}
+    </div>
+    <div>
+        {{ form.body }}<br>
+    <small><a href="{% url 'app:mdHelp' %}">Markdown</a> is supported!</small>
+    </div>
+    <div>
+        <small>Add an image</small>
+		{% if post/%}
+    	{{ form.images }} <b>(Not Required)</b>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="{% url 'app:index' %}">Cancel</a>
+</form>
+{% endblock page_content %}

@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.utils import ProgrammingError
 from django.db.models import Q
 
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
 from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
@@ -49,17 +49,37 @@ def index(request):
 	}
 	return render(request, 'index.html', context)
 
-@csrf_exempt
-def register(request):
-	if request.method == 'POST':
-		form = CustomUserCreationForm(request.POST)
+@login_required
+def editPost(request, pk):
+	post = get_object_or_404(Post, id=pk)
+	user = getUserFromID(request.user.id)
+	if request.method == "POST":
+		form = CreatePost(request.POST, request.FILES)
 		if form.is_valid():
-			user = form.save()
-			login(request, user)
+			postModel = Post(
+				author=request.user.pk,
+				title=form.cleaned_data["title"],
+				body=form.cleaned_data["body"],
+				images=form.cleaned_data["images"],
+			)
+			postModel.save()
+			mentions = postModel.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, postModel, 'post')
 			return redirect('app:index')
 	else:
-		form = CustomUserCreationForm()
-	return render(request, 'register.html', {'form': form})
+		form = CreatePost(
+			initial={
+				'title': post.title,
+				'body': post.body,
+				'images': post.images
+			})
+
+	context = {
+		'post': post,
+		'form': form
+	}
+	return render(request, 'app/editPost.html', context)
 
 @login_required
 def postVideo(request):
@@ -403,13 +423,6 @@ def follow_user(request):
 	else:
 		request.user.follow(user)
 		return JsonResponse({'message': 'Thanks for following!', 'following': True})
-
-class CustomLoginView(LoginView):
-	template_name = 'login.html'
-	authentication_form = CustomAuthenticationForm
-
-class CustomLogoutView(LogoutView):
-	template_name = 'index.html'
 
 def handler405(request, exception=None):
 	return render(request, '405.html', status=405)
