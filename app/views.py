@@ -53,6 +53,10 @@ def index(request):
 def editPost(request, pk):
 	post = get_object_or_404(Post, id=pk)
 	user = getUserFromID(request.user.id)
+
+	if user.id != post.author:
+		return redirect('app:post', pk)
+
 	if request.method == "POST":
 		form = CreatePost(request.POST, request.FILES)
 		if form.is_valid():
@@ -109,6 +113,45 @@ def postVideo(request):
 		'uploadForm': None
 	}
 	return render(request, 'createVideo.html', context)
+
+@login_required
+def editVideo(request, pk):
+	video = get_object_or_404(Video, id=pk)
+	user = getUserFromID(request.user.id)
+
+	if user.id != video.author:
+		return redirect('app:watch', pk)
+
+	if request.method == "POST":
+		form = PostVideo(request.POST, request.FILES)
+		if form.is_valid():
+			video.author=user.id
+			video.title=form.cleaned_data["title"]
+			video.body=form.cleaned_data["description"]
+			if form.cleaned_data["video"] is not None:
+				video.video_file=form.cleaned_data["video_file"]
+			if form.cleaned_data["thumbnail"] is not None:
+				video.images=form.cleaned_data["thumbnail"]
+
+			video.save()
+			mentions = video.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, video, 'video')
+			return redirect('app:watch', pk)
+	else:
+		form = PostVideo(
+			initial={
+				'title': video.title,
+				'description': video.description,
+				'thumbnail': video.thumbnail,
+				'video_file': video.video_file
+			})
+
+	context = {
+		'video': video,
+		'form': form
+	}
+	return render(request, 'app/editVideo.html', context)
 
 def watchVideo(request, pk):
 	video = get_object_or_404(Video, pk=pk)

@@ -3,7 +3,10 @@
 
 
 {% block page_content %}
-    <h2 style="margin-bottom: 0px;">{{ post.title }}</h2>
+    <div class="editBar">
+    	<h2 style="margin-bottom: 0px;">{{ post.title }}</h2>
+    	<a href="{% url 'app:editPost' post.id %}" class="button">Edit</a>
+    </div>
     <small style="margin-top: 0rem; margin-bottom: 0.5rem;">
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>

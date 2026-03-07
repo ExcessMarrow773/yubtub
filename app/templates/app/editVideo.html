@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block page_title %}Edit Video{% endblock page_title %}
+
+{% block page_content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="{% url 'app:index' %}">Cancel</a>
+</form>
+{% endblock page_content %}

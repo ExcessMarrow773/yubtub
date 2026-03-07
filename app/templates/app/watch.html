@@ -3,7 +3,10 @@
 {% block title %}YubTub: {{ videos.title }}{% endblock title %}
 
 {% block page_content %}
-<h1>{{ videos.title }}</h1>
+<dir class="editBar">
+    <h2>{{ videos.title }}</h2>
+    <a href="{% url 'app:editVideo' videos.id %}" class="button">Edit</a>
+</dir>
 Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videoAuthor }}</a>
 <div>
 <video width="50%" height="50%" controls Play Pause Seeking Volume Fullscreen>
@@ -47,4 +50,4 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videoAuthor }}</
 {% endfor %}
 {% endblock comments %}
 <div id="toast-container"></div>
-{% endblock %}
+{% endblock page_content %}
