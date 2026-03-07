@@ -222,6 +222,18 @@ sub { position: relative; top:  0.3em; vertical-align: baseline; }
 div { margin: 0.5rem 0; }
 
 /* ── Navbar ─────────────────────────────────────────────────── */
+.editBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editBar a {
+  display: inline-block;
+  gap: 0.5rem;
+  height: min-content;
+}
+
 .navbar {
   display: flex;
   align-items: center;
