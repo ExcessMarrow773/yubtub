@@ -25,7 +25,7 @@ User = get_user_model()
 # Create your views here.
 
 def getUserFromID(id):
-	User.objects.get(id=id)
+	return User.objects.get(id=id)
 
 def index(request):
 	user_videos = Video.objects.order_by('-created_on')
@@ -56,17 +56,17 @@ def editPost(request, pk):
 	if request.method == "POST":
 		form = CreatePost(request.POST, request.FILES)
 		if form.is_valid():
-			postModel = Post(
-				author=request.user.pk,
-				title=form.cleaned_data["title"],
-				body=form.cleaned_data["body"],
-				images=form.cleaned_data["images"],
-			)
-			postModel.save()
-			mentions = postModel.get_valid_mentions()
+			post.author=user.id
+			post.title=form.cleaned_data["title"]
+			post.body=form.cleaned_data["body"]
+			if form.cleaned_data["images"] is not None:
+				post.images=form.cleaned_data["images"]
+
+			post.save()
+			mentions = post.get_valid_mentions()
 			if mentions:
-				mail.mention_email(mentions, postModel, 'post')
-			return redirect('app:index')
+				mail.mention_email(mentions, post, 'post')
+			return redirect('app:post', pk)
 	else:
 		form = CreatePost(
 			initial={
