@@ -3,7 +3,10 @@
 
 
 {% block page_content %}
-    <h2 style="margin-bottom: 0px;">{{ post.title }}</h2>
+    <div class="editBar">
+    	<h2 style="margin-bottom: 0px;">{{ post.title }}</h2>
+    	<a href="{% url 'app:editPost' post.id %}" class="button">Edit</a>
+    </div>
     <small style="margin-top: 0rem; margin-bottom: 0.5rem;">
         {{ post.created_on.date }} at {{ post.created_on.time}}
     </small>
@@ -35,7 +38,7 @@
         <p>
             On {{ comment.created_on.date }} <b>{{ authors | get_item:comment.author }}</b> wrote:
             <div style="margin-left: 25px;">
-                {% if comment.author.is_superuser %}
+				{% if comment.author in superUserIds %}
                     {{ comment.body | markdown | linebreaks }}
                 {% else %}
                     {{ comment.body | linebreaks }}

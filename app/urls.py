@@ -7,9 +7,6 @@ app_name = 'app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', views.CustomLoginView.as_view(), name='login'),
-    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
-    path('signup/', views.register, name='register'),
     path('makeVideo/', views.postVideo, name='postVideo'),
     path('watch/<int:pk>', views.watchVideo, name='watch'),
     path('account/<int:pk>/', views.account, name='account'),
@@ -23,5 +20,7 @@ urlpatterns = [
     path('EconProject/', views.EconProject, name="EconProject"),
     path('follow-user/', views.follow_user, name="follow-user"),
     path('following/', views.following, name="following"),
-	path('demo/', views.DEMO, name="demo")
- ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('editPost/<int:pk>/', views.editPost, name="editPost"),
+    path('editVideo/<int:pk>/', views.editVideo, name="editVideo"),
+    path('demo/', views.DEMO, name="demo")
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

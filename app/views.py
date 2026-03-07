@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.utils import ProgrammingError
 from django.db.models import Q
 
-from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm, CustomAuthenticationForm, CustomUserCreationForm
+from app.forms import PostVideo, VideoCommentForm, CreatePost, PostCommentForm
 from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
@@ -25,7 +25,7 @@ User = get_user_model()
 # Create your views here.
 
 def getUserFromID(id):
-	User.objects.get(id=id)
+	return User.objects.get(id=id)
 
 def index(request):
 	user_videos = Video.objects.order_by('-created_on')
@@ -49,17 +49,41 @@ def index(request):
 	}
 	return render(request, 'index.html', context)
 
-@csrf_exempt
-def register(request):
-	if request.method == 'POST':
-		form = CustomUserCreationForm(request.POST)
+@login_required
+def editPost(request, pk):
+	post = get_object_or_404(Post, id=pk)
+	user = getUserFromID(request.user.id)
+
+	if user.id != post.author:
+		return redirect('app:post', pk)
+
+	if request.method == "POST":
+		form = CreatePost(request.POST, request.FILES)
 		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			return redirect('app:index')
+			post.author=user.id
+			post.title=form.cleaned_data["title"]
+			post.body=form.cleaned_data["body"]
+			if form.cleaned_data["images"] is not None:
+				post.images=form.cleaned_data["images"]
+
+			post.save()
+			mentions = post.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, post, 'post')
+			return redirect('app:post', pk)
 	else:
-		form = CustomUserCreationForm()
-	return render(request, 'register.html', {'form': form})
+		form = CreatePost(
+			initial={
+				'title': post.title,
+				'body': post.body,
+				'images': post.images
+			})
+
+	context = {
+		'post': post,
+		'form': form
+	}
+	return render(request, 'app/editPost.html', context)
 
 @login_required
 def postVideo(request):
@@ -89,6 +113,45 @@ def postVideo(request):
 		'uploadForm': None
 	}
 	return render(request, 'createVideo.html', context)
+
+@login_required
+def editVideo(request, pk):
+	video = get_object_or_404(Video, id=pk)
+	user = getUserFromID(request.user.id)
+
+	if user.id != video.author:
+		return redirect('app:watch', pk)
+
+	if request.method == "POST":
+		form = PostVideo(request.POST, request.FILES)
+		if form.is_valid():
+			video.author=user.id
+			video.title=form.cleaned_data["title"]
+			video.body=form.cleaned_data["description"]
+			if form.cleaned_data["video"] is not None:
+				video.video_file=form.cleaned_data["video_file"]
+			if form.cleaned_data["thumbnail"] is not None:
+				video.images=form.cleaned_data["thumbnail"]
+
+			video.save()
+			mentions = video.get_valid_mentions()
+			if mentions:
+				mail.mention_email(mentions, video, 'video')
+			return redirect('app:watch', pk)
+	else:
+		form = PostVideo(
+			initial={
+				'title': video.title,
+				'description': video.description,
+				'thumbnail': video.thumbnail,
+				'video_file': video.video_file
+			})
+
+	context = {
+		'video': video,
+		'form': form
+	}
+	return render(request, 'app/editVideo.html', context)
 
 def watchVideo(request, pk):
 	video = get_object_or_404(Video, pk=pk)
@@ -256,6 +319,12 @@ def viewPost(request, pk):
 		authors[i.author] = user
 
 	postAuthor = User.objects.get(id=post.author).username
+	
+	superUsers = User.objects.filter(is_superuser=True).all()
+	superUserIds = []
+	for i in superUsers:
+		superUserIds.append(i.id)
+
 
 	context = {
 		"post": post,
@@ -263,7 +332,9 @@ def viewPost(request, pk):
 		"form": PostCommentForm(),
 		"muted": isMuted(request),
 		'authors': authors,
-		'postAuthor': postAuthor
+		'postAuthor': postAuthor,
+		'superUsers': superUsers,
+		'superUserIds': superUserIds
 	}
 
 	return render(request, "app/viewPost.html", context)
@@ -395,13 +466,6 @@ def follow_user(request):
 	else:
 		request.user.follow(user)
 		return JsonResponse({'message': 'Thanks for following!', 'following': True})
-
-class CustomLoginView(LoginView):
-	template_name = 'login.html'
-	authentication_form = CustomAuthenticationForm
-
-class CustomLogoutView(LogoutView):
-	template_name = 'index.html'
 
 def handler405(request, exception=None):
 	return render(request, '405.html', status=405)

@@ -362,10 +362,10 @@ class URLPatternTests(TestCase):
         self.assertEqual(self.client.get(reverse('app:index')).status_code, 200)
 
     def test_login_url(self):
-        self.assertEqual(self.client.get(reverse('app:login')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('accounts:login')).status_code, 200)
 
     def test_register_url(self):
-        self.assertEqual(self.client.get(reverse('app:register')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('accounts:register')).status_code, 200)
 
     def test_todo_url(self):
         self.assertEqual(self.client.get(reverse('app:TODO')).status_code, 200)

@@ -19,3 +19,13 @@ class ProfileUsernameChange(forms.ModelForm):
 
 class ProfilePasswordChange(PasswordChangeForm):
     user = User
+
+User = get_user_model()
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username", "email", "password1", "password2")
+
+class CustomAuthenticationForm(AuthenticationForm):
+    pass
