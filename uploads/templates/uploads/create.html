@@ -1,15 +1,41 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<script src="{% static 'upload.js' %}" defer></script>
+
+<style>
+    #progress-container {
+        display: none;
+        margin: 1.25rem 0;
+    }
+    #progress-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        margin-top: 0.4rem;
+    }
+</style>
+{% endblock %}
 
 {% block page_content %}
-<div>
-	{{ form }}
-</div>
-<button type="submit" class="btn btn-primary">Submit</button>
-<a href="{% url 'app:index' %}">Cancel</a>
-<input type="file" name="fileInput" id="fileInput">
-<button onclick="uploadFile()">Upload File</button>
-<progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
-<h3 id="status"></h3>
-<p id="loaded_n_total"></p>
+<h1>Upload File</h1>
+
+<form method="post" enctype="multipart/form-data" id="upload-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- ── Upload progress ── -->
+    <div id="progress-container">
+        <progress id="progress-bar" value="0" max="100"></progress>
+        <div id="progress-meta">
+            <span id="progress-status">Uploading…</span>
+            <span id="progress-text">0%</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+    <a href="{% url 'app:index' %}">Cancel</a>
+</form>
 
 {% endblock page_content %}

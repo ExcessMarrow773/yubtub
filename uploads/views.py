@@ -39,7 +39,7 @@ def createUpload(request):
 				file_name=request.FILES["file"].name
 			)
 			upload.save()
-			return redirect('uploads:view', upload.pk)
+			return redirect('uploads:viewUpload', upload.pk)
 	else:
 		form = UploadFileForm()
 
