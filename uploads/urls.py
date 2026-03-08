@@ -6,5 +6,6 @@ from . import views
 app_name = 'uploads'
 
 urlpatterns = [
-    path('', views.index, name='uploadsIndex'),
+	path('', views.createUpload, name='createUpload'),
+	path('<int:pk>/', views.viewUpload, name='viewUpload')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
