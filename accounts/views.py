@@ -19,7 +19,7 @@ User = get_user_model()
 # Create your views here.
 
 
-@login_required(login_url='/login/')
+@login_required()
 def settings(request):
 	userModel = get_object_or_404(User, username=request.user.username)
 
