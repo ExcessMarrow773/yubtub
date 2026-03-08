@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div>
+	{{ form }}
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+<a href="{% url 'app:index' %}">Cancel</a>
+<input type="file" name="fileInput" id="fileInput">
+<button onclick="uploadFile()">Upload File</button>
+<progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+<h3 id="status"></h3>
+<p id="loaded_n_total"></p>
+
+{% endblock page_content %}
