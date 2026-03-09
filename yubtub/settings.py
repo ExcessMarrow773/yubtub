@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 	'chat.apps.ChatConfig',
 	'bugs.apps.BugsConfig',
 	'jsTests.apps.JstestsConfig',
+    'uploads.apps.UploadsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,6 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/settings/login/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 

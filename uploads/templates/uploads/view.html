@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+Download file: "{{ upload.file_name }}"<br><br>	
+<a class="button" href="{{ upload.file.url }}" download="{{ upload.file_name }}">Download</a>
+
+{% endblock page_content %}

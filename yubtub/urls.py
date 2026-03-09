@@ -18,14 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from accounts.views import CustomLoginView, CustomLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls')),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('chat/', include('chat.urls')),
     path('jsTest/', include('jsTests.urls')),
     path('settings/', include('accounts.urls')),
-    path('bug/', include('bugs.urls'))
+    path('bug/', include('bugs.urls')),
+	path('uploads/', include('uploads.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler405 = 'app.views.handler405'

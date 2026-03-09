@@ -2,11 +2,25 @@
 
 {% load static %}
 {% block extra_head %}
-    <script src="{% static 'app/upload.js' %}"></script>
+<script src="{% static 'upload.js' %}" defer></script>
+<style>
+    #progress-container {
+        display: none;
+        margin: 1.25rem 0;
+    }
+    #progress-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        margin-top: 0.4rem;
+    }
+</style>
 {% endblock %}
+
 {% block page_content %}
 <h1 id="title">Post Video</h1>
-<form method="post" enctype="multipart/form-data">
+
+<form method="post" enctype="multipart/form-data" id="upload-form">
     {% csrf_token %}
     <div>
         {{ form.title }}*
@@ -21,6 +35,18 @@
         Video: {{ form.video_file }}*
     </div>
     <small>* marks a field as required</small><br>
+
+    <!-- ── Upload progress ── -->
+    <div id="progress-container">
+        <div id="progress-track">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="progress-meta">
+            <span id="progress-status">Uploading…</span>
+            <span id="progress-text">0%</span>
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{% url 'app:index' %}">Cancel</a>
 </form>
