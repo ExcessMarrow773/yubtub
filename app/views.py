@@ -419,6 +419,10 @@ def search(request):
 
 ## API REQUESTS
 
+def uploadSong(request):
+	context = {}
+	return render(request, "app/songUpload.html", context)
+
 @require_POST
 def like_video(request):
 	if not request.user.is_authenticated:

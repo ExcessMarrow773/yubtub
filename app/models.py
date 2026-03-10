@@ -183,3 +183,16 @@ class Banner(models.Model):
     
     def __str__(self):
         return self.message[:50]
+
+
+
+class Song(models.Model):
+    author = models.IntegerField(default=0)
+    name = models.CharField(max_length=25)
+    song_file = models.FileField(
+        upload_to='songs/',
+        validators=[FileExtensionValidator(allowed_extensions=['mp3'])]
+    )
+
+    def __str__(self):
+        return self.name
