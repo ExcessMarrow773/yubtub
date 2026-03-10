@@ -18,6 +18,8 @@ from operator import attrgetter
 from app import mail
 from app.qol import isVMuted, isPMuted, isMuted
 
+from accounts.models import CustomUser
+
 import os
 import json
 
@@ -25,11 +27,16 @@ User = get_user_model()
 # Create your views here.
 
 def getUserFromID(id):
-	return User.objects.get(id=id)
+	try:
+		return User.objects.get(id=id)
+	except CustomUser.DoesNotExist:
+		return User.objects.get(id=1)
+
 
 def index(request):
 	user_videos = Video.objects.order_by('-created_on')
 	user_posts = Post.objects.order_by('-created_on')
+	user = getUserFromID(request.user.pk)
 
 	# Combine and sort by created_on
 	combined = sorted(
@@ -40,8 +47,15 @@ def index(request):
 
 	authors = {}
 	for i in combined:
-		user = User.objects.get(id=i.author).username
-		authors[i.author] = user
+		author = User.objects.get(id=i.author)
+		if user.is_staff:
+			if author.first_name and author.last_name:
+				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
+			else:
+				authors[i.author] = author.username
+		else:
+			authors[i.author] = author.username
+			
 		
 	context = {
 		'combined': combined,
@@ -188,8 +202,14 @@ def watchVideo(request, pk):
 
 	authors = {}
 	for i in comments:
-		user = User.objects.get(id=i.author).username
-		authors[i.author] = user
+		author = User.objects.get(id=i.author)
+		if user.is_staff:
+			if author.first_name and author.last_name:
+				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
+			else:
+				authors[i.author] = author.username
+		else:
+			authors[i.author] = author.username
 
 	videoAuthor = User.objects.get(id=video.author).username
 
@@ -293,11 +313,11 @@ def viewPost(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	form = PostCommentForm()
 	url = request.build_absolute_uri()
-
+	user = getUserFromID(request.user.pk)
 	if request.method == "POST":
 		form = PostCommentForm(request.POST)
 		if form.is_valid():
-			user = User.objects.get(username=request.user.username)
+			
 			comment = PostComment(
 				author=user.id,
 				body=form.cleaned_data["body"],
@@ -315,8 +335,14 @@ def viewPost(request, pk):
 
 	authors = {}
 	for i in comments:
-		user = User.objects.get(id=i.author).username
-		authors[i.author] = user
+		author = User.objects.get(id=i.author)
+		if user.is_staff:
+			if author.first_name and author.last_name:
+				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
+			else:
+				authors[i.author] = author.username
+		else:
+			authors[i.author] = author.username
 
 	postAuthor = User.objects.get(id=post.author).username
 	
