@@ -23,7 +23,7 @@
 <form method="post" enctype="multipart/form-data" id="upload-form">
     {% csrf_token %}
     <div>
-        {{ form.title }}*
+        {{ form.title }}
     </div>
     <div>
         {{ form.description }}
@@ -32,10 +32,8 @@
         Thumbnail: {{ form.thumbnail }}
     </div>
     <div>
-        Video: {{ form.video_file }}*
+        Video: {{ form.video_file }}
     </div>
-    <small>* marks a field as required</small><br>
-
     <!-- ── Upload progress ── -->
     <div id="progress-container">
         <div id="progress-track">
@@ -47,8 +45,15 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a href="{% url 'app:index' %}">Cancel</a>
+    {% if request.META.HTTP_SEC_FETCH_DEST == 'document' %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{% url 'app:index' %}">Cancel</a>
+        <style>
+            form {
+                background-color: #bbe47b;
+            }
+        </style>
+    {% endif %}
 </form>
 
 <small>Please note that videos and comments may be deleted, as YubTub is still in development.</small>
