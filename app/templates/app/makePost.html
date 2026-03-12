@@ -45,7 +45,16 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a href="{% url 'app:index' %}">Cancel</a>
+    {% if request.META.HTTP_SEC_FETCH_DEST == 'document' %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{% url 'app:index' %}">Cancel</a>
+        <style>
+            form {
+                background-color: #bbe47b;
+            }
+        </style>
+    {% endif %}
+    <small>Please note that posts and comments may be deleted, as YubTub is still in development.</small>
+
 </form>
 {% endblock page_content %}
