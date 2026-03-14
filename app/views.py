@@ -127,11 +127,11 @@ def editVideo(request, pk):
 		if form.is_valid():
 			video.author=user.id
 			video.title=form.cleaned_data["title"]
-			video.body=form.cleaned_data["description"]
+			video.description=form.cleaned_data["description"]
 			if form.cleaned_data["video"] is not None:
 				video.video_file=form.cleaned_data["video_file"]
 			if form.cleaned_data["thumbnail"] is not None:
-				video.images=form.cleaned_data["thumbnail"]
+				video.thumbnail=form.cleaned_data["thumbnail"]
 
 			video.save()
 			mentions = video.get_valid_mentions()
