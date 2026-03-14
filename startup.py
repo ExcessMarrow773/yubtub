@@ -44,7 +44,7 @@ try:
 		if debug:
 			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
 		else:
-			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3'])
+			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3', '--reload'])
 
 except KeyboardInterrupt:
 	print('\n\nStopping server and exiting program')
