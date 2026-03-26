@@ -180,6 +180,7 @@ class Banner(models.Model):
     active = models.BooleanField(default=True)
     created_by = models.CharField(max_length=150, default='system')
     created_on = models.DateTimeField(auto_now_add=True)
+    expires_on = models.DateTimeField(null=True)
     
     def __str__(self):
         return self.message[:50]
