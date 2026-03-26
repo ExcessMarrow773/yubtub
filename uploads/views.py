@@ -28,7 +28,7 @@ def index(request):
 @login_required()
 def createUpload(request):
 	user = getUserFromID(request.user.id)
-	if not user.is_superuser:
+	if not user.has_perm('uploads.add_upload'):
 		return redirect('app:index')
 	if request.method == "POST":
 		form = UploadFileForm(request.POST, request.FILES)
@@ -51,6 +51,8 @@ def createUpload(request):
 
 def viewUpload(request, pk):
 	user = getUserFromID(request.user.id)
+	if not user.has_perm('uploads.view_upload'):
+		return redirect('app:index')
 	upload = get_object_or_404(Upload, pk=pk)
 	context = {
 		'upload': upload
