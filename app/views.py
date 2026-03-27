@@ -40,8 +40,8 @@ def getUserFromID(id):
 def index(request):
 	user_videos = Video.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
 	user_posts = Post.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
-	old_user_videos = Video.objects.order_by('-created_on').filter(created_on__lt=timezone.now() - timedelta(weeks=1))
-	old_user_posts = Post.objects.order_by('-created_on').filter(created_on__lt=timezone.now() - timedelta(weeks=1))
+	old_user_videos = Video.objects.order_by('-created_on')
+	old_user_posts = Post.objects.order_by('-created_on')
 	
 	user = getUserFromID(request.user.pk)
 
@@ -65,22 +65,10 @@ def index(request):
 			authors[i.author] = author.username
 
 	old_combined = sorted(
-		chain(old_user_videos, old_user_posts),
+		chain(list(set(old_user_videos) - set(user_videos)), list(set(old_user_posts) - set(user_posts))),
 		key=attrgetter('created_on'),
 		reverse=True
 	)
-
-
-	authors = {}
-	for i in old_combined:
-		author = User.objects.get(id=i.author)
-		if user.is_staff:
-			if author.first_name and author.last_name:
-				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
-			else:
-				authors[i.author] = author.username
-		else:
-			authors[i.author] = author.username
 
 
 	context = {
