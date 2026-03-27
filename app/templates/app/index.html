@@ -8,7 +8,7 @@
 <form action="{% url 'app:search' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
 </form>
-{% if combined %}
+    {% if combined %}
     <div class="video-grid">
         {% for thing in combined %}
 

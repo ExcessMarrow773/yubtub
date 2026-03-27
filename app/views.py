@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect, JsonResponse
-from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
@@ -15,7 +14,6 @@ from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
 from operator import attrgetter
-from datetime import timedelta
 
 from app import mail
 from app.qol import isVMuted, isPMuted, isMuted
@@ -24,8 +22,6 @@ from accounts.models import CustomUser
 
 import os
 import json
-
-
 
 User = get_user_model()
 # Create your views here.
@@ -52,7 +48,6 @@ def index(request):
 		reverse=True
 	)
 
-
 	authors = {}
 	for i in combined:
 		author = User.objects.get(id=i.author)
@@ -73,7 +68,6 @@ def index(request):
 
 	context = {
 		'combined': combined,
-		'old_combined': old_combined,
 		'authors': authors,
 	}
 	return render(request, 'index.html', context)
