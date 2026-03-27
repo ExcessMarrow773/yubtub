@@ -42,6 +42,41 @@
         {% endfor %}
     </div>
 {% else %}
-    <p>Nothing posted yet.</p>
+	<p>Nothing posted in the last week.</p>
+{% endif %}
+{% if old_combined %}
+<hr>
+    <div class="video-grid">
+        {% for thing in old_combined %}
+
+            {% if thing.type == "video" %}
+                <div class="video-card">
+                    <a href="{% url 'app:watch' thing.id %}">
+                        <img src="{{ thing.thumbnail.url }}" alt="Thumbnail">
+                    </a>
+                    <div class="video-card-info">
+                        <strong>{{ thing.title }}</strong>
+                        <small>
+                            <a href="{% url 'app:account' thing.author %}">{{ authors | get_item:thing.author }}</a>
+                            · {{ thing.created_on }}
+                        </small>
+                    </div> 
+                </div>
+
+            {% elif thing.type == "post" %}
+                <div class="post-card">
+                    <div class="post-card-label">Post - <a href="{% url "app:account" thing.author %}">{{ authors | get_item:thing.author }}</a></div>
+                    
+                    <a href="{% url 'app:post' thing.pk %}">
+                        <strong>{{ thing.title }}</strong>
+                    </a>
+                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <small>{{ thing.created_on }}</small>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+    </div>
 {% endif %}
 {% endblock page_content %}

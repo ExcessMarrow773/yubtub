@@ -34,8 +34,11 @@ def getUserFromID(id):
 
 
 def index(request):
-	user_videos = Video.objects.order_by('-created_on')
-	user_posts = Post.objects.order_by('-created_on')
+	user_videos = Video.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
+	user_posts = Post.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
+	old_user_videos = Video.objects.order_by('-created_on')
+	old_user_posts = Post.objects.order_by('-created_on')
+	
 	user = getUserFromID(request.user.pk)
 
 	# Combine and sort by created_on
@@ -55,8 +58,14 @@ def index(request):
 				authors[i.author] = author.username
 		else:
 			authors[i.author] = author.username
-			
-		
+
+	old_combined = sorted(
+		chain(list(set(old_user_videos) - set(user_videos)), list(set(old_user_posts) - set(user_posts))),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
+
+
 	context = {
 		'combined': combined,
 		'authors': authors,
