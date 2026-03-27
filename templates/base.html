@@ -66,7 +66,6 @@
 <body>
 	
 <div id="toast-container"></div>
-{% if request.META.HTTP_SEC_FETCH_DEST == 'document' %}
 <div class="navbar">
 	<h1>
 		<a href="{% url "bugs:bugReport" %}" style="text-decoration: none; "> <img src="{% static 'img/icons8-bug-60.png' %}" alt="Example Image" styles="opacity: 1"> </a>
@@ -117,7 +116,6 @@
 		{% endfor %}
 	</div>
 </div>
-{% endif %}
 {% endif %}
 {% block page_content %}
 {% endblock page_content %}
