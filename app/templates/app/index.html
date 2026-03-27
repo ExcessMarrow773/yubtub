@@ -41,7 +41,10 @@
 
         {% endfor %}
     </div>
-{% elif old_combined %}
+{% else %}
+	<p>Nothing posted in the last week.</p>
+{% endif %}
+{% if old_combined %}
 <hr>
     <div class="video-grid">
         {% for thing in old_combined %}
@@ -75,8 +78,5 @@
 
         {% endfor %}
     </div>
-
-{% else %}
-    <p>Nothing posted yet.</p>
 {% endif %}
 {% endblock page_content %}
