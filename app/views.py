@@ -64,6 +64,25 @@ def index(request):
 		else:
 			authors[i.author] = author.username
 
+	old_combined = sorted(
+		chain(old_user_videos, old_user_posts),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
+
+
+	authors = {}
+	for i in old_combined:
+		author = User.objects.get(id=i.author)
+		if user.is_staff:
+			if author.first_name and author.last_name:
+				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
+			else:
+				authors[i.author] = author.username
+		else:
+			authors[i.author] = author.username
+
+
 	context = {
 		'combined': combined,
 		'old_combined': old_combined,
