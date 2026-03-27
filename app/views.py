@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.db.utils import ProgrammingError
@@ -14,6 +15,7 @@ from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
 from operator import attrgetter
+from datetime import timedelta
 
 from app import mail
 from app.qol import isVMuted, isPMuted, isMuted
@@ -68,6 +70,7 @@ def index(request):
 
 	context = {
 		'combined': combined,
+		'old_combined': old_combined,
 		'authors': authors,
 	}
 	return render(request, 'index.html', context)
