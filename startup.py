@@ -8,8 +8,12 @@ args = sys.argv
 
 if len(args) == 2:
 	port = int(args[1])
+elif len(args) == 3:
+	port = int(args[1])
+	use_gunicorn = tuple(args[2])
 else:
 	port = 8000
+	use_gunicorn = False
 
 if os.path.exists('CONFIG') == False:
 	with open('CONFIG', 'w') as f:
@@ -41,7 +45,7 @@ try:
 
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 		print(f"Starting server on http://127.0.0.1:{port}\n")
-		if debug:
+		if not use_gunicorn:
 			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
 		else:
 			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3', '--reload'])
