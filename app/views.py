@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect, JsonResponse
-from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
@@ -15,7 +14,6 @@ from app.models import Video, VideoComment, Post, PostComment
 
 from itertools import chain
 from operator import attrgetter
-from datetime import timedelta
 
 from app import mail
 from app.qol import isVMuted, isPMuted, isMuted
@@ -24,8 +22,6 @@ from accounts.models import CustomUser
 
 import os
 import json
-
-
 
 User = get_user_model()
 # Create your views here.
@@ -38,11 +34,8 @@ def getUserFromID(id):
 
 
 def index(request):
-	user_videos = Video.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
-	user_posts = Post.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
-	old_user_videos = Video.objects.order_by('-created_on').filter(created_on__lt=timezone.now() - timedelta(weeks=1))
-	old_user_posts = Post.objects.order_by('-created_on').filter(created_on__lt=timezone.now() - timedelta(weeks=1))
-	
+	user_videos = Video.objects.order_by('-created_on')
+	user_posts = Post.objects.order_by('-created_on')
 	user = getUserFromID(request.user.pk)
 
 	# Combine and sort by created_on
@@ -51,7 +44,6 @@ def index(request):
 		key=attrgetter('created_on'),
 		reverse=True
 	)
-
 
 	authors = {}
 	for i in combined:
@@ -63,29 +55,10 @@ def index(request):
 				authors[i.author] = author.username
 		else:
 			authors[i.author] = author.username
-
-	old_combined = sorted(
-		chain(old_user_videos, old_user_posts),
-		key=attrgetter('created_on'),
-		reverse=True
-	)
-
-
-	authors = {}
-	for i in old_combined:
-		author = User.objects.get(id=i.author)
-		if user.is_staff:
-			if author.first_name and author.last_name:
-				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
-			else:
-				authors[i.author] = author.username
-		else:
-			authors[i.author] = author.username
-
-
+			
+		
 	context = {
 		'combined': combined,
-		'old_combined': old_combined,
 		'authors': authors,
 	}
 	return render(request, 'index.html', context)
