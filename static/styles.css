@@ -301,18 +301,43 @@ chat {
 }
 
 msg {
-  display: inline-block;
+  display: block;
   position: relative;
   padding: 10px 15px 18px;
   border-radius: 12px;
   max-width: 75%;
+  width: auto;
   word-wrap: break-word;
   color: var(--accent-bg);
+}
 
+#id_chat_item_container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* prevents stretch */
+  gap: 12px;
+  width: 100%;
 }
 
 msg.from { align-self: flex-start; background: var(--accent-hover); border-top-left-radius: 0; }
 msg.to   { align-self: flex-end;   background: var(--accent-hover); border-top-right-radius: 0; }
+
+.chat__input__container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 66%;
+  max-width: 650px;
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  background: var(--bg); /* so it covers content behind it when scrolling */
+}
+
+.chat__input__container input {
+  flex: 1;
+}
 
 msg .timestamp {
   display: block;
