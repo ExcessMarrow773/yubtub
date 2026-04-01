@@ -8,6 +8,8 @@ args = sys.argv
 
 if len(args) == 2:
 	port = int(args[1])
+	use_gunicorn = False
+
 elif len(args) == 3:
 	port = int(args[1])
 	use_gunicorn = tuple(args[2])
