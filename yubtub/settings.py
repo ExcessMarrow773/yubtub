@@ -48,6 +48,7 @@ if dbOnline:
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne', 
     'app.apps.AppConfig',
 	'chat.apps.ChatConfig',
 	'bugs.apps.BugsConfig',
@@ -61,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
 ]
+
+ASGI_APPLICATION = 'yubtub.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -92,6 +95,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'yubtub.wsgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Database
@@ -159,7 +168,7 @@ STATIC_URL = '/yubtubStatic/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     f'{BASE_DIR}/static',
-    'app/static/app'
+    'chat/static/chat'
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

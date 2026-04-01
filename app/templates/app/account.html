@@ -22,6 +22,7 @@
 {% endblock heading %}
 
 {% block extra_navbar %}
+    <a class="button" href="{% url 'chat:index' %}">Chat</a>
     <a href="{% url 'accounts:settings' %}" class="button">Settings</a>
 {% endblock extra_navbar %}
 
