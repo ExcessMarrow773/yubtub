@@ -1,4 +1,7 @@
-const chatSocket = new WebSocket("ws://" + window.location.host + "/");
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const socketUrl = `${protocol}//${window.location.host}/`;
+const chatSocket = new WebSocket(socketUrl);
+
 
 function parseCommands(message, userName) {
 	if (message === '/reload') {
