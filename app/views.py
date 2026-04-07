@@ -50,8 +50,14 @@ def index(request):
 		reverse=True
 	)
 
+	old_combined = sorted(
+		chain(list(set(old_user_videos) - set(user_videos)), list(set(old_user_posts) - set(user_posts))),
+		key=attrgetter('created_on'),
+		reverse=True
+	)
+
 	authors = {}
-	for i in combined:
+	for i in old_combined:
 		author = User.objects.get(id=i.author)
 		if user.is_staff:
 			if author.first_name and author.last_name:
@@ -60,13 +66,6 @@ def index(request):
 				authors[i.author] = author.username
 		else:
 			authors[i.author] = author.username
-
-	old_combined = sorted(
-		chain(list(set(old_user_videos) - set(user_videos)), list(set(old_user_posts) - set(user_posts))),
-		key=attrgetter('created_on'),
-		reverse=True
-	)
-
 
 	context = {
 		'combined': combined,
