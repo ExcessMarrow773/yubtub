@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
 from django.conf import settings
 from yubtub import settings
 from django.contrib.auth import get_user_model
@@ -134,6 +134,11 @@ class Post(models.Model):
         null=True,
         blank=True
     )
+    image_size = models.IntegerField(default=19, 
+    validators = [
+        MinValueValidator(1),
+        MaxValueValidator(100)
+    ])
 
     def was_published_recently(self):
        return self.created_on >= timezone.now() - datetime.timedelta(days=1)

@@ -90,7 +90,7 @@ def editPost(request, pk):
 			post.body=form.cleaned_data["body"]
 			if form.cleaned_data["images"] is not None:
 				post.images=form.cleaned_data["images"]
-
+			post.image_size=form.cleaned_data["image_size"]
 			post.save()
 			mentions = post.get_valid_mentions()
 			if mentions:
@@ -101,7 +101,8 @@ def editPost(request, pk):
 			initial={
 				'title': post.title,
 				'body': post.body,
-				'images': post.images
+				'images': post.images,
+				'image_size': post.image_size
 			})
 
 	context = {

@@ -15,9 +15,11 @@
     <div>
         <small>Add an image</small>
 		{% if post.images %}
-			<img src="{{ post.images.url }}" alt="" width="19%" height="auto">
+			<img src="{{ post.images.url }}" alt="" width="{{ post.image_size }}%" height="auto">
 		{% endif %}
     	{{ form.images }} <b>(Not Required)</b>
+        <br>Image Size (%)
+        {{ form.image_size }}
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{% url 'app:index' %}">Cancel</a>

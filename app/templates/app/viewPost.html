@@ -19,7 +19,7 @@
     <p>{{ post.body | markdown }}</p>
     <div style="justify-content: center; align-items: center; ">	
     	{% if post.images %}
-    	<img src="{{ post.images.url }}" alt="" width="19%" height="auto">
+    	<img src="{{ post.images.url }}" alt="" width="{{ post.image_size }}%" height="auto">
     	{% endif %}
     </div>
 
