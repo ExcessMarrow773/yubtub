@@ -1,23 +1,23 @@
 # IN PROGRESS ITEM
 
-- [ ] add moderator buttons/ abilities
-
-- [ ] refacter folders and files to be easer to follow
+- add better image viewing features <https://atticusfw.dev/bug/view/11>
 
 - [ ] Add downloading/ uploading youtube vids from links
 
 - [ ] add Black Bar Program
 
-- [ ] Add different communities
 
 ## TODO
 
-- [ ] redo chat app for realtime comunication <https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/>
+- [x] add moderator buttons/ abilities
 
-- [x] add bot commands
+- [x] refacter folders and files to be easer to follow
+
+- [x] redo chat app for realtime comunication <https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/>
+
+- [x] add bot commands (Removed while redoing chat app)
 
 - [x] add a way to upload images to posts (multi file upload)
-
 
 - [x] add mentioning with emails: [Tutorial](https://medium.com/dajngo/email-configuration-in-django-3c7d9e149445)
 
