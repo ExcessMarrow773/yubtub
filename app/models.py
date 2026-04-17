@@ -166,8 +166,9 @@ class PostComment(models.Model):
     type = models.CharField(max_length=20, default='postComment')
 
     def __str__(self):
-         return self.author
-    
+        userID = self.author
+        return User.objects.get(id=userID).username
+        
     def get_mentions(self):
         """Extract all @mentions from the comment body"""
         pattern = r'@(\w+)'

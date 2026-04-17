@@ -28,6 +28,8 @@ class CustomUser(AbstractUser):
         ),
     )
 
+	use_naughty_words = models.BooleanField(default=False)
+
 	def follow(self, user):
 		self.following.add(user)
 
@@ -42,3 +44,7 @@ class CustomUser(AbstractUser):
 
 	def is_followed_by(self, user):
 		return self.followers.filter(pk=user.pk).exists()
+	
+	def __str__(self):
+		return self.username
+

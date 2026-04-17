@@ -308,6 +308,7 @@ def makePost(request):
 				title=form.cleaned_data["title"],
 				body=form.cleaned_data["body"],
 				images=form.cleaned_data["images"],
+				image_size=form.cleaned_data["image_size"]
 			)
 			post.save()
 			mentions = post.get_valid_mentions()

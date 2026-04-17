@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("KEY", "u*t/(8jijbuyfrx(y))")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", True) == 'True'
-#DEBUG = True
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '192.168.1.199', '192.168.68.120', '192.168.68.134', 'raspberrypi.local', 'yeti.local', '187.77.203.207', 'atticusfw.dev', 'dev.atticusfw.dev']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN' 
@@ -147,6 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL	='accounts.CustomUser'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
