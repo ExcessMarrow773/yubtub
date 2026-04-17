@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_truncate dict_extras %}
+{% load markdown_truncate dict_extras black_box %}
 
 {% block title %}YubTub - Home{% endblock title %}
 
@@ -33,7 +33,7 @@
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>
                     </a>
-                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <p>{{ thing.body | censor:user | markdown_truncate:100  }}</p>
                     <small>{{ thing.created_on }}</small>
                 </div>
 
@@ -70,7 +70,7 @@
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>
                     </a>
-                    <p>{{ thing.body | markdown_truncate:100 }}</p>
+                    <p>{{ thing.body | censor:user | markdown_truncate:100 }}</p>
                     <small>{{ thing.created_on }}</small>
                 </div>
 

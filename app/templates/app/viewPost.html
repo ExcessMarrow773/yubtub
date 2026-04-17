@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_extras dict_extras %}
+{% load markdown_extras dict_extras black_box %}
 
 
 {% block page_content %}
@@ -16,7 +16,7 @@
         By <a href="{% url 'app:account' post.author %}">{{ postAuthor }}</a>
     </p>
 
-    <p>{{ post.body | markdown }}</p>
+    <p>{{ post.body | censor:user | markdown }}</p>
     <div style="justify-content: center; align-items: center; ">	
     	{% if post.images %}
     	<img src="{{ post.images.url }}" alt="" width="{{ post.image_size }}%" height="auto">
@@ -41,9 +41,9 @@
             On {{ comment.created_on.date }} <b>{{ authors | get_item:comment.author }}</b> wrote:
             <div style="margin-left: 25px;">
 				{% if comment.author in superUserIds %}
-                    {{ comment.body | markdown | linebreaks }}
+                    {{ comment.body | censor:user | markdown | linebreaks  }}
                 {% else %}
-                    {{ comment.body | linebreaks }}
+                    {{ comment.body | censor:user | linebreaks}}
                     <script>console.log("{{ comment.body }}")</script>
                 {% endif %}
             </div>
