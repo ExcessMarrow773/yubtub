@@ -1,13 +1,12 @@
 # IN PROGRESS ITEM
 
-- add better image viewing features <https://atticusfw.dev/bug/view/11>
-
 - [ ] Add downloading/ uploading youtube vids from links
 
-- [ ] add Black Bar Program
-
-
 ## TODO
+
+- [x] add better image viewing features <https://atticusfw.dev/bug/view/11>
+
+- [x] add Black Bar Program
 
 - [x] add moderator buttons/ abilities
 
