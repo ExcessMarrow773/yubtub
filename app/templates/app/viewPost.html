@@ -10,7 +10,7 @@
     </div>
     {% endif %}
     <small style="margin-top: 0rem; margin-bottom: 0.5rem;">
-        {{ post.created_on.date }} at {{ post.created_on.time}}
+        Posted: {{ post.created_on }}
     </small>
     <p style="margin-top: 0px;">
         By <a href="{% url 'app:account' post.author %}">{{ postAuthor }}</a>

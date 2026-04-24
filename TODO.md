@@ -1,5 +1,7 @@
 # IN PROGRESS ITEM
 
+- [ ] Add multi-image support
+
 - [ ] Add downloading/ uploading youtube vids from links
 
 ## TODO

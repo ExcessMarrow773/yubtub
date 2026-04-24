@@ -48,11 +48,6 @@
     {% if request.META.HTTP_SEC_FETCH_DEST == 'document' %}
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{% url 'app:index' %}">Cancel</a>
-        <style>
-            form {
-                background-color: #bbe47b;
-            }
-        </style>
     {% endif %}
 </form>
 
