@@ -4,6 +4,8 @@
 
 - [ ] Add downloading/ uploading youtube vids from links
 
+- [ ] Add more profile features <https://atticusfw.dev/bug/view/14>
+
 ## TODO
 
 - [x] add better image viewing features <https://atticusfw.dev/bug/view/11>
