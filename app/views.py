@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.db.utils import ProgrammingError
 from django.db.models import Q
 
@@ -34,7 +35,7 @@ def getUserFromID(id):
 	except CustomUser.DoesNotExist:
 		return User.objects.get(id=1)
 
-
+@xframe_options_exempt
 def index(request):
 	user_videos = Video.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
 	user_posts = Post.objects.order_by('-created_on').filter(created_on__gt=timezone.now() - timedelta(weeks=1))
