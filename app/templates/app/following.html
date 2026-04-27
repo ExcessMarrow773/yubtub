@@ -21,7 +21,7 @@
                     <div class="video-card-info">
                         <strong>{{ thing.title }}</strong>
                         <small>
-                            <a href="{% url 'app:account' thing.author %}">{{ authors | get_item:thing.author }}</a>
+                            <a href="{% url 'app:account' thing.author %}">{{ thing.author | get_user_username:user }}</a>
                             · {{ thing.created_on }}
                         </small>
                     </div> 
@@ -29,7 +29,7 @@
 
             {% elif thing.type == "post" %}
                 <div class="post-card">
-                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ authors | get_item:thing.author }}</a></u></div>
+                    <div class="post-card-label">Post - <u><a href="{% url "app:account" thing.author %}">{{ thing.author | get_user_username:user }}</a></u></div>
                     
                     <a href="{% url 'app:post' thing.pk %}">
                         <strong>{{ thing.title }}</strong>

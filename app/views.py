@@ -57,21 +57,9 @@ def index(request):
 		reverse=True
 	)
 
-	authors = {}
-	for i in old_combined:
-		author = User.objects.get(id=i.author)
-		if user.is_staff:
-			if author.first_name and author.last_name:
-				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
-			else:
-				authors[i.author] = author.username
-		else:
-			authors[i.author] = author.username
-
 	context = {
 		'combined': combined,
 		'old_combined': old_combined,
-		'authors': authors,
 	}
 	return render(request, 'index.html', context)
 
@@ -213,16 +201,6 @@ def watchVideo(request, pk):
 
 	comments = VideoComment.objects.filter(video=video).order_by("-created_on")
 
-	authors = {}
-	for i in comments:
-		author = User.objects.get(id=i.author)
-		if user.is_staff:
-			if author.first_name and author.last_name:
-				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
-			else:
-				authors[i.author] = author.username
-		else:
-			authors[i.author] = author.username
 
 	videoAuthor = User.objects.get(id=video.author).username
 
@@ -233,7 +211,6 @@ def watchVideo(request, pk):
 		'likes': likes,
 		'form': form,
 		'muted': isMuted(request),
-		'authors': authors,
 		'videoAuthor': videoAuthor
 	}
 
@@ -259,15 +236,10 @@ def account(request, pk):
 		following_names.append(i.username)
 	user = get_object_or_404(User, id=pk)
 
-	authors = {}
-	for i in combined:
-		useracc = User.objects.get(id=i.author).username
-		authors[i.author] = useracc
 	
 	context = {
 		'combined': combined,
 		'username': user,
-		'authors': authors,
 		'isUsersAccount': user.username == request.user.username,
 		'followingUser': user.username in following_names,
 		'user': request.user
@@ -347,17 +319,6 @@ def viewPost(request, pk):
 			return HttpResponseRedirect(request.path_info)
 	comments = PostComment.objects.filter(post=post)
 
-	authors = {}
-	for i in comments:
-		author = User.objects.get(id=i.author)
-		if user.is_staff:
-			if author.first_name and author.last_name:
-				authors[i.author] = f"{author.username} ({author.first_name} {author.last_name})"
-			else:
-				authors[i.author] = author.username
-		else:
-			authors[i.author] = author.username
-
 	postAuthor = User.objects.get(id=post.author).username
 	
 	superUsers = User.objects.filter(is_superuser=True).all()
@@ -371,7 +332,6 @@ def viewPost(request, pk):
 		"comments": comments,
 		"form": PostCommentForm(),
 		"muted": isMuted(request),
-		'authors': authors,
 		'postAuthor': postAuthor,
 		'superUsers': superUsers,
 		'superUserIds': superUserIds
@@ -415,14 +375,9 @@ def following(request):
 		reverse=True
 	)
 	
-	authors = {}
-	for i in combined:
-		user = User.objects.get(id=i.author).username
-		authors[i.author] = user
 	
 	context = {
 		'combined': combined,
-		'authors': authors,
 		'following': following
 	}
 
@@ -445,14 +400,9 @@ def search(request):
 		reverse=True
 	)
 
-	authors = {}
-	for i in combined:
-		user = User.objects.get(id=i.author).username
-		authors[i.author] = user
 
 	context = {
 		'combined': combined,
-			'authors': authors,
 	}
 
 	return render(request, "app/search.html", context)
