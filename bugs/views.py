@@ -49,15 +49,10 @@ def bug_reportIndex(request):
     
     combined = bugs | resolvedBugs
 
-    authors = {}
-    for i in combined:
-          user = User.objects.get(id=i.author).username
-          authors[i.author] = user
 
     context = {
          'resolvedBugs': resolvedBugs,
          'bugs': bugs,
-         'authors': authors
     }
     return render(request, 'bugs/bugReportIndex.html', context)
 

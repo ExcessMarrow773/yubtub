@@ -38,7 +38,7 @@
     <div>
     {% for comment in comments %}
         <p>
-            On {{ comment.created_on.date }} <b>{{ authors | get_item:comment.author }}</b> wrote:
+            On {{ comment.created_on.date }} <b>{{ thing.author | get_user_username:user }}</b> wrote:
             <div style="margin-left: 25px;">
 				{% if comment.author in superUserIds %}
                     {{ comment.body | censor:user | markdown | linebreaks  }}
