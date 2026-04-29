@@ -1,3 +1,5 @@
+#!./.venv/bin/python3
+
 import subprocess, time, os, platform, sys
 from dotenv import load_dotenv
 
