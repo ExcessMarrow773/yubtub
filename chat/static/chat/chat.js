@@ -9,6 +9,19 @@ function parseCommands(message, userName) {
 	}
 }
 
+function sanitize(string) {
+  const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#x27;',
+      "/": '&#x2F;',
+  };
+  const reg = /[&<>"'/]/ig;
+  return string.replace(reg, (match)=>(map[match]));
+}
+
 chatSocket.onopen = function (e) {
   console.log("The connection was setup successfully !");
 };
@@ -29,12 +42,15 @@ document.querySelector("#id_message_send_button").onclick = function (e) {
   chatSocket.send(JSON.stringify({ message: messageInput, username : userName}));
   window.scrollTo(0, document.body.scrollHeight);
 };
+
 chatSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   var msg = document.createElement("msg");
   var userName = document.querySelector("#id_message_send_input").dataset.username
+  var message = data.username + ": " + sanitize(data.message);
+  
+  msg.innerHTML = message;
 
-  msg.innerHTML = data.username + ": " + data.message;
   if (data.username !== userName) {
 	  msg.classList.add('from');
   } else {
