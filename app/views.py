@@ -216,6 +216,10 @@ def watchVideo(request, pk):
 
 	return render(request, 'watch.html', context)
 
+def githubRedirect(request):
+	context = {}
+	return render(request, 'githubRedirect.html', context)
+
 def account(request, pk):
 	user_videos = Video.objects.filter(author=pk).order_by('-created_on')
 	user_posts = Post.objects.filter(author=pk).order_by('-created_on')

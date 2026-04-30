@@ -1,0 +1,21 @@
+{% extends "css.html" %}
+{% load static %}
+
+{% block extra_static %}
+<script>
+	window.onload = function() {
+		window.open('https://github.com/ExcessMarrow773/yubtub', '_blank');
+		const currentUrl = new URL(window.location.href);
+		console.log(currentUrl.host);
+		if (currentUrl.host.startsWith("dev.")) {
+			window.location.replace("https://dev.atticusfw.dev");
+		} else {
+			window.location.replace("https://atticusfw.dev");
+		};
+	};
+</script>
+<h1>Test</h1>
+{% endblock %}
+
+{% block page_content %}
+{% endblock page_content %}
