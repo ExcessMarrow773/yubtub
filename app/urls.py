@@ -22,6 +22,7 @@ urlpatterns = [
     path('following/', views.following, name="following"),
     path('editPost/<int:pk>/', views.editPost, name="editPost"),
     path('editVideo/<int:pk>/', views.editVideo, name="editVideo"),
+	path('github/', views.githubRedirect, name="githubRedirect"),
     path('demo/', views.DEMO, name="demo"),
     path('song/', views.uploadSong, name="uploadSong")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

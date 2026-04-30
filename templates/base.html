@@ -1,18 +1,16 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	{% load static %}
 	<meta charset="UTF-8">
-
-	<link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
-	<link rel="apple-touch-icon" href="{% static 'favicon.png' %}">
-
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title> {% block title %}YubTub{% endblock title %}</title>
 	<link rel="stylesheet" href="{% static 'styles.css' %}">
+	<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
 	<script src="{% static 'script.js' %}"></script>
-
-	{% if true %}
+	
+	{% now "m" as current_month %}
+	{% if current_month <= "01" or current_month >= "11" %}
 
 	<script defer="" src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
