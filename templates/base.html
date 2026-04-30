@@ -9,7 +9,8 @@
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
 	<script src="{% static 'script.js' %}"></script>
 
-	{% if true %}
+	{% now "m" as current_month %}
+	{% if current_month <= "01" or current_month >= "11" %}
 
 	<script defer="" src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
