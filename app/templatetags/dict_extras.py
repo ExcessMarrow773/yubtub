@@ -10,7 +10,12 @@ def get_user_username(id, requestUser):
     user = User.objects.get(id=id)
     username = user.username
     if requestUser.is_superuser:
-        output = f"{username} ({user.first_name} {user.last_name})"
+        if user.first_name and not user.last_name:
+            output = f"{username} ({user.first_name})"
+        elif user.first_name and user.last_name:
+            output = f"{username} ({user.first_name} {user.last_name})"
+        else:
+            output = f"{username}"
     else:
         output = username
     return output
