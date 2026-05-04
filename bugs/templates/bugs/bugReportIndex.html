@@ -14,7 +14,7 @@
             <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
             </a>
-            <p>{{ bug.body | markdown_truncate:100 }}</p>
+            <p>{{ bug.description | markdown_truncate:100 }}</p>
             <small>{{bug.created_on}}</small>
         </div>
     {% endfor %}
@@ -32,7 +32,7 @@
             <a href="{% url 'bugs:bugView' bug.pk %}">
                 <strong>{{ bug.title.capitalize }}</strong>
             </a>
-            <p>{{ bug.body | markdown_truncate:100 }}</p>
+            <p>{{ bug.description | markdown_truncate:100 }}</p>
             <small>{{bug.created_on}}</small>
         </div>
     {% endfor %}

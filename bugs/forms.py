@@ -6,4 +6,9 @@ User = get_user_model()
 class BugReportForm(forms.ModelForm):
     class Meta:
         model = BugReport
-        fields = ['title', 'body', 'type', 'github_issue']
+        fields = ['title', 'issues', 'description', 'type', 'github_issue']
+
+        widgets = {
+            'issues': forms.Textarea(attrs={'style': 'width: 400px; height: 140px;'}),
+            'description': forms.Textarea(attrs={'style': 'width: 400px; height: 140px;'}),
+        }

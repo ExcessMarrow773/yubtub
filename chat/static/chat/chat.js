@@ -47,7 +47,7 @@ chatSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   var msg = document.createElement("msg");
   var userName = document.querySelector("#id_message_send_input").dataset.username
-  var message = sanitize(data.username) + ": " + sanitize(data.message);
+  var message = sanitize(data.username) + ": " + sanitize("{{ \"" + data.message + " | censor:user | markdown | linebreaks  }}");
   
   msg.innerHTML = message;
 
