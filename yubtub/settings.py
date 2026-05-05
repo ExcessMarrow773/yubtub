@@ -22,6 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SQLPASS = os.getenv("SQLPASS", None)
 SQLIP = os.getenv("SQLIP")
 dbOnline = os.getenv("ONLINE", False) == "True"
+
+extra_hosts = os.getenv("HOSTS", [])
+extra_hosts = extra_hosts[2:len(extra_hosts)-2].split("\", \"")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -32,8 +36,10 @@ SECRET_KEY = os.getenv("KEY", "u*t/(8jijbuyfrx(y))")
 DEBUG = os.getenv("DEBUG", True) == 'True'
 # DEBUG = True
 ALLOWED_HOSTS = ['187.77.203.207', 'atticusfw.dev', 'dev.atticusfw.dev']
+for i in extra_hosts:
+	ALLOWED_HOSTS.append(i)
 
-X_FRAME_OPTIONS = 'SAMEORIGIN' 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CSRF_TRUSTED_ORIGINS=[]
 

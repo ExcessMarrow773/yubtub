@@ -15,6 +15,7 @@ class BugReport(models.Model):
     author = models.CharField(max_length=100, default='admin')
     title = models.CharField(max_length=255)
     issues = models.TextField(null=True)
+    issueModel = models.ManyToManyField("bugs.BugIssue", blank=True, null=True)
     description = models.TextField()
     created_on = models.DateTimeField(auto_now=True, auto_now_add=False)
     type = models.CharField(choices=TYPE_CHOICES, max_length=50, default='BUG')
@@ -24,19 +25,42 @@ class BugReport(models.Model):
 
     def __str__(self):
         return self.title
-    
     def save(self, *args, **kwargs):
-        first_save_kwargs = kwargs.copy()
-        issueList = self.issues.split("\n")
-        # First save to create the row and get a primary key (if new)
+        is_new = self.pk is None
+        
+        old_issues = set()
+        if not is_new:
+            try:
+                old_issues = set(
+                    self.issueModel.values_list('issue', flat=True)
+                )
+            except Exception:
+                pass
+        
         super().save(*args, **kwargs)
-        for i in issueList:
-            BugIssues.objects.create(bug=self, issue=i)
-    
-class BugIssues(models.Model):
+        
+        if self.issues:
+            new_issues = set(
+                i.strip() for i in self.issues.split("\n") if i.strip()
+            )
+            
+            # Delete issues that were removed from the text
+            if not is_new:
+                removed = old_issues - new_issues
+                self.issueModel.filter(issue__in=removed).delete()
+            
+            # Only create issues that don't already exist
+            to_create = new_issues - old_issues
+            for issue_text in to_create:
+                issue = BugIssue.objects.create(bug=self, issue=issue_text)
+                self.issueModel.add(issue)
+class BugIssue(models.Model):
     bug = models.ForeignKey("bugs.BugReport", on_delete=models.CASCADE)
     issue = models.TextField()
-    completed = models.BooleanField(default=False)
+    resolved = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        if self.resolved==True:
+                return f"{self.issue} [x]"
+        else:
+                return f"{self.issue} [_]"

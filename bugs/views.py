@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 
 from bugs.forms import BugReportForm
-from bugs.models import BugReport, BugIssues
+from bugs.models import BugReport, BugIssue
 
 from itertools import chain
 from operator import attrgetter
