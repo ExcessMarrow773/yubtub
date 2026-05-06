@@ -24,7 +24,7 @@ SQLIP = os.getenv("SQLIP")
 dbOnline = os.getenv("ONLINE", False) == "True"
 
 extra_hosts = os.getenv("HOSTS", [])
-extra_hosts = extra_hosts[2:len(extra_hosts)-2].split("\", \"")
+if extra_hosts != []: extra_hosts = extra_hosts[2:len(extra_hosts)-2].split("\", \"")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/

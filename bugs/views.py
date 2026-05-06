@@ -59,7 +59,7 @@ def bug_reportIndex(request):
 def bugView(request, pk):
     bug = get_object_or_404(BugReport, pk=pk)
     username = User.objects.get(id=bug.author).username
-    issues = BugIssues.objects
+    issues = BugIssue.objects
     context = {
         'bug': bug,
         'issues': issues,
