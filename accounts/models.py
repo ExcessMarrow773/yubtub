@@ -19,9 +19,9 @@ class CustomUser(AbstractUser):
 
 	following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
-	profile_pic = models.ImageField(_("Profile Picture"), upload_to="profilePics", default="static/img/pfpDefault.png")
+	profile_pic = models.ImageField(_("Profile Picture"), upload_to="profilePics", default="static/img/pfpDefault.png", blank=True)
 
-	description = models.TextField(_("Profile Description"), null=True)
+	description = models.TextField(_("Profile Description"), null=True, blank=True)
 
 	username = models.CharField(
         max_length=150,
