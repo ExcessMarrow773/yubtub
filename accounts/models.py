@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
 	description = models.TextField(_("Profile Description"), null=True, blank=True)
 
 	username = models.CharField(
-        max_length=150,
+        max_length=32,
         unique=True,
         validators=[username_validator],
 		help_text=_(
