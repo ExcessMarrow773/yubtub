@@ -33,7 +33,13 @@ DEBUG = os.getenv("DEBUG", True) == 'True'
 # DEBUG = True
 ALLOWED_HOSTS = ['187.77.203.207', 'atticusfw.dev', 'dev.atticusfw.dev']
 
-X_FRAME_OPTIONS = 'SAMEORIGIN' 
+ENV_HOSTS = os.getenv("HOSTS", [])
+ENV_HOSTS = ENV_HOSTS[2:len(ENV_HOSTS)-2].split('", "')
+
+for i in ENV_HOSTS:
+    ALLOWED_HOSTS.append(i)
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CSRF_TRUSTED_ORIGINS=[]
 
