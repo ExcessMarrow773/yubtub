@@ -16,7 +16,7 @@
             By <a href="{% url 'app:account' bug.author %}">{{ username }}</a>
         </p>
 
-        <p>{{ bug.body | markdown }}</p>
+        <p>{{ bug.description | markdown }}</p>
 
         {% if bug.github_issue %}
             <a href="{{ bug.github_issue }}"><h3>{{bug.github_issue}}</h3></a>

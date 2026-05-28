@@ -80,7 +80,6 @@ function followUser() {
 function resolveBug(bug, link) {
     const resolveButton = document.getElementById("resolve-button");
     
-
     console.log(bug);
 
     fetch('/bug/resolve/', {
