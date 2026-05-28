@@ -93,7 +93,7 @@
 			<form method="post" action="{% url 'accounts:logout' %}">
 				{% block extra_navbar %}{% endblock extra_navbar %}
 				{% if "/account/" not in request.path and username != user.username %}
-					<a id="name" class="button" href="{% url 'app:account' user.id %}"><img class="profile_pic" width="25" src="{{ user.profile_pic.url }}" />  {{ user.username }}</a>
+					<a id="name" class="button" href="{% url 'app:account' user.id %}"><img class="profile_pic" width="25px" height="25px" src="{{ user.profile_pic.url }}"></img>  {{ user.username }}</a>
 				{% endif %}
 				{% csrf_token %}
 				<button class="a" type="submit">Logout</button>
