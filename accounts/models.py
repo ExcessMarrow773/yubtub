@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
 	following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
 	username = models.CharField(
-        max_length=150,
+        max_length=32,
         unique=True,
         validators=[username_validator],
 		help_text=_(
