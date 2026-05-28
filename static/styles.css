@@ -502,10 +502,7 @@ a, img, video, .video-card, .post-card, .bug-card, .banner-track-wrapper {
   z-index: 10;
 }
 
-
 .profile_pic {
-  width: 75px;
-  height: 75px;
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto;
@@ -513,8 +510,6 @@ a, img, video, .video-card, .post-card, .bug-card, .banner-track-wrapper {
 }
 
 .profile_pic img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   object-position: center;
   display: block; /* Removes any extra space below the image */
