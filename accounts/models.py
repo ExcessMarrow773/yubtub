@@ -28,11 +28,13 @@ class CustomUser(AbstractUser):
         unique=True,
         validators=[username_validator],
 		help_text=_(
-            'Required. 150 characters or fewer. Letters, digits and +/-/_ only.'
+            'Required. 32 characters or fewer. Letters, digits and +/-/_ only.'
         ),
     )
 
-	use_naughty_words = models.BooleanField(default=False)
+	BOOL_FILTER_CHOICES = ((True, 'Off'), (False, 'On'))
+
+	use_naughty_words = models.BooleanField(_("Filters"), choices=BOOL_FILTER_CHOICES, default=False, blank=True)
 
 	def follow(self, user):
 		self.following.add(user)

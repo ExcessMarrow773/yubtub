@@ -7,7 +7,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
 	readonly_fields = ('followers_display', 'follower_count')
-	
+
 	fieldsets = (
 		(None, {
 			'fields': ('username', 'password')

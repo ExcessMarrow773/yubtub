@@ -10,7 +10,7 @@ User = get_user_model()
 class ProfileDetailsChange(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'description', 'email', 'profile_pic']
+        fields = ['first_name', 'last_name', 'use_naughty_words', 'description', 'email', 'profile_pic']
 
 class ProfileUsernameChange(forms.ModelForm):
     class Meta:
@@ -19,8 +19,6 @@ class ProfileUsernameChange(forms.ModelForm):
 
 class ProfilePasswordChange(PasswordChangeForm):
     user = User
-
-User = get_user_model()
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
