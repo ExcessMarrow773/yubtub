@@ -501,3 +501,16 @@ a, img, video, .video-card, .post-card, .bug-card, .banner-track-wrapper {
   position: relative;
   z-index: 10;
 }
+
+.profile_pic {
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  flex-shrink: 0; /* Prevents the container from being squished */
+}
+
+.profile_pic img {
+  object-fit: cover;
+  object-position: center;
+  display: block; /* Removes any extra space below the image */
+}
