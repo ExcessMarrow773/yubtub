@@ -238,14 +238,14 @@ def account(request, pk):
 	following_names = []
 	for i in following:
 		following_names.append(i.username)
-	user = get_object_or_404(User, id=pk)
+	userProfile = get_object_or_404(User, id=pk)
 
 	
 	context = {
 		'combined': combined,
-		'username': user,
-		'isUsersAccount': user.username == request.user.username,
-		'followingUser': user.username in following_names,
+		'profile': userProfile,
+		'isUsersAccount': userProfile.username == request.user.username,
+		'followingUser': userProfile.username in following_names,
 		'user': request.user
 	}
 	return render(request, 'app/account.html', context)

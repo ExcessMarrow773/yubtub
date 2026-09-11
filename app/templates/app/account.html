@@ -6,16 +6,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}">
     <script src="{% static 'admin/js/core.js' %}"></script>
     <script>
-        console.log("{{ username.lower }}")
-        console.log("{{ username.upper }}")
-        console.log("{{ username }}")
+        console.log("{{ profile.lower }}")
+        console.log("{{ profile.upper }}")
+        console.log("{{ profile }}")
     </script>
 {% endblock extra_head %}
 
 {% block heading %}
-    {{ username }}'s stuff
+    {{ profile }}'s stuff
     {% if not isUsersAccount and user.is_authenticated %}
-        <button id="follow-button" data-account="{{ username }}" onclick="followUser()">
+        <button id="follow-button" data-account="{{ profile }}" onclick="followUser()">
             {% if followingUser %}Unfollow{% else %}Follow{% endif %}
         </button>
     {% endif %}
@@ -27,7 +27,7 @@
 {% endblock extra_navbar %}
 
 {% block page_content %}
-<p>{% if user.description == None %} {% else %} {{ user.description }} {% endif %}</p>
+<p>{% if profile.description == None %} {% else %} {{ profile.description }} {% endif %}</p>
 <hr>
 <p id="follow-response"></p>
     {% if combined %}
