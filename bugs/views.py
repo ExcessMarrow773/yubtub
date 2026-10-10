@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 
 from bugs.forms import BugReportForm
-from bugs.models import BugReport, BugIssue
+from bugs.models import BugReport
 
 from itertools import chain
 from operator import attrgetter
@@ -28,8 +28,7 @@ def bug_report(request):
             bug = BugReport(
                 author=username,
                 title=form.cleaned_data["title"],
-                issues=form.cleaned_data["issues"],
-                description=form.cleaned_data["description"],
+                body=form.cleaned_data["body"],
                 type=form.cleaned_data["type"],
                 github_issue=form.cleaned_data["github_issue"]
             )
@@ -50,6 +49,7 @@ def bug_reportIndex(request):
     
     combined = bugs | resolvedBugs
 
+
     context = {
          'resolvedBugs': resolvedBugs,
          'bugs': bugs,
@@ -59,10 +59,9 @@ def bug_reportIndex(request):
 def bugView(request, pk):
     bug = get_object_or_404(BugReport, pk=pk)
     username = User.objects.get(id=bug.author).username
-    issues = BugIssue.objects
+
     context = {
         'bug': bug,
-        'issues': issues,
         'username': username
     }
 

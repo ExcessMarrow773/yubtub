@@ -27,6 +27,7 @@
 {% endblock extra_navbar %}
 
 {% block page_content %}
+<p>{% if user.description == None %} {% else %} {{ user.description }} {% endif %}</p>
 <hr>
 <p id="follow-response"></p>
     {% if combined %}

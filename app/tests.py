@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase, Client
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -257,6 +259,53 @@ class FollowingPageTests(TestCase):
         response = self.client.get(reverse('app:following'))
         # Should redirect to login
         self.assertIn(response.status_code, [302, 404])
+
+
+class FollowUserApiTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user1 = User.objects.create_user(username='alice', password='pass123')
+        self.user2 = User.objects.create_user(username='bob', password='pass123')
+
+    def _post_follow(self, account):
+        return self.client.post(
+            reverse('app:follow-user'),
+            data=json.dumps({'account': account}),
+            content_type='application/json',
+        )
+
+    def test_follow_user_requires_authentication(self):
+        response = self._post_follow('bob')
+        self.assertEqual(response.status_code, 403)
+
+    def test_follow_user_returns_404_for_missing_account(self):
+        self.client.login(username='alice', password='pass123')
+        response = self._post_follow('nobody')
+        self.assertEqual(response.status_code, 404)
+
+    def test_follow_user_adds_following(self):
+        self.client.login(username='alice', password='pass123')
+        response = self._post_follow('bob')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['following'])
+        self.assertTrue(self.user1.is_following(self.user2))
+
+    def test_unfollow_user_removes_following(self):
+        self.client.login(username='alice', password='pass123')
+        self.user1.follow(self.user2)
+        response = self._post_follow('bob')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()['following'])
+        self.assertFalse(self.user1.is_following(self.user2))
+
+    def test_follow_user_invalid_json_returns_400(self):
+        self.client.login(username='alice', password='pass123')
+        response = self.client.post(
+            reverse('app:follow-user'),
+            data='not json',
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 400)
 
 
 # ---------------------------------------------------------------------------
