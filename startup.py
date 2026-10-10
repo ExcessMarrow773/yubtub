@@ -39,7 +39,7 @@ try:
 
 		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'migrate'])
 		print(f"Starting server on http://127.0.0.1:{port}\n")
-		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
+		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'runserver', f'172.18.0.1:{port}'])
 	else:
 		print("Starting application...\n")
 		subprocess.run(['git', 'pull'])
@@ -50,9 +50,13 @@ try:
 		subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
 		print(f"Starting server on http://127.0.0.1:{port}\n")
 		if not use_gunicorn:
-			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'0.0.0.0:{port}'])
+			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'172.18.0.1:{port}'])
 		else:
-			subprocess.run(['./.venv/bin/gunicorn', 'yubtub.wsgi', '--workers 3', '--reload'])
+			subprocess.run([
+				'./.venv/bin/gunicorn', 'yubtub.wsgi',
+				'--workers', '3', '--reload',
+				'--bind', f'172.18.0.1:{port}',
+			])
 
 except KeyboardInterrupt:
 	print('\n\nStopping server and exiting program')
