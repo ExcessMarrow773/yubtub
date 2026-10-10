@@ -174,7 +174,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/yubtubStatic/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     f'{BASE_DIR}/static',
@@ -191,10 +191,10 @@ LOGIN_URL = '/settings/login/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
 
-if dbOnline and SQLIP != "127.0.0.1":
-    MEDIA_URL = 'https://atticusfw.dev/yubtubMedia/'
-else:
-    MEDIA_URL = '/yubtubMedia/'
+# if dbOnline and SQLIP != "127.0.0.1":
+#     MEDIA_URL = 'https://atticusfw.dev/yubtubMedia/'
+# else:
+MEDIA_URL = 'media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
