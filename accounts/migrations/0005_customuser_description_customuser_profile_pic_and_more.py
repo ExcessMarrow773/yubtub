@@ -13,11 +13,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='customuser',
-            name='description',
-            field=models.TextField(blank=True, null=True, verbose_name='Profile Description'),
-        ),
-        migrations.AddField(
-            model_name='customuser',
             name='profile_pic',
             field=models.ImageField(blank=True, default='static/img/pfpDefault.png', upload_to='profilePics', verbose_name='Profile Picture'),
         ),
