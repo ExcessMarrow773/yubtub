@@ -4,10 +4,10 @@
 
 {% block page_content %}
 {% if user.pk == videos.author %}
-<dir class="editBar">
+<div class="editBar">
     <h2>{{ videos.title }}</h2>
     <a href="{% url 'app:editVideo' videos.id %}" class="button">Edit</a>
-</dir>
+</div>
 {% endif %}
 Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videoAuthor }}</a>
 <div>
@@ -19,8 +19,9 @@ Uploaded by <a href="/{% url 'app:account' videos.author %}">{{ videoAuthor }}</
 
 <div>
 <a href="{{ videos.video_file.url }}" class="button">vid</a>
+{% if user.is_authenticated %}
 <button id="like-button" data-video-id="{{ pk }}" onclick="likeVideo()">{{ likes }}:&#x1F44D;</button> <small>Views: {{ videos.views }}</small>
-
+{% endif %}
 
 {{ videos.description | markdown | linebreaks }}  <!-- linegrapes/ do she pipe it tillyo linegreaps -->
 </div>

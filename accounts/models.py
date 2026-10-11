@@ -21,7 +21,7 @@ class CustomUser(AbstractUser):
 
 	profile_pic = models.ImageField(_("Profile Picture"), upload_to="profilePics", default="static/img/pfpDefault.png", blank=True)
 
-	description = models.TextField(_("Profile Description"), null=True, blank=True)
+	description = models.TextField(_("Profile Description"), null=True)
 
 	username = models.CharField(
         max_length=32,
