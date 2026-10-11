@@ -1,63 +1,67 @@
 #!./.venv/bin/python3
 
-import subprocess, time, os, platform, sys
-from dotenv import load_dotenv
+from django.core.management import ManagementUtility
+from dotenv import load_dotenv, get_key, find_dotenv
 
+import os
+
+dotenv_path = find_dotenv()
 load_dotenv()
 
-debug = os.getenv("DEBUG", True) == 'True'
-args = sys.argv
+IP = get_key(dotenv_path, "HOST_IP")
+PORT = get_key(dotenv_path, "HOST_PORT")
+PROD = get_key(dotenv_path, "PROD")
+AUTOMIGRATE = get_key(dotenv_path, "AUTOMIGRATE")
 
-if len(args) == 2:
-	port = int(args[1])
-	use_gunicorn = False
+os.environ["DJANGO_SETTINGS_MODULE"] = "yubtub.settings"
 
-elif len(args) == 3:
-	port = int(args[1])
-	use_gunicorn = tuple(args[2])
+utility = ManagementUtility(["manage.py", "collectstatic", "--no-input"])
+utility.execute()
+
+if IP == None:
+    raise NameError("HOST_IP enviroment variable not found")
+if PORT == None:
+    raise NameError("HOST_PORT enviroment variable not found")
+if PROD == None:
+    raise NameError("PROD enviroment variable not found")
+if AUTOMIGRATE == None:
+    raise NameError("AUTOMIGRATE enviroment variable not found")
+
+if AUTOMIGRATE == True:
+    print("\nAutomigrate enabled, but you still have to make the migrations yourself.\n")
+    utility = ManagementUtility(["manage.py", "migrate"])
+    utility.execute()
+
+if PROD == True:
+    import multiprocessing
+    import gunicorn.app.base
+
+    import yubtub.wsgi
+
+    def number_of_workers():
+        return (multiprocessing.cpu_count() * 2) + 1
+
+    class StandaloneApplication(gunicorn.app.base.BaseApplication):
+        def __init__(self, app, options=None):
+            self.options = options or {}
+            self.application = app
+            super().__init__()
+
+        def load_config(self):
+            config = {key: value for key, value in self.options.items()
+                    if key in self.cfg.settings and value is not None}
+            for key, value in config.items():
+                self.cfg.set(key.lower(), value)
+
+        def load(self):
+            return self.application
+
+    options = {
+        'bind': '%s:%s' % (IP, PORT),
+        'workers': number_of_workers(),
+    }
+    StandaloneApplication(yubtub.wsgi.application, options).run()
+    
 else:
-	port = 8000
-	use_gunicorn = False
-
-if os.path.exists('CONFIG') == False:
-	with open('CONFIG', 'w') as f:
-		f.write('first_run=True\n')
-
-with open('CONFIG', 'r') as f:
-	config = f.read().splitlines()
-if config[0] == 'first_run=True':
-	print("First run detected. Setting up the environment...\n")
-	subprocess.run(['python3', './setup.py'])
-	with open('CONFIG', 'w') as f:
-		f.write('first_run=False\n')
-try:
-	if platform.system() == 'Windows':
-		print("Starting application...\n")
-		subprocess.run(['git', 'pull'])
-		print("\nRunning migrations and starting server...\n")
-		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'makemigrations'])
-
-		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'migrate'])
-		print(f"Starting server on http://127.0.0.1:{port}\n")
-		subprocess.run(['./.venv/Scripts/python.exe', 'manage.py', 'runserver', f'172.18.0.1:{port}'])
-	else:
-		print("Starting application...\n")
-		subprocess.run(['git', 'pull'])
-		subprocess.run(['./.venv/bin/python3', 'manage.py', 'collectstatic', '--no-input'])
-		print("\nRunning migrations and starting server...\n")
-		subprocess.run(['./.venv/bin/python3', 'manage.py', 'makemigrations'])
-
-		subprocess.run(['./.venv/bin/python3', 'manage.py', 'migrate'])
-		print(f"Starting server on http://127.0.0.1:{port}\n")
-		if not use_gunicorn:
-			subprocess.run(['./.venv/bin/python3', 'manage.py', 'runserver', f'172.18.0.1:{port}'])
-		else:
-			subprocess.run([
-				'./.venv/bin/gunicorn', 'yubtub.wsgi',
-				'--workers', '3', '--reload',
-				'--bind', f'172.18.0.1:{port}',
-			])
-
-except KeyboardInterrupt:
-	print('\n\nStopping server and exiting program')
-	print('Server stopped, database saved')
+    utility = ManagementUtility(["manage.py", "runserver", f"{IP}:{PORT}"])
+    utility.execute()
